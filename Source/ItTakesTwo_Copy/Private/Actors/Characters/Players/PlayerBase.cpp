@@ -25,26 +25,29 @@ APlayerBase::APlayerBase()
 	if (TempDashInput.Succeeded()) IA_Dash = TempDashInput.Object;
 	ConstructorHelpers::FObjectFinder<UInputAction> TempUltiInput(TEXT("/Script/EnhancedInput.InputAction'/Game/Inputs/IA_Ultimate.IA_Ultimate'"));
 	if (TempUltiInput.Succeeded()) IA_Ultimate = TempUltiInput.Object;
-	
-	
 }
 
 void APlayerBase::Move(const FInputActionValue& Value)
 {
+	
 }
 
 void APlayerBase::BaseAttack(const FInputActionValue& Value)
 {
+	
 }
 
 void APlayerBase::SpecialAttack(const FInputActionValue& Value)
 {
+	
 }
 
 void APlayerBase::Dash(const FInputActionValue& Value)
 {
+	
 }
 
 void APlayerBase::Ultimate(const FInputActionValue& Value)
 {
+	
 }
