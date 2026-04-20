@@ -31,8 +31,6 @@ public:
 	UHPComponent* GetHPComponent() { return HPComp; }
 	UFUNCTION(BlueprintCallable, Category="Components")
 	UStatComponent* GetStatComponent() { return StatComp; }
-	UFUNCTION(BlueprintCallable, Category="Components")
-	USkillComponent* GetSkillComponent() { return SkillComp; }
 
 	virtual void OnHit();
 	virtual void OnDie();
@@ -42,6 +40,4 @@ private:
 	UHPComponent* HPComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UStatComponent* StatComp;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
-	USkillComponent* SkillComp;
 };

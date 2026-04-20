@@ -23,3 +23,17 @@ void USkillComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>
 	
 }
 
+void USkillComponent::RequestExecuteSkill(int32 SkillIndex)
+{
+	// todo 서버일때는 바로 실행
+	// todo 클라이언트 일때는 Server_ExecuteSkill(SkillIndex) 실행
+}
+
+void USkillComponent::Server_ExecuteSkill_Implementation(int32 SkillIndex)
+{
+}
+
+void USkillComponent::Multicast_PlayerSkilEffect_Implementation(int32 SkillIndex)
+{
+}
+
