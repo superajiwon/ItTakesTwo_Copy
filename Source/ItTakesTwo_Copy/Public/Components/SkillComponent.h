@@ -5,6 +5,7 @@
 #include "Components/ActorComponent.h"
 #include "SkillComponent.generated.h"
 
+class USkillBase;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ITTAKESTWO_COPY_API USkillComponent : public UActorComponent
@@ -21,7 +22,23 @@ protected:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 public:	
-	// virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+	// 캐릭터에서 호출 할 스킬 시
+	UFUNCTION(BlueprintCallable, Category="Skill")
+	void RequestExecuteSkill(int32 SkillIndex);
+	
+protected:
+	// 네트워크 로직 -> 서버 단독 실행
+	UFUNCTION(Server, Reliable)
+	void Server_ExecuteSkill(int32 SkillIndex);
+	
+	// 이펙트 실행
+	UFUNCTION(NetMulticast, Unreliable)
+	void Multicast_PlayerSkilEffect(int32 SkillIndex);
+	
+protected:
+	// UPROPERTY(EditDefaultsOnly, Category="Skill")
+	// TArray<TSubclassOf<USkillBase>> SkillClasses;
+	//
+	// UPROPERTY(Transient)
+	// TArray<USkillBase*> Skills;
 };

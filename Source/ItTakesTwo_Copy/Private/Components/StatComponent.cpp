@@ -15,7 +15,6 @@ void UStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
 }
 
 void UStatComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
