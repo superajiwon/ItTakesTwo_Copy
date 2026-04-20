@@ -5,6 +5,7 @@
 #include "Actors/Characters/CharacterBase.h"
 #include "PlayerBase.generated.h"
 
+class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
