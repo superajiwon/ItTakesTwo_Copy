@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "HUDViewModel.h"
+#include "UI/ViewModel/HUDViewModel.h"
 
 void UHUDViewModel::Initialize(TObjectPtr<APlayerController> PlayerController)
 {

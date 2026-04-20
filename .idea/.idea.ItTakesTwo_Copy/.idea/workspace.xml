@@ -52,7 +52,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;NZW&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Gwonseon&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -164,6 +164,8 @@
       <workItem from="1776326823915" duration="2090000" />
       <workItem from="1776595269966" duration="2256000" />
       <workItem from="1776643530314" duration="553000" />
+      <workItem from="1776660923260" duration="34000" />
+      <workItem from="1776661134360" duration="427000" />
     </task>
     <servers />
   </component>

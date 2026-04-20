@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItTakesTwo_Copy/UI/ViewModel/ViewModelBase.h"
+#include "ItTakesTwo_Copy/Public/UI/ViewModel/ViewModelBase.h"
 #include "HUDViewModel.generated.h"
 
 UCLASS()

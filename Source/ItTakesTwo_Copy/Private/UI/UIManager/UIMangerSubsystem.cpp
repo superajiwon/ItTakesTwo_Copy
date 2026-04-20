@@ -1,10 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UIMangerSubsystem.h"
-
-#include "ItTakesTwo_Copy/UI/ViewModel/HUDViewModel/HUDViewModel.h"
-#include "ItTakesTwo_Copy/UI/ViewModel/LobbyViewModel/LobbyViewModel.h"
+#include "ItTakesTwo_Copy/Public/UI/UIManager/UIMangerSubsystem.h"
+#include "ItTakesTwo_Copy/Public/UI/ViewModel/HUDViewModel.h"
+#include "ItTakesTwo_Copy/Public/UI/ViewModel/LobbyViewModel.h"
 
 void UUIMangerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {

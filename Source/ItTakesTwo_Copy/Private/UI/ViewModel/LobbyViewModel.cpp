@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "LobbyViewModel.h"
+#include "UI/ViewModel/LobbyViewModel.h"
 
 void ULobbyViewModel::Initialize(TObjectPtr<APlayerController> PlayerController)
 {
