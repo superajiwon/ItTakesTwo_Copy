@@ -15,7 +15,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="" />
+    <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTTypes.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTTypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/Lv_ServerPlayerSelect.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Lv_ServerPlayerSelect.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/Lv_ServerTestInGame.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Lv_ServerTestInGame.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/WBP_Select.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/WBP_Select.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/ITTGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/ITTGameMode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/MenuController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/MenuController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/ITTPlayerState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/ITTPlayerState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/ITTGameMode.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/ITTGameMode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTGameInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTSessionSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTSessionSubsystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/MenuController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/MenuController.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,20 +43,24 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/UObject/UnrealNames.inl" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/MenuController.gen.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/ToyArbalist_Monster.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/SkillComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/UltimateComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Interfaces/Healable.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTSessionSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTTypes.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/MenuController.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/MonsterBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/ToyArbalist_Monster.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/SkillComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/UltimateComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Interfaces/Healable.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTGameInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTSessionSubsystem.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTTypes.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/MenuController.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -59,7 +78,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "Gwonseon",
+    "git-widget-placeholder": "NZW",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

@@ -1,17 +1,9 @@
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "Shared/ITTTypes.h" 
 #include "ITTPlayerState.generated.h"
-
-UENUM(BlueprintType)
-enum class EPlayerRole : uint8
-{
-	None	UMETA(DisplayName = "None"),
-	May		UMETA(DisplayName = "May"),
-	Cody	UMETA(DisplayName = "Cody")
-};
 
 UCLASS()
 class ITTAKESTWO_COPY_API AITTPlayerState : public APlayerState

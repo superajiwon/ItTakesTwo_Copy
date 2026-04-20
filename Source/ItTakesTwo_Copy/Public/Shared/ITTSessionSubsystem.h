@@ -40,6 +40,6 @@ private:
 	FName GameSessionName{NAME_GameSession};
 	
 	UPROPERTY()
-	FName ListenLevelName{FName("Lv_ServerTestInGame")};
+	FName ListenLevelName{FName("Lv_ServerPlayerSelect")};
 	
 };
