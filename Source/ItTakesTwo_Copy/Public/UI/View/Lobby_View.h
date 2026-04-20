@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Lobby_View.generated.h"
 
-
+class UButton;
 UCLASS()
 class ITTAKESTWO_COPY_API ULobby_View : public UUserWidget
 {
@@ -17,10 +17,10 @@ public:
 	
 private:
 	UPROPERTY(Meta = (BindWidget))
-	class UButton* Btn_Create{};
+	UButton* Btn_Create{};
 	
 	UPROPERTY(Meta = (BindWidget))
-	class UButton* Btn_Join{};
+	UButton* Btn_Join{};
 	
 	UFUNCTION()
 	void CreateServerHandler();

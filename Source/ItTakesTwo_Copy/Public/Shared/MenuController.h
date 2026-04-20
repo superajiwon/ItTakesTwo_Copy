@@ -14,7 +14,9 @@ class ITTAKESTWO_COPY_API AMenuController : public APlayerController
 public:
 	virtual void BeginPlay() override;
 	
-	
+public:
 	void HostStart();
 	void ClientJoin();
+	void FindSession();
+	
 };
