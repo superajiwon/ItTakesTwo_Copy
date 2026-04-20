@@ -5,6 +5,9 @@
     <projectFile profileName="EpicGames.AspNet">../../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.AspNet/EpicGames.AspNet.csproj</projectFile>
     <projectFile kind="Docker">../../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Perforce.Fixture/EpicGames.Perforce.Fixture.csproj</projectFile>
     <projectFile>../../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/UnrealBuildTool/UnrealBuildTool.csproj</projectFile>
+    <projectFile>../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/AutomationTool.csproj</projectFile>
+    <projectFile kind="Docker">../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Perforce.Fixture/EpicGames.Perforce.Fixture.csproj</projectFile>
+    <projectFile>../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/UnrealBuildTool/UnrealBuildTool.csproj</projectFile>
     <projectFile>Intermediate/ProjectFiles/ItTakesTwo_Copy.vcxproj</projectFile>
     <projectFile>Intermediate/ProjectFiles/UE5.vcxproj</projectFile>
   </component>
@@ -12,289 +15,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/betterCommentsSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/betterCommentsSettings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/Cody_Bottom.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/Cody_Detail.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/Cody_Eye.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/Cody_Head.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/Cody_HeadDetail.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/Cody_Wizard.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/M_Cody_Bottom.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/M_Cody_Detail.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/M_Cody_Eye.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/M_Cody_Head.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/M_Cody_HeadDetail.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Materials/M_Cody_Wizard.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_Wizard.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var1_2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var1_3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var2_2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var2_3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var3_2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var3_3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Attack_Var3_4.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_BeamAttack.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Blink_Exit.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_Mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_OrbAttack.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_TakeDamage_Var1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_TakeDamage_Var2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Bhv_PlayRoom_MageCombat_TakeDamage_Var3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Loco_PlayRoom_MageCombat_Jog.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Loco_PlayRoom_MageCombat_Jog_Start_Fwd.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_WizardCody_Loco_PlayRoom_MageCombat_Jog_Stop_Fwd.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_Wizard_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/SkeletalMeshes/Cody_Wizard_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Bottom_mat_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Bottom_mat_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Bottom_mat_C5.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Bottom_mat_C6.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Cody_Eyes_BaseColor.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Cody_Wizard_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Cody_Wizard_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Cody_Wizard_C6.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Detail_mat_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Detail_mat_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Detail_mat_C5.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/HeadDetail_mat_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/HeadDetail_mat_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Head_mat_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Head_mat_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cody_Wizard/Textures/Head_mat_C5.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Materials/Cotton_Fur_Shells_M.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Materials/Cutie_Body.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Materials/Cutie_Cape.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Materials/Cutie_Head.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Materials/M_Cotton_Fur_Shells_M.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Materials/M_Cutie_Body.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Materials/M_Cutie_Cape.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Materials/M_Cutie_Head.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/SkeletalMeshes/Cutie.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/SkeletalMeshes/CutieNPC_Cutie_Mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/SkeletalMeshes/CutieNPC_Cutie_Mh_Reaction_var1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/SkeletalMeshes/Cutie_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/SkeletalMeshes/Cutie_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cotton_F1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cotton_F2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cutie_Body_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cutie_Body_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cutie_Cape_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cutie_Cape_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cutie_Head_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cutie_Head_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/Cutie/Textures/Cutie_Head_C6.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/M_May_Castle.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/M_May_Eye.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/M_May_Hair.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/M_May_Head.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/M_May_Pants.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/M_May_Parts.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/M_May_Shirt.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/May_Castle.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/May_Eyes.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/May_Hair.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/May_Head.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/May_Pants.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/May_Parts.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Materials/May_Shirt.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/May_Sword/Materials/M_ToySword.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/May_Sword/Materials/M_ToySword_01.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/May_Sword/Materials/ToySword.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/May_Sword/Materials/ToySword_01.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/May_Sword/StaticMeshes/May_Sword.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/May_Sword/Textrues/ToySword_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/May_Sword/Textrues/ToySword_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/May_Sword/Textrues/ToySword_C4.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_Castle.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_Attack_Var1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_Attack_Var2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_Attack_Var3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_Dash.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_GroundSmash.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_Mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_TakeDamage_Heavy_Var1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_TakeDamage_Heavy_Var2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_TakeDamage_Heavy_Var3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_UltimateWhirlwind_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Bhv_PlayRoom_BruteCombat_Whirlwind_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Loco_PlayRoom_BruteCombat_Jog.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Loco_PlayRoom_BruteCombat_Start_Fwd.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_CastleMay_Loco_PlayRoom_BruteCombat_Stop.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_Castle_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/SkeletalMeshes/May_Castle_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/Castle/May_Castle_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/Castle/May_Castle_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/Castle/May_Castle_C4.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Eye.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Hair_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Hair_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Head_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Head_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Pants_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Pants_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Parts_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Parts_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Shirt_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/May_Castle/Textures/May_Shirt_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/Materials/M_ToyArbalist.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/Materials/ToyArbalist.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalist.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_Attack_Enter.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_Attack_MH.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_Attack_var1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_Death_Back.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_Death_Front.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_Death_Left.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_Death_Right.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_HitReaction_Back.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_HitReaction_Front.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_HitReaction_Left.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_HitReaction_Right.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_MH.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalistToyArbalist_Walk.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalist_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/SkeletalMeshes/ToyArbalist_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/Textures/ToyArbalist_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/Textures/ToyArbalist_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/ToyArbalist_Arrow/Materials/ToyArbalist.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/ToyArbalist_Arrow/StaticMeshes/ToyArbalist_Arrow.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/ToyArbalist_Crossbow/Materials/ToyArbalist.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyArbalist/ToyArbalist_Crossbow/StaticMeshes/ToyArbalist_Crossbow.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Materials/M_ToyCrusher_Body.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Materials/M_ToyCrusher_Glass.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Materials/M_ToyCrusher_Hand.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Materials/M_ToyCrusher_Oven.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Materials/ToyCrusher_Body.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Materials/ToyCrusher_Glass.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Materials/ToyCrusher_Hand.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Materials/ToyCrusher_Oven.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/SkeletalMeshes/ToyCrusher.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/SkeletalMeshes/ToyCrusherToyCrusher_MH.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/SkeletalMeshes/ToyCrusherToyCrusher_Move_Fwd.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/SkeletalMeshes/ToyCrusherToyCrusher_Smash.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/SkeletalMeshes/ToyCrusher_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/SkeletalMeshes/ToyCrusher_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Textures/Glass_01_Dirty_M5.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Textures/Glass_01_Dirty_T1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Textures/ToyCrusher_Body_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Textures/ToyCrusher_Body_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Textures/ToyCrusher_Hand_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Textures/ToyCrusher_Hand_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Textures/ToyCrusher_Oven_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyCrusher/Textures/ToyCrusher_Oven_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/Materials/M_ToyKnight.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/Materials/ToyKnight.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnight.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Alerted_Mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Attack_Var1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Attack_Var2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Death_Front.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Death_Left.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Death_Right.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_HitReaction.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_HitReaction_Back.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_HitReaction_Front.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_HitReaction_Left.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_HitReaction_Right.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Jog.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Spawn_Long.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnightToyKnight_Spawn_Small.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnight_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/SkeletalMeshes/ToyKnight_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/Textures/ToyKnight_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/Textures/ToyKnight_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/ToyKnight_MorningStar/Materials/ToyKnight.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/ToyKnight_MorningStar/StaticMeshes/ToyKnight_MorningStar.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/ToyKnight_Sword/Materials/ToyKnight.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyKnight/ToyKnight_Sword/StaticMeshes/ToyKnight_Sword.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/Materials/M_ToyMage.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/Materials/ToyMage.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMage.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Attack_MH.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Attack_Start.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Attack_Var1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Attack_Var2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Attack_Var3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Attack_Var4.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Attack_Var5.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Death_Back.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Death_Front.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Death_Left.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Death_Right.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_HitReaction_Left.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_HitReaction_Right.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Idle.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Idle_ver2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Idle_ver3.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Teleport_Enter.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMageToyMage_Teleport_Exit.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMage_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/SkeletalMeshes/ToyMage_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/Textures/ToyMage_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/Textures/ToyMage_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/Textures/ToyMage_C4.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/ToyMage_Staff/Materials/ToyMage.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyMage/ToyMage_Staff/StaticMeshes/ToyMage_Staff.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/Materials/M_ToyOgre.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/Materials/ToyOgre.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgre.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Charge.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Charge_Hit.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Charge_Start.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Dizzy.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Dizzy_Recover.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_HitReaction.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_Enter.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_LeftHand_Hurt.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_LeftHand_Hurt_Death.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_LeftHand_Hurt_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_LeftHand_Recover.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_RightHand_Hurt.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_RightHand_Hurt_Death.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_RightHand_Hurt_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_RightHand_Recover.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Hole_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Telegraph_Enter.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Telegraph_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Turn_Left.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Turn_Right.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_Walk.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgreToyOgre_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgre_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/SkeletalMeshes/ToyOgre_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/Textures/ToyOgre_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/Textures/ToyOgre_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyOgre/Textures/ToyOgre_C4.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/Materials/M_ToyShielder.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/Materials/ToyShielder.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielder.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielderToyShielder_Attack.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielderToyShielder_Death.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielderToyShielder_HitReaction.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielderToyShielder_Telegraph_Enter.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielderToyShielder_Telegraph_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielderToyShielder_Walk.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielderToyShielder_mh.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielder_PhysicsAsset.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/SkeletalMeshes/ToyShielder_Skeleton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/Textures/ToyShielder_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/Textures/ToyShielder_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/Textures/ToyShielder_Weapon_C1.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/Textures/ToyShielder_Weapon_C2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/ToyShielder_Shield/Materials/M_ToyShielder_Weapon.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/ToyShielder_Shield/Materials/ToyShielder_Weapon.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/ToyShielder_Shield/StaticMeshes/ToyShielder_Shield.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/ToyShielder_Spear/Materials/ToyShielder_Weapon.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/CharactersModel/ToyShielder/ToyShielder_Spear/StaticMeshes/ToyShielder_Spear.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ItTakesTwo_Copy.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/ItTakesTwo_Copy.uproject" afterDir="false" />
-    </list>
+    <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -371,6 +92,66 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="AutomationTool" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="AUTO_ATTACH_CHILDREN" value="0" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/AutomationTool.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="UnrealBuildTool" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="AUTO_ATTACH_CHILDREN" value="0" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/UnrealBuildTool/UnrealBuildTool.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="EpicGames.Perforce.Fixture/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="containerName" value="epicgames.perforce.fixture" />
+          <option name="contextFolderPath" value="C:\PU_Project\_TeamProjects\ItTakesThree\_Git\ItTakesTwo_Copy" />
+          <option name="sourceFilePath" value="../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Perforce.Fixture/Dockerfile" />
+        </settings>
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="디폴트 작업">
@@ -382,6 +163,7 @@
       <workItem from="1770619251115" duration="35000" />
       <workItem from="1776326823915" duration="2090000" />
       <workItem from="1776595269966" duration="2256000" />
+      <workItem from="1776643530314" duration="553000" />
     </task>
     <servers />
   </component>
