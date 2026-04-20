@@ -62,11 +62,89 @@ void UITTSessionSubsystem::CreateSession(int32 NumPublicConnection)
 
 void UITTSessionSubsystem::JoinSession()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), FName("127.0.0.1")); // Level 이름 대신 IP 주소.
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("JoinSession failed: SessionInterface is invalid."));
+		return;
+	}
+
+	if (!LastSessionSearch.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("JoinSession failed: LastSessionSearch is invalid."));
+		return;
+	}
+
+	if (LastSessionSearch->SearchResults.Num() <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("JoinSession failed: No search results found."));
+		return;
+	}
+
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	if (!LocalPlayer)
+	{
+		UE_LOG(LogTemp, Error, TEXT("JoinSession failed: LocalPlayer is null."));
+		return;
+	}
+
+	JoinSessionCompleteDelegate =
+		FOnJoinSessionCompleteDelegate::CreateUObject(this, &UITTSessionSubsystem::OnJoinSessionComplete);
+
+	JoinSessionCompleteDelegateHandle =
+		SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegate);
+
+	const FOnlineSessionSearchResult& SearchResult = LastSessionSearch->SearchResults[0];
+
+	const bool bJoinStarted = SessionInterface->JoinSession(
+		*LocalPlayer->GetPreferredUniqueNetId(),
+		GameSessionName,
+		SearchResult
+	);
+
+	if (!bJoinStarted)
+	{
+		UE_LOG(LogTemp, Error, TEXT("JoinSession failed: JoinSession call returned false."));
+		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegateHandle);
+	}
 }
 
 void UITTSessionSubsystem::FindSession()
 {
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("FindSession failed: SessionInterface is invalid."));
+		return;
+	}
+
+	FindSessionsCompleteDelegate =
+		FOnFindSessionsCompleteDelegate::CreateUObject(this, &UITTSessionSubsystem::OnFindSessionsComplete);
+
+	FindSessionsCompleteDelegateHandle =
+		SessionInterface->AddOnFindSessionsCompleteDelegate_Handle(FindSessionsCompleteDelegate);
+
+	LastSessionSearch = MakeShared<FOnlineSessionSearch>();
+	LastSessionSearch->MaxSearchResults = 10;
+	LastSessionSearch->bIsLanQuery = true;
+	// LastSessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	if (!LocalPlayer)
+	{
+		UE_LOG(LogTemp, Error, TEXT("FindSession failed: LocalPlayer is null."));
+		SessionInterface->ClearOnFindSessionsCompleteDelegate_Handle(FindSessionsCompleteDelegateHandle);
+		return;
+	}
+
+	const bool bFindStarted =
+		SessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), LastSessionSearch.ToSharedRef());
+
+	if (!bFindStarted)
+	{
+		UE_LOG(LogTemp, Error, TEXT("FindSession failed: FindSessions call returned false."));
+		SessionInterface->ClearOnFindSessionsCompleteDelegate_Handle(FindSessionsCompleteDelegateHandle);
+	}
 }
 
 void UITTSessionSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)
@@ -93,4 +171,85 @@ void UITTSessionSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasS
 	}
 
 	UGameplayStatics::OpenLevel(World, ListenLevelName, true, TEXT("listen"));
+}
+
+void UITTSessionSubsystem::OnFindSessionsComplete(bool bWasSuccessful)
+{
+	bFindSession = false;
+
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->ClearOnFindSessionsCompleteDelegate_Handle(FindSessionsCompleteDelegateHandle);
+	}
+
+	if (!bWasSuccessful)
+	{
+		UE_LOG(LogTemp, Error, TEXT("OnFindSessionsComplete failed."));
+		return;
+	}
+
+	if (!LastSessionSearch.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("OnFindSessionsComplete failed: LastSessionSearch is invalid."));
+		return;
+	}
+
+	const int32 ResultCount = LastSessionSearch->SearchResults.Num();
+	UE_LOG(LogTemp, Log, TEXT("FindSession success: %d session(s) found."), ResultCount);
+
+	for (int32 Index = 0; Index < ResultCount; ++Index)
+	{
+		const FOnlineSessionSearchResult& Result = LastSessionSearch->SearchResults[Index];
+
+		const FString SessionId = Result.GetSessionIdStr();
+		const FString OwnerName = Result.Session.OwningUserName;
+
+		UE_LOG(LogTemp, Log, TEXT("Result[%d] SessionId: %s / Owner: %s"),
+			Index,
+			*SessionId,
+			*OwnerName);
+	}
+
+	if (ResultCount <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No sessions found. Auto join aborted."));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Session found. Auto joining first result."));
+	JoinSession();
+}
+
+void UITTSessionSubsystem::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
+{
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegateHandle);
+	}
+
+	if (Result != EOnJoinSessionCompleteResult::Success)
+	{
+		UE_LOG(LogTemp, Error, TEXT("OnJoinSessionComplete failed: %d"), static_cast<int32>(Result));
+		return;
+	}
+
+	FString ConnectString;
+	if (!SessionInterface.IsValid() || !SessionInterface->GetResolvedConnectString(SessionName, ConnectString))
+	{
+		UE_LOG(LogTemp, Error, TEXT("OnJoinSessionComplete failed: Could not resolve connect string."));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("JoinSession succeeded. ConnectString: %s"), *ConnectString);
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("OnJoinSessionComplete failed: PlayerController is null."));
+		return;
+	}
+
+	PlayerController->ClientTravel(ConnectString, TRAVEL_Absolute);
 }

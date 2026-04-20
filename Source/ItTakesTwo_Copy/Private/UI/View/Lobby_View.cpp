@@ -28,6 +28,6 @@ void ULobby_View::JoinServerHandler()
 	AMenuController* PC = Cast<AMenuController>(GetOwningPlayer());
 	if (PC)
 	{
-		PC->ClientJoin();
+		PC->FindSession();
 	}
 }

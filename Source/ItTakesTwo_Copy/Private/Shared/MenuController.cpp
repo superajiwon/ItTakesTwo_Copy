@@ -25,3 +25,9 @@ void AMenuController::ClientJoin()
 	SessionSubsystem->JoinSession();
 	
 }
+
+void AMenuController::FindSession()
+{
+	UITTSessionSubsystem* SessionSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UITTSessionSubsystem>();
+	SessionSubsystem->FindSession();
+}
