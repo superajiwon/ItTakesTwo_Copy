@@ -1,0 +1,21 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "ItTakesTwo_Copy/UI/ViewModel/ViewModelBase.h"
+#include "LobbyViewModel.generated.h"
+
+
+UCLASS()
+class ITTAKESTWO_COPY_API ULobbyViewModel : public UViewModelBase
+{
+	GENERATED_BODY()
+	
+public:
+	virtual void Initialize(TObjectPtr<APlayerController> PlayerController) override;
+	virtual void Deinitialize() override;
+	
+private:
+	
+};
