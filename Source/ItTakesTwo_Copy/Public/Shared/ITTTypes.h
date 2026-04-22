@@ -10,3 +10,12 @@ enum class EPlayerRole : uint8
 	May		UMETA(DisplayName = "May (Fire Knight)"),
 	Cody	UMETA(DisplayName = "Cody (Ice Mage)")
 };
+
+UENUM(BlueprintType)
+enum class EActionType : uint8
+{
+	Basic		UMETA(DisplayName = "Basic"),
+	Special		UMETA(DisplayName = "Special"),
+	Dash		UMETA(DisplayName = "Dash"),
+	Ultimate	UMETA(DisplayName = "Ultimate")
+};

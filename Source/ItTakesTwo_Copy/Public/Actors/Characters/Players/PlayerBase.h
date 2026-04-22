@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Actors/Characters/CharacterBase.h"
+#include "Actors/Characters/Players/PlayerActionData.h"
 #include "PlayerBase.generated.h"
 
 class USpringArmComponent;
@@ -32,10 +33,25 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	USkillComponent* SkillComp;
 	
-	// UPROPERTY()
-	// class ACameraManagerActor* CameraManager;
-	
 public:
+	// === Action ===	
+	// 액션 데이터 (DataAsset)
+	// 에디터에서 DA_Cody 또는 DA_May를 할당합니다.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CombatData")
+	UPlayerActionData* ActionData;
+	
+	// 현재 폼에 맞는 공격 데이터를 반환하는 헬퍼	
+	// 기본: NormalAttackData 반환
+	// May:  bIsUltimateForm 상태에 따라 Normal / Ultimate 반환
+	virtual FAttackModeData* GetCurrentAttackData();
+	
+	// 궁극기 활성화 콜백 (virtual — MayCharacter가 override)
+	// Server_ExecuteSkill에서 Ultimate(ActionType==3) 수신 시 서버에서 호출됩니다.
+	virtual void OnUltimateActivated() {}
+	
+	// 현재 콤보 단계 (로컬 상태 — 소유 클라이언트/방장에서만 증가)
+	int32 CurComboIndex = 0;
+	
 	// === Input ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
 	UInputMappingContext* IMC_PlayerMapping;
@@ -51,9 +67,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* IA_Ultimate;
 	
-	void Move(const FInputActionValue& Value);
-	void BaseAttack(const FInputActionValue& Value);
-	void SpecialAttack(const FInputActionValue& Value);
-	void Dash(const FInputActionValue& Value);
-	void Ultimate(const FInputActionValue& Value);
+	virtual void Move(const FInputActionValue& Value);
+	virtual void BaseAttack(const FInputActionValue& Value);
+	virtual void SpecialAttack(const FInputActionValue& Value);
+	virtual void Dash(const FInputActionValue& Value);
+	virtual void Ultimate(const FInputActionValue& Value);
 };
