@@ -18,18 +18,27 @@ class ITTAKESTWO_COPY_API APlayerBase : public ACharacterBase
 public:
 	APlayerBase();
 	
-public:
 	UFUNCTION(BlueprintCallable, Category="Components")
 	USkillComponent* GetSkillComponent() { return SkillComp; }
+	
+protected:
+	virtual void BeginPlay() override;
+	
+public:
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	USkillComponent* SkillComp;
 	
+	// UPROPERTY()
+	// class ACameraManagerActor* CameraManager;
+	
 public:
 	// === Input ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
-	UInputMappingContext* InputMappingContext;
+	UInputMappingContext* IMC_PlayerMapping;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* IA_Move;

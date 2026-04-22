@@ -4,6 +4,8 @@
 
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Actors/Characters/Players/PlayerBase.h"
 
 ACameraManagerActor::ACameraManagerActor()
 {
@@ -32,6 +34,15 @@ void ACameraManagerActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	UpdateCameraPosition(DeltaTime);
+	
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		APlayerController* PC = It->Get();
+		if (PC && PC->IsLocalController() && PC->GetViewTarget() != this)
+		{
+			PC->SetViewTargetWithBlend(this, 0.f);
+		}
+	}
 }
 
 void ACameraManagerActor::AddTarget(AActor* Target)
@@ -50,7 +61,17 @@ void ACameraManagerActor::RemoveTarget(AActor* Target)
 
 void ACameraManagerActor::UpdateCameraPosition(float DeltaTime)
 {
+	// 방장(호스트)이나 클라이언트가 AddTarget을 개별적으로 호출하면서 생기는 싱크/네트워크 꼬임을 완벽하게 방지.
+	// 기존에 추가된 미니보스 등의 타겟을 날리지 않기 위해 AddUnique만 수행.
+	TArray<AActor*> FoundPlayers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerBase::StaticClass(), FoundPlayers);
+	for (AActor* Player : FoundPlayers)
+	{
+		TrackTargets.AddUnique(Player);
+	}
+	
 	if (TrackTargets.Num() == 0) return;
+	
 	
 	// 타겟들의 위치를 모두 합산할 변수
 	FVector Centroid = FVector::ZeroVector;

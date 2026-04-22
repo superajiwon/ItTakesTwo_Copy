@@ -38,7 +38,7 @@ protected:
 protected:
 	// UPROPERTY(EditDefaultsOnly, Category="Skill")
 	// TArray<TSubclassOf<USkillBase>> SkillClasses;
-	//
+	
 	// UPROPERTY(Transient)
 	// TArray<USkillBase*> Skills;
 };
