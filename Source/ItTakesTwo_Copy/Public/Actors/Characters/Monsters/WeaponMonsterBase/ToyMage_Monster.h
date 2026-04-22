@@ -3,20 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MonsterBase.h"
-#include "ToyArbalist_Monster.generated.h"
+#include "WeaponMonsterBase.h"
+#include "ToyMage_Monster.generated.h"
 
 UCLASS()
-class ITTAKESTWO_COPY_API AToyArbalist_Monster : public AMonsterBase
+class ITTAKESTWO_COPY_API AToyMage_Monster : public AWeaponMonsterBase
 {
 	GENERATED_BODY()
 
 public:
-	AToyArbalist_Monster();
+	AToyMage_Monster();
 
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
 };

@@ -1,27 +1,76 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
+﻿
 
 #include "Actors/Characters/Monsters/MonsterBase.h"
 
+#include "Actors/Characters/Monsters/MonsterAIController.h"
+#include "Actors/Characters/Players/PlayerBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
-// Sets default values
+
 AMonsterBase::AMonsterBase()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	bReplicates = true;
+	ACharacter::SetReplicateMovement(true);
+
+	AIControllerClass = AMonsterAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
 }
 
-// Called when the game starts or when spawned
 void AMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
 }
 
-// Called every frame
 void AMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
+void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMonsterBase, MonsterState);
+}
+
+void AMonsterBase::SetMonsterState(EMonsterState NewState)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	if (MonsterState == NewState)
+	{
+		return;
+	}
+
+	MonsterState = NewState;
+	OnRep_MonsterState();
+}
+
+float AMonsterBase::GetDetectRadius() const
+{
+	return DetectRadius;
+}
+
+float AMonsterBase::GetAttackRange() const
+{
+	return AttackRange;
+}
+
+void AMonsterBase::OnRep_MonsterState()
+{
+	// 상태 변경 시 클라에서 애니메이션 처리
+}
 
