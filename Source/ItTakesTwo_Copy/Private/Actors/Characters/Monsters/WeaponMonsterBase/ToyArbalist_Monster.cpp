@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/Characters/Monsters/ToyArbalist_Monster.h"
+#include "Actors/Characters/Monsters/WeaponMonsterBase/ToyArbalist_Monster.h"
 
 
 AToyArbalist_Monster::AToyArbalist_Monster()

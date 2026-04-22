@@ -28,16 +28,33 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/AIModule/Private/AIController.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/UObject/UnrealNames.inl" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/Class.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Components/SceneComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/Character.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/HitComp_Info.gen.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/BossBase.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/HitBoxComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterAIController.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterBase.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/ToyArbalist_Monster.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/WeaponMonsterBase/ToyKnightSword_Monster.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/WeaponMonsterBase/WeaponMonsterBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/SkillComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/UltimateComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Interfaces/Healable.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTSessionSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/MenuController.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/Boss/BossBase.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/HitBoxComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/MonsterAIController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/MonsterBase.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/ToyArbalist_Monster.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/Struct/HitComp_Info.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/WeaponMonsterBase/ToyKnightSword_Monster.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/WeaponMonsterBase/WeaponMonsterBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/SkillComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/UltimateComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Interfaces/Healable.h" root0="FORCE_HIGHLIGHTING" />
@@ -54,7 +71,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Run",
+    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -177,6 +194,11 @@
       <workItem from="1776662887055" duration="9924000" />
       <workItem from="1776676613794" duration="330000" />
       <workItem from="1776679858516" duration="5878000" />
+      <workItem from="1776689811021" duration="4514000" />
+      <workItem from="1776753648568" duration="1305000" />
+      <workItem from="1776755840511" duration="6638000" />
+      <workItem from="1776769161243" duration="11845000" />
+      <workItem from="1776838412273" duration="4141000" />
     </task>
     <servers />
   </component>
