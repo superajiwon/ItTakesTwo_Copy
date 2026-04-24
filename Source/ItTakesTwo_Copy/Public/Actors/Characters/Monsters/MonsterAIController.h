@@ -4,10 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "MonsterBase.h"
 #include "MonsterAIController.generated.h"
 
 class APlayerBase;
 class AMonsterBase;
+
+UENUM()
+enum class ETeleportTypeState : uint8
+{
+	IdleWait,
+	Attack,
+	TeleportEnter,
+	TeleportMove,
+	TeleportExit
+};
 
 UCLASS()
 class ITTAKESTWO_COPY_API AMonsterAIController : public AAIController
@@ -24,8 +35,14 @@ protected:
 private:
 	APlayerBase* FindNearestPlayer() const;
 	void UpdateMovement();
+
 	void MoveToTarget();
 	void MoveToTargetLocation();
+	void TeleportToTarget();
+
+public:
+	void NotifyAttackAnimationFinished();
+	
 private:
 	UPROPERTY()
 	TObjectPtr<AMonsterBase> CachedMonster;
@@ -33,12 +50,27 @@ private:
 	UPROPERTY()
 	TWeakObjectPtr<AActor> CurrentTarget;
 
-	UPROPERTY(EditAnywhere, Category = "AI")
+	UPROPERTY()
+	EMonsterMoveType MonsterMoveType{EMonsterMoveType::BasicMove};
+	
+	UPROPERTY(EditAnywhere, Category = "MonsterAI")
 	float DetectRadius = 1500.0f;
 
-	UPROPERTY(EditAnywhere, Category = "AI")
+	UPROPERTY(EditAnywhere, Category = "MonsterAI")
 	float AttackRange = 180.0f;
 
-	UPROPERTY(EditAnywhere, Category = "AI")
+	UPROPERTY(EditAnywhere, Category = "MonsterAI")
 	FVector TargetLocation{};
+
+private:
+	bool bTeleport{false};
+	bool bWaitingAttackEnd{false};
+	
+	int32 FireCount{0};
+
+	
+	float CurrentIdleTime{0.0f};
+	float MaxIdleTime{1.0f};
+	
+	ETeleportTypeState TeleportStep = ETeleportTypeState::IdleWait;
 };

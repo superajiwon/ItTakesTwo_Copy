@@ -15,7 +15,7 @@ AMonsterBase::AMonsterBase()
 
 	bReplicates = true;
 	ACharacter::SetReplicateMovement(true);
-
+	
 	AIControllerClass = AMonsterAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
@@ -43,6 +43,8 @@ void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AMonsterBase, MonsterState);
 }
 
+
+
 void AMonsterBase::SetMonsterState(EMonsterState NewState)
 {
 	if (!HasAuthority())
@@ -59,6 +61,11 @@ void AMonsterBase::SetMonsterState(EMonsterState NewState)
 	OnRep_MonsterState();
 }
 
+bool AMonsterBase::GetMontagePlayingState() const
+{
+	return bPlayingMontage;
+}
+
 float AMonsterBase::GetDetectRadius() const
 {
 	return DetectRadius;
@@ -69,8 +76,65 @@ float AMonsterBase::GetAttackRange() const
 	return AttackRange;
 }
 
+void AMonsterBase::MontagePlay()
+{
+	if (!AnimInstance)
+		AnimInstance = GetMesh() ? GetMesh()->GetAnimInstance() : nullptr;
+	
+	if (!AnimInstance)
+		return;
+	
+
+	UAnimMontage* MontageToPlay{nullptr};
+
+	switch (MonsterState)
+	{
+		case EMonsterState::Swing:
+		{
+			MontageToPlay = SwingMontage;
+			break;
+		}
+		case EMonsterState::Fire:
+		{
+			MontageToPlay = FireMontage;
+			break;
+		}
+		case EMonsterState::TeleportEnter:
+		{
+			MontageToPlay = TeleportEnterMontage;
+			break;
+		}
+		case EMonsterState::TeleportExit:
+		{
+			MontageToPlay = TeleportExitMontage;
+			break;
+		}
+		default:
+			break;
+	}
+	if (!MontageToPlay)
+		return;
+	
+	const float PlayResult = AnimInstance->Montage_Play(MontageToPlay);
+	if (PlayResult > 0.0f)
+	{
+		bPlayingMontage = true;
+	}
+}
+
 void AMonsterBase::OnRep_MonsterState()
 {
 	// 상태 변경 시 클라에서 애니메이션 처리
+	MontagePlay();
+}
+
+void AMonsterBase::AnimNotify_MontageEnd()
+{
+	bPlayingMontage = false;
+	AMonsterAIController* MonsterController = Cast<AMonsterAIController>(GetController());
+	if (!MonsterController)
+		return;
+
+	MonsterController->NotifyAttackAnimationFinished();
 }
 

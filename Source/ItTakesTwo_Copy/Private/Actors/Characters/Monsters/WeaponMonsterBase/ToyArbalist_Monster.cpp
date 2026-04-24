@@ -7,7 +7,7 @@
 AToyArbalist_Monster::AToyArbalist_Monster()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
+	MonsterMoveType = EMonsterMoveType::Standing;	
 	
 }
 

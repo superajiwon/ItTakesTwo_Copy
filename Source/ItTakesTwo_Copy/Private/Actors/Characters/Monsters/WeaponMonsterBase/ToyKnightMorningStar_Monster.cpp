@@ -10,6 +10,7 @@ AToyKnightMorningStar_Monster::AToyKnightMorningStar_Monster()
 {
 	PrimaryActorTick.bCanEverTick = true;
 		
+	MonsterMoveType = EMonsterMoveType::BasicMove;
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
 	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FHitComp_Info HitCompInfo(FName("Monster"), FName("Monster"), FVector(0.f, 0.f, 45.0f), FVector(20.f, 20.f, 40.f));
