@@ -1,7 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Actors/Characters/Players/May/MayCharacter.h"
 
-#include "Actors/Characters/Players/MayCharacter.h"
+#include "Actors/Characters/Monsters/HitBoxComponent.h"
 #include "Actors/Characters/Players/PlayerActionData.h"
 #include "Net/UnrealNetwork.h"
 
@@ -17,8 +17,13 @@ AMayCharacter::AMayCharacter()
 	SwordComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SwordComp"));
 	SwordComp->SetupAttachment(GetMesh(), FName(TEXT("RightAttachSocket")));
 	ConstructorHelpers::FObjectFinder<UStaticMesh> TempSwordMesh(TEXT("/Script/Engine.StaticMesh'/Game/Models/Characters/May_Castle/May_Sword/StaticMeshes/May_Sword.May_Sword'"));
-	if (TempSwordMesh.Succeeded())
-		SwordComp->SetStaticMesh(TempSwordMesh.Object);
+	if (TempSwordMesh.Succeeded()) SwordComp->SetStaticMesh(TempSwordMesh.Object);
+	
+	SwordCollision = CreateDefaultSubobject<UHitBoxComponent>(TEXT("SwordCollision"));
+	SwordCollision->AttachToComponent(SwordComp, FAttachmentTransformRules::KeepRelativeTransform);
+	FHitComp_Info HitCompInfo(FName("Player_MaySword"), FName("PlayerWeapon"), FVector(0.0f,-5.679186f,125.570730f), FVector( 8.0f, 10.0f, 10.0f));
+	SwordCollision->InitializeHitComp(HitCompInfo);
+	SwordCollision->CollisionOff();
 }
 
 void AMayCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const

@@ -67,5 +67,10 @@ public:
 	
 	// 궁극기
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attack")
-	UAnimMontage* UltimateMontage ;
+	UAnimMontage* UltimateMontage;
+	
+	// 피격
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Damage")
+	FComboStepData TakeDamageData;
+	
 };

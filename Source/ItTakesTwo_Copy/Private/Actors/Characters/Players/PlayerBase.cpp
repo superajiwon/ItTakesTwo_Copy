@@ -106,7 +106,7 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 {
 	if (!SkillComp || !ActionData) return;
 	
-	UE_LOG(LogTemp, Warning, TEXT("왜요왜요왜?"));
+	//! UE_LOG(LogTemp, Warning, TEXT("왜요왜요왜?"));
 	
 	FAttackModeData* CurData = GetCurrentAttackData();
 	if (!CurData) return;
@@ -130,7 +130,7 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 	const int32 RandomIdx = FMath::RandRange(0, Montages.Num() - 1);
 	SkillComp->RequestExecuteSkill(EActionType::Basic, CurComboIndex, RandomIdx);
 
-	UE_LOG(LogTemp, Warning, TEXT("CurComboIndex: %d / RandomIdx: %d"), CurComboIndex, RandomIdx);
+	//! UE_LOG(LogTemp, Warning, TEXT("CurComboIndex: %d / RandomIdx: %d"), CurComboIndex, RandomIdx);
 	
 	// 다음 콤보 단계로 진행
 	// 최대 콤보를 넘기면 0으로 리셋
@@ -157,5 +157,20 @@ void APlayerBase::Dash(const FInputActionValue& Value)
 void APlayerBase::Ultimate(const FInputActionValue& Value)
 {
 	if (!SkillComp) return;
-	SkillComp->RequestExecuteSkill(EActionType::Ultimate, 0, 0);
+	CurComboIndex = 0; // 콤보 초기화 
+	SkillComp->RequestExecuteSkill(EActionType::Ultimate, CurComboIndex, 0);
+}
+
+void APlayerBase::TakeDamageAction()
+{
+	if (!SkillComp) return;
+	
+	if (ActionData->TakeDamageData.Montages.IsEmpty())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Take Damage 몽타주가 비어있어요"));
+		return;
+	}
+	
+	const int32 RandomIdx = FMath::RandRange(0, ActionData->TakeDamageData.Montages.Num() - 1);
+	SkillComp->RequestExecuteSkill(EActionType::TakeDamage, 0, RandomIdx);
 }

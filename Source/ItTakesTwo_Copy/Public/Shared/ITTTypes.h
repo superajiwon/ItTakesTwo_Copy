@@ -17,5 +17,6 @@ enum class EActionType : uint8
 	Basic		UMETA(DisplayName = "Basic"),
 	Special		UMETA(DisplayName = "Special"),
 	Dash		UMETA(DisplayName = "Dash"),
-	Ultimate	UMETA(DisplayName = "Ultimate")
+	Ultimate	UMETA(DisplayName = "Ultimate"),
+	TakeDamage	UMETA(DisplayName = "TakeDamage"),
 };

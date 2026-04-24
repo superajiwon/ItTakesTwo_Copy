@@ -30,7 +30,6 @@ public:
 		const FHitResult& SweepResult
 	);
 	
-	
 public:
 	void InitializeHitComp(FHitComp_Info HitInfo); // Extents, Location, TagName , ProfileName
 	void CollisionOn();
@@ -44,7 +43,5 @@ public:
 
 private:
 	bool bCollisionOn{false};
-	
-	
 	
 };

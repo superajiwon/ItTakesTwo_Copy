@@ -53,7 +53,6 @@ void USkillComponent::Server_ExecuteSkill_Implementation(EActionType ActionType,
 	APlayerBase* Owner = Cast<APlayerBase>(GetOwner());
 	if (!Owner) return;
 	
-	//!!!!!!?????
 	if (ActionType == EActionType::Ultimate)
 	{
 		Owner->OnUltimateActivated();
@@ -98,6 +97,13 @@ void USkillComponent::Multicast_PlayerSkillEffect_Implementation(EActionType Act
 	case EActionType::Ultimate:
 		Montage = Data->UltimateMontage;
 		break;
+	case EActionType::TakeDamage:
+		{
+			TArray<UAnimMontage*> Montages = Data->TakeDamageData.Montages;
+			if (Montages.IsValidIndex(MontageIdx))
+				Montage = Montages[MontageIdx];
+			break;
+		}
 	default: break;
 	}
 	

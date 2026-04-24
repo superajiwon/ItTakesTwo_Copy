@@ -6,6 +6,8 @@
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "MayCharacter.generated.h"
 
+class UHitBoxComponent;
+
 UCLASS()
 class ITTAKESTWO_COPY_API AMayCharacter : public APlayerBase
 {
@@ -18,6 +20,10 @@ protected:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 public:
+	// === Component ===
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UHitBoxComponent> SwordCollision;
+	
 	// === Weapon ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> SwordComp;
