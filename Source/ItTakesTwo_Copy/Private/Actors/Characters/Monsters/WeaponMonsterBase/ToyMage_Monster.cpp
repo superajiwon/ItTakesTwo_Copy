@@ -10,8 +10,8 @@ AToyMage_Monster::AToyMage_Monster()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	MonsterMoveType = EMonsterMoveType::Teleport;
-	DetectRadius = 300.0f;
-	AttackRange = 100.f;
+	DetectRadius = 1500.0f;
+	AttackRange = 500.f;
 	MaxIdleTime = 1.f;
 	TargetLocationMap.Add(0, FVector(1940.0f, 0.0f, 100.0f));
 	TargetLocationMap.Add(1, FVector(720.0f, -330.0f, 100.0f));

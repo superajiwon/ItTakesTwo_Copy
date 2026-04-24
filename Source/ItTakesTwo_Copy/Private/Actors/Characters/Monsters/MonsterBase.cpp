@@ -18,7 +18,7 @@ AMonsterBase::AMonsterBase()
 	
 	AIControllerClass = AMonsterAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
+	
 	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
@@ -84,11 +84,15 @@ void AMonsterBase::MontagePlay()
 	if (!AnimInstance)
 		return;
 	
-
 	UAnimMontage* MontageToPlay{nullptr};
 
 	switch (MonsterState)
 	{
+		case EMonsterState::Attack:
+		{
+			MontageToPlay =	AttackMontage;
+			break;
+		}
 		case EMonsterState::Swing:
 		{
 			MontageToPlay = SwingMontage;

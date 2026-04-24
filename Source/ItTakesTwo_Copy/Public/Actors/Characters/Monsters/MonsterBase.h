@@ -82,19 +82,19 @@ public:
 	void AnimNotify_MontageEnd();
 	
 protected:
-	UPROPERTY()
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bPlayingMontage{false};
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float DetectRadius{50.f};
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float MoveSpeed{300.0f};
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float AttackRange{180.0f};
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float MaxIdleTime{1.f};
 	
 	
@@ -110,6 +110,9 @@ protected:
 	UPROPERTY()
 	UAnimInstance* AnimInstance;
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Montage")
+	TObjectPtr<UAnimMontage> AttackMontage;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Montage")
 	TObjectPtr<UAnimMontage> SwingMontage;
 
