@@ -17,53 +17,21 @@
   <component name="ChangeListManager">
     <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/ABP_Cody.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/ABP_Cody.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/May/ABP_May.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/May/ABP_May.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/May/BP_May.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/May/BP_May.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Datas/Player/DA_Cody.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Datas/Player/DA_Cody.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Datas/Player/DA_May.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Datas/Player/DA_May.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Inputs/IMC_PlayerMapping.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Inputs/IMC_PlayerMapping.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var1_1_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var1_1_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var1_2_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var1_2_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var1_3_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var1_3_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var2_1_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var2_1_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var2_2_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var2_2_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var2_3_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var2_3_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var3_1_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var3_1_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var3_2_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var3_2_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var3_3_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var3_3_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var3_4_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Basic_Attack_Var3_4_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Special_Attack_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Special_Attack_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_TakeDamage_Var1_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_TakeDamage_Var1_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_TakeDamage_Var2_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_TakeDamage_Var2_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_TakeDamage_Var3_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_TakeDamage_Var3_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Ultimate_Attack_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/Cody_Wizard/Montages/Cody_Wizard_Ultimate_Attack_Montage.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_BaseAttack_Var1_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_BaseAttack_Var1_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_BaseAttack_Var2_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_BaseAttack_Var2_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_BaseAttack_Var3_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_BaseAttack_Var3_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_SpecialAttack_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_SpecialAttack_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_TakeDamage_Var1_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_TakeDamage_Var1_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_TakeDamage_Var2_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_TakeDamage_Var2_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_TakeDamage_Var3_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_TakeDamage_Var3_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_UltimateWhirlwind_LMB_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_UltimateWhirlwind_LMB_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_UltimateWhirlwind_RMB_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_UltimateWhirlwind_RMB_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_Ultimate_Attack_Montage.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/Montages/May_Castle_Ultimate_Attack_Montage.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/SkeletalMeshes/May_Castle_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/Characters/May_Castle/SkeletalMeshes/May_Castle_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/Lv_ServerTestInGame.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Lv_ServerTestInGame.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/HitBoxComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/HitBoxComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/CodyCharacter.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/MayCharacter.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/May/MayCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/May/MayCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerAnimInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/SkillComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/SkillComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/HitBoxComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/HitBoxComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/CodyCharacter.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/MayCharacter.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerActionData.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerActionData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/Struct/HitComp_Info.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/Struct/HitComp_Info.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyAnimInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyAnimInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/May/MayAnimInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/May/MayAnimInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/May/MayCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/May/MayCharacter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerAnimInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerAnimInstance.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTTypes.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,13 +45,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/MenuController.gen.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerActionData.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/SkillComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/UltimateComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Interfaces/Healable.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Components/UHitSphereComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTSessionSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTTypes.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -93,6 +61,7 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/SkillComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/UltimateComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Interfaces/Healable.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Components/UHitSphereComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTGameInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTSessionSubsystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTTypes.h" root0="FORCE_HIGHLIGHTING" />
@@ -103,6 +72,7 @@
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Perforce/PerforceMetadataLogger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Components/SceneComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerController.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/Components/BoxComponent.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -115,12 +85,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Debug",
+    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "NZW",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -245,6 +215,7 @@
       <workItem from="1776903202388" duration="202000" />
       <workItem from="1776925227648" duration="10895000" />
       <workItem from="1776942288402" duration="9470000" />
+      <workItem from="1777010417384" duration="9317000" />
     </task>
     <servers />
   </component>

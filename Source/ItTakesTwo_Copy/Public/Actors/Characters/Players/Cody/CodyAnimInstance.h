@@ -13,5 +13,10 @@ class ITTAKESTWO_COPY_API UCodyAnimInstance : public UPlayerAnimInstance
 public:
 	// === Anim Notify ===
 	UFUNCTION()
+	virtual void AnimNotify_CollisionOn();
+	UFUNCTION()
+	virtual void AnimNotify_CollisionOff();
+	
+	UFUNCTION()
 	void AnimNotify_AttackOn();
 };

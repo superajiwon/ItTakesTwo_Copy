@@ -26,9 +26,15 @@ public:
 	
 	// === Anim Notify ===
 	UFUNCTION()
-	virtual void AnimNotify_CanCombo();
+	virtual void AnimNotify_CollisionOn() {};
 	UFUNCTION()
-	virtual void AnimNotify_SpecialOn();
+	virtual void AnimNotify_CollisionOff() {};
+	
 	UFUNCTION()
-	virtual void AnimNotify_UltimateOn();
+	virtual void AnimNotify_CanCombo() {};
+	UFUNCTION()
+	virtual void AnimNotify_SpecialOn() {};
+	UFUNCTION()
+	virtual void AnimNotify_UltimateOn() {};
+	
 };

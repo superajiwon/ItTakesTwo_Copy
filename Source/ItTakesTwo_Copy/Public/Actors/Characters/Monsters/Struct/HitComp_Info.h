@@ -9,13 +9,16 @@ struct FHitComp_Info
 	
 public: // 구조체 생성자로 초기화
 	FHitComp_Info()
-	: HitTagName(NAME_None), CollisionProfileName(NAME_None), HitBoxLocation(FVector::ZeroVector), HitBoxExtents(FVector::ZeroVector)
+	: HitTagName(NAME_None), CollisionProfileName(NAME_None), HitBoxLocation(FVector::ZeroVector), HitBoxExtents(FVector::ZeroVector), HitSphereLocation(FVector::ZeroVector), HitSphereRadius(100.0f)
 	{	}
 	
 	FHitComp_Info(FName TagName, FName ProfileName, FVector Location, FVector Extents)
 		: HitTagName(TagName), CollisionProfileName(ProfileName), HitBoxLocation(Location), HitBoxExtents(Extents)
 	{	}
 	
+	FHitComp_Info(FName TagName, FName ProfileName, FVector Location, float Radius)
+	: HitTagName(TagName), CollisionProfileName(ProfileName), HitSphereLocation(Location), HitSphereRadius(Radius)
+	{	}
 	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -29,4 +32,10 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector HitBoxExtents{FVector::ZeroVector};
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector HitSphereLocation{FVector::ZeroVector};
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float HitSphereRadius{100.0f};
 };

@@ -12,18 +12,3 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsMoving = (MovementSpeed > 3.f);	
 }
 
-void UPlayerAnimInstance::AnimNotify_CanCombo()
-{
-	
-}
-
-void UPlayerAnimInstance::AnimNotify_SpecialOn()
-{
-	
-}
-
-void UPlayerAnimInstance::AnimNotify_UltimateOn()
-{
-	
-}
-

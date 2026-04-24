@@ -68,6 +68,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* IA_TakeDamageTemp;
 	
+	// === Input Action === 
 	virtual void Move(const FInputActionValue& Value);
 	virtual void BaseAttack(const FInputActionValue& Value);
 	virtual void SpecialAttack(const FInputActionValue& Value);
