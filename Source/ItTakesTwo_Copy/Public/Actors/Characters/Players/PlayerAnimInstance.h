@@ -5,8 +5,6 @@
 #include "Animation/AnimInstance.h"
 #include "PlayerAnimInstance.generated.h"
 
-
-
 UCLASS()
 class ITTAKESTWO_COPY_API UPlayerAnimInstance : public UAnimInstance
 {
@@ -19,4 +17,24 @@ public:
 	float MovementSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
 	bool bIsMoving;
+	
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Montage")
+	bool bIsMontagePlaying = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Montage")
+	bool bCanCombo = false;
+	
+	// === Anim Notify ===
+	UFUNCTION()
+	virtual void AnimNotify_CollisionOn() {};
+	UFUNCTION()
+	virtual void AnimNotify_CollisionOff() {};
+	
+	UFUNCTION()
+	virtual void AnimNotify_CanCombo() {};
+	UFUNCTION()
+	virtual void AnimNotify_SpecialOn() {};
+	UFUNCTION()
+	virtual void AnimNotify_UltimateOn() {};
+	
 };

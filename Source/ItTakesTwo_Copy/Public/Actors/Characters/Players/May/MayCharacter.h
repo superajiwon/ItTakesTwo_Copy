@@ -6,6 +6,9 @@
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "MayCharacter.generated.h"
 
+class UHitBoxComponent;
+class UHitSphereComponent;
+
 UCLASS()
 class ITTAKESTWO_COPY_API AMayCharacter : public APlayerBase
 {
@@ -21,6 +24,13 @@ public:
 	// === Weapon ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> SwordComp;
+	
+	// === Collision ===
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UHitBoxComponent> SwordCollision;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UHitSphereComponent> SpecialCollision;
 	
 	// =========================================================
 	//  May 전용: 궁극기 폼 체인지 상태

@@ -9,6 +9,6 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (!OwningActor) return;
 	
 	MovementSpeed = OwningActor->GetVelocity().Size2D();
-	
 	bIsMoving = (MovementSpeed > 3.f);	
 }
+

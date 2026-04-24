@@ -1,8 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "Actors/Characters/Players/MayCharacter.h"
+#include "Actors/Characters/Players/May/MayCharacter.h"
 #include "Actors/Characters/Players/PlayerActionData.h"
+#include "Actors/Characters/Monsters/HitBoxComponent.h"
+#include "Shared/Components/HitSphereComponent.h"
 #include "Net/UnrealNetwork.h"
 
 AMayCharacter::AMayCharacter()
@@ -17,8 +17,19 @@ AMayCharacter::AMayCharacter()
 	SwordComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SwordComp"));
 	SwordComp->SetupAttachment(GetMesh(), FName(TEXT("RightAttachSocket")));
 	ConstructorHelpers::FObjectFinder<UStaticMesh> TempSwordMesh(TEXT("/Script/Engine.StaticMesh'/Game/Models/Characters/May_Castle/May_Sword/StaticMeshes/May_Sword.May_Sword'"));
-	if (TempSwordMesh.Succeeded())
-		SwordComp->SetStaticMesh(TempSwordMesh.Object);
+	if (TempSwordMesh.Succeeded()) SwordComp->SetStaticMesh(TempSwordMesh.Object);
+	
+	SwordCollision = CreateDefaultSubobject<UHitBoxComponent>(TEXT("SwordCollision"));
+	SwordCollision->AttachToComponent(SwordComp, FAttachmentTransformRules::KeepRelativeTransform);
+	FHitComp_Info SwordHitCompInfo(FName("Player_MaySword"), FName("PlayerWeapon"), FVector(0.0f,-5.679186f,119.102255f), FVector( 10.0f, 40.0f, 90.0f));
+	SwordCollision->InitializeHitComp(SwordHitCompInfo);
+	SwordCollision->CollisionOff();
+	
+	SpecialCollision = CreateDefaultSubobject<UHitSphereComponent>(TEXT("SpecialCollision"));
+	SpecialCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Root"));
+	FHitComp_Info SpecialHitCompInfo(FName("Player_MaySpecial"), FName("PlayerWeapon"), FVector(0.0f,0.0f,0.0f), 500.f);
+	SpecialCollision->InitializeHitComp(SpecialHitCompInfo);
+	SpecialCollision->CollisionOff();
 }
 
 void AMayCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -46,3 +57,4 @@ void AMayCharacter::OnUltimateActivated()
 	// 서버에서만 호출되므로 HasAuthority() 체크 불필요
 	bIsUltimateForm = !bIsUltimateForm;
 }
+

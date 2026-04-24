@@ -36,13 +36,12 @@ private:
 public:
 	// === Action ===	
 	// 액션 데이터 (DataAsset)
-	// 에디터에서 DA_Cody 또는 DA_May를 할당합니다.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CombatData")
 	UPlayerActionData* ActionData;
 	
 	// 현재 폼에 맞는 공격 데이터를 반환하는 헬퍼	
 	// 기본: NormalAttackData 반환
-	// May:  bIsUltimateForm 상태에 따라 Normal / Ultimate 반환
+	// May: bIsUltimateForm 상태에 따라 Normal / Ultimate 반환
 	virtual FAttackModeData* GetCurrentAttackData();
 	
 	// 궁극기 활성화 콜백 (virtual — MayCharacter가 override)
@@ -66,10 +65,15 @@ public:
 	UInputAction* IA_Dash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* IA_Ultimate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* IA_TakeDamageTemp;
 	
+	// === Input Action === 
 	virtual void Move(const FInputActionValue& Value);
 	virtual void BaseAttack(const FInputActionValue& Value);
 	virtual void SpecialAttack(const FInputActionValue& Value);
 	virtual void Dash(const FInputActionValue& Value);
 	virtual void Ultimate(const FInputActionValue& Value);
+	
+	virtual void TakeDamageAction();
 };
