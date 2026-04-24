@@ -18,6 +18,15 @@ void AMonsterAIController::BeginPlay()
 	Super::BeginPlay();
 	TargetLocation = (FVector(1940.0f, 0.0f, 100.0f));
 	
+	if (CachedMonster)
+	{
+		
+		DetectRadius = CachedMonster->GetDetectRadius();
+		AttackRange = CachedMonster->GetAttackRange();
+		MonsterMoveType = CachedMonster->GetMoveType();
+		MaxIdleTime = CachedMonster->GetMaxIdleTime();
+	}
+	
 }
 
 
@@ -32,13 +41,7 @@ void AMonsterAIController::OnPossess(APawn* InPawn)
 		UE_LOG(LogTemp, Warning, TEXT("No CachedMonster"));
 		return;
 	}
-	if (CachedMonster)
-	{
-		DetectRadius = CachedMonster->GetDetectRadius();
-		AttackRange = CachedMonster->GetAttackRange();
-		MonsterMoveType = CachedMonster->GetMoveType();
-		MaxIdleTime = CachedMonster->GetMaxIdleTime();
-	}
+
 }
 
 void AMonsterAIController::Tick(float DeltaTime)
@@ -134,17 +137,17 @@ void AMonsterAIController::MoveToTarget()
 
 	if (!CurrentTarget.IsValid())
 	{
-		if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
+	//	if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
 			CachedMonster->SetMonsterState(EMonsterState::Idle);
 		StopMovement();
 		return;
 	}
 	const float DistanceToTarget = FVector::Dist(CachedMonster->GetActorLocation(), CurrentTarget->GetActorLocation());
 	
-	if (DistanceToTarget > DetectRadius)
+	if (DistanceToTarget >= DetectRadius)
 	{
 		CurrentTarget = nullptr;
-		if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
+	//	if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
 			CachedMonster->SetMonsterState(EMonsterState::Idle);
 		StopMovement();
 		return;
@@ -152,15 +155,15 @@ void AMonsterAIController::MoveToTarget()
 
 	if (DistanceToTarget <= AttackRange)
 	{
-		if (CachedMonster->GetMonsterState() != EMonsterState::Attack)
-			CachedMonster->SetMonsterState(EMonsterState::Attack);	
+		//if (CachedMonster->GetMonsterState() != EMonsterState::Swing)
+			CachedMonster->SetMonsterState(EMonsterState::Swing);	
 		StopMovement();
 		return;
 	}
-	if (CachedMonster->GetMonsterState() != EMonsterState::Chase)
+	//if (CachedMonster->GetMonsterState() != EMonsterState::Chase)
 		CachedMonster->SetMonsterState(EMonsterState::Chase);
 
-	MoveToActor(CurrentTarget.Get(), AttackRange);
+	MoveToActor(CurrentTarget.Get(), AttackRange - 50.f);
 	
 }
 
@@ -255,7 +258,6 @@ void AMonsterAIController::NotifyAttackAnimationFinished()
 	{
 		case ETeleportTypeState::Attack:
 		{
-			
 			TeleportStep = ETeleportTypeState::TeleportEnter;
 			CachedMonster->SetMonsterState(EMonsterState::TeleportEnter);
 			break;
