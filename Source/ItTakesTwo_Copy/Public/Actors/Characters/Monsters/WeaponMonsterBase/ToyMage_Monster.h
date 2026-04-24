@@ -16,8 +16,16 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void MoveTeleport(AMonsterAIController* MonsterController, FVector PlayerLocation) override;
 public:
 	virtual void Tick(float DeltaTime) override;
 
+	
+	
+private:
+	TMap<int32, FVector> TargetLocationMap;// 순간이동 위치를 담은 배열
+	int32 CurrentLocationIndex{0};
+	
+	
+	
 };
