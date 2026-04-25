@@ -4,9 +4,10 @@
 #include "Shared/VFXObjectPoolSubsystem.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Shared/Actor/VFXExplosionObject.h"
 #include "Shared/Actor/VFXProjectileObject.h"
 
-#define MAX_VFXPOOLSIZE 40
+#define MAX_VFXPOOLSIZE 20
 
 void UVFXObjectPoolSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -25,12 +26,19 @@ void UVFXObjectPoolSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 			ProjectileList.Add(Projectile);
 		}
 	}
-
+	for (int32 i = 0; i < MAX_VFXPOOLSIZE; ++i)
+	{
+		AVFXExplosionObject* Explosion = GetWorld()->SpawnActor<AVFXExplosionObject>(AVFXExplosionObject::StaticClass());
+		if (Explosion)
+		{
+			ExplosionList.Add(Explosion);
+		}
+	}
 }
 
 
 
-TObjectPtr<AVFXProjectileObject> UVFXObjectPoolSubsystem::UseVFX_Projectile(FVFXSpawn_Info VFXInfo)
+TObjectPtr<AVFXProjectileObject> UVFXObjectPoolSubsystem::UseVFX_Projectile(const FVFXSpawn_Info& VFXInfo)
 {
 	for (AVFXProjectileObject* Projectile : ProjectileList)
 	{
@@ -43,9 +51,17 @@ TObjectPtr<AVFXProjectileObject> UVFXObjectPoolSubsystem::UseVFX_Projectile(FVFX
 	return nullptr;
 }
 
-void UVFXObjectPoolSubsystem::UseVFX_Explosion(FVFXSpawn_Info VFXInfo)
+TObjectPtr<AVFXExplosionObject> UVFXObjectPoolSubsystem::UseVFX_Explosion(const FVFXSpawn_Info& VFXInfo)
 {
-	
+	for (AVFXExplosionObject* Explosion : ExplosionList)
+	{
+		if (Explosion && !Explosion->IsUsing())
+		{
+			Explosion->UseVFXObject(VFXInfo);
+			return Explosion;
+		}
+	}
+	return nullptr;
 }
 
 
@@ -61,6 +77,16 @@ void UVFXObjectPoolSubsystem::Deinitialize()
 		}
 	}
 	ProjectileList.Empty();
+	
+	for (AVFXExplosionObject* Explosion : ExplosionList)
+	{
+		if (IsValid(Explosion))
+		{
+			Explosion->Destroy();
+		}
+	}
+	ExplosionList.Empty();
+
 	Super::Deinitialize();
 }
 

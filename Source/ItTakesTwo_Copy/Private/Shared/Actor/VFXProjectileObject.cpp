@@ -4,6 +4,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Shared/VFXObjectPoolSubsystem.h"
 
 
 AVFXProjectileObject::AVFXProjectileObject()
@@ -60,8 +61,32 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 {
 	if (!bUsing)
 		return;
+	if (!OtherActor || OtherActor == this)
+	{
+		return;
+	}
 
-	
+	if (OtherActor == VFXInfo.OwnedActor)
+	{
+		return;
+	}
+
+	if (VFXInfo.bSpawnOverlapExplosion && VFXInfo.OverlapExplosionNiagara)
+	{
+		UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
+		if (PoolSubsystem)
+		{
+			const FVFXSpawn_Info ExplosionInfo = FVFXSpawn_Info::CreateExplosionOnce_NoCollision(
+				VFXInfo.OwnedActor,
+				VFXInfo.OverlapExplosionNiagara,
+				GetActorLocation()
+			);
+
+			PoolSubsystem->UseVFX_Explosion(ExplosionInfo);
+		}
+	}
+
+	FinishVFXObject();
 }
 
 void AVFXProjectileObject::Tick(float DeltaTime)

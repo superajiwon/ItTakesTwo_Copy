@@ -4,6 +4,7 @@
 #include "Actors/Characters/CharacterBase.h"
 #include "FVFXSpawn_Info.generated.h"
 
+#define MAX_DISTANCE 1000.f
 
 UENUM()
 enum class EAttackType : uint8
@@ -76,12 +77,32 @@ public:
 	FVector Extents{FVector::Zero()};
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float SphereRadius = 0.0f;
+	float SphereRadius{0.0f};
 	
+	
+	// Projectile 충돌 했을 때 소환되는 이펙트용
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bSpawnOverlapExplosion{false};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UNiagaraSystem> OverlapExplosionNiagara{nullptr};
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float OverlapExplosionLifeTime{0.0f};
 	
 public:
-	
 	FVFXSpawn_Info() = default;
+	
+	// Projectile이 부딪혔을 때 소환하기 위함
+	FVFXSpawn_Info& CreateOverlapExplosion(
+	TObjectPtr<UNiagaraSystem> ExplosionNiagara,
+	float ExplosionLifeTime)
+	{
+		bSpawnOverlapExplosion = true;
+		OverlapExplosionNiagara = ExplosionNiagara;
+		OverlapExplosionLifeTime = ExplosionLifeTime;
+		return *this;
+	}
 	
 	// -----------------------------------------------------------
 	// 타겟 위치로 발사 - Collision 없음
@@ -101,7 +122,7 @@ public:
 		Info.Damage = 0.f;
 		Info.Extents = FVector::ZeroVector;
 		Info.SphereRadius = 0.f;
-		Info.Life_Distance = 5000.f;
+		Info.Life_Distance = MAX_DISTANCE;
 		return Info;
 	}
 
@@ -126,7 +147,7 @@ public:
 		Info.Damage = 0.f;
 		Info.Extents = FVector::ZeroVector;
 		Info.SphereRadius = 0.f;
-		Info.Life_Distance = 5000.f;
+		Info.Life_Distance = MAX_DISTANCE;
 		return Info;
 	}
 
@@ -194,7 +215,7 @@ public:
 			(TargetLoc - StartLoc).GetSafeNormal());
 		Info.TargetLocation = TargetLoc;
 		Info.SetSphereCollision(bUseAttack, CollisionName, DamageValue, Radius);
-		Info.Life_Distance = 5000.f;
+		Info.Life_Distance = MAX_DISTANCE;
 		return Info;
 	}
 	
@@ -216,7 +237,7 @@ public:
 			(TargetLoc - StartLoc).GetSafeNormal());
 		Info.TargetLocation = TargetLoc;
 		Info.SetBoxCollision(bUseAttack, CollisionName, DamageValue, BoxExtents);
-		Info.Life_Distance = 5000.f;
+		Info.Life_Distance = MAX_DISTANCE;
 		return Info;
 	}
 	
@@ -239,7 +260,7 @@ public:
 		Info.TargetActor = Target;
 		Info.TargetLocation = TargetLoc;
 		Info.SetSphereCollision(bUseAttack, CollisionName, DamageValue, Radius);
-		Info.Life_Distance = 5000.f;
+		Info.Life_Distance = MAX_DISTANCE;
 		return Info;
 	}
 	
@@ -262,7 +283,7 @@ public:
 		Info.TargetActor = Target;
 		Info.TargetLocation = TargetLoc;
 		Info.SetBoxCollision(bUseAttack, CollisionName, DamageValue, BoxExtents);
-		Info.Life_Distance = 5000.f;
+		Info.Life_Distance = MAX_DISTANCE;
 		return Info;
 	}
 	
@@ -349,41 +370,104 @@ public:
 		Info.SetBoxCollision(bUseAttack, CollisionName, DamageValue, BoxExtents);
 		return Info;
 	}
-	//
-	// // -----------------------------------------------------------
-	// // 폭발 - 한 번 실행
-	// static FVFXSpawn_Info CreateExplosionOnce(
-	// 	TObjectPtr<ACharacterBase> Owner,
-	// 	TObjectPtr<UNiagaraSystem> Asset,
-	// 	const FVector& SpawnLoc
-	// )
-	// {
-	// 	FVFXSpawn_Info Info;
-	//
-	// 	Info.VFXType = EAttackType::Explosion_Once;
-	// 	Info.OwnedActor = Owner;
-	// 	Info.NiagaraAsset = Asset;
-	// 	Info.StartLocation = SpawnLoc;
-	//
-	// 	return Info;
-	// }
-	//
-	// // 폭발 - LifeTime 기반
-	// static FVFXSpawn_Info CreateExplosionLifeTime(
-	// 	TObjectPtr<ACharacterBase> Owner,
-	// 	TObjectPtr<UNiagaraSystem> Asset,
-	// 	const FVector& SpawnLoc,
-	// 	float LifeTime
-	// )
-	// {
-	// 	FVFXSpawn_Info Info = CreateExplosionOnce(Owner, Asset, SpawnLoc);
-	//
-	// 	Info.VFXType = EAttackType::Explosion_LifeTime;
-	// 	Info.Life_Time = LifeTime;
-	//
-	// 	return Info;
-	// }
+	
+	// -----------------------------------------------------------
+	// -----------------------------------------------------------
+	// 폭발 - 한 번 실행, 충돌 없음
+	static FVFXSpawn_Info CreateExplosionOnce_NoCollision(
+		TObjectPtr<ACharacterBase> Owner,
+		TObjectPtr<UNiagaraSystem> Asset,
+		const FVector& SpawnLoc
+	)
+	{
+		FVFXSpawn_Info Info;
+		Info.VFXType = EAttackType::Explosion_Once;
+		Info.OwnedActor = Owner;
+		Info.NiagaraAsset = Asset;
+		Info.StartLocation = SpawnLoc;
+		return Info;
+	}
+	
+	// 폭발 - LifeTime 기반
+	static FVFXSpawn_Info CreateExplosionLifeTime_NoCollision(
+		TObjectPtr<ACharacterBase> Owner,
+		TObjectPtr<UNiagaraSystem> Asset,
+		const FVector& SpawnLoc,
+		float LifeTime
+	)
+	{
+		FVFXSpawn_Info Info = CreateExplosionOnce_NoCollision(Owner, Asset, SpawnLoc);
+		Info.VFXType = EAttackType::Explosion_LifeTime;
+		Info.Life_Time = LifeTime;
+		return Info;
+	}
 
+	// 폭발 - 한 번 실행 - Sphere Collision
+	static FVFXSpawn_Info CreateExplosionOnce_SphereCollision(
+		TObjectPtr<ACharacterBase> Owner,
+		TObjectPtr<UNiagaraSystem> Asset,
+		const FVector& SpawnLoc,
+		bool bUseAttack,
+		FName CollisionName,
+		float DamageValue,
+		float Radius
+	)
+	{
+		FVFXSpawn_Info Info = CreateExplosionOnce_NoCollision(Owner, Asset, SpawnLoc);
+		Info.SetSphereCollision(bUseAttack, CollisionName, DamageValue, Radius);
+		return Info;
+	}
+	
+	// 폭발 - LifeTime 기반 - Sphere Collision
+	static FVFXSpawn_Info CreateExplosionLifeTime_SphereCollision(
+		TObjectPtr<ACharacterBase> Owner,
+		TObjectPtr<UNiagaraSystem> Asset,
+		const FVector& SpawnLoc,
+		float LifeTime,
+		bool bUseAttack,
+		FName CollisionName,
+		float DamageValue,
+		float Radius
+	)
+	{
+		FVFXSpawn_Info Info = CreateExplosionLifeTime_NoCollision(Owner, Asset, SpawnLoc, LifeTime);
+		Info.SetSphereCollision(bUseAttack, CollisionName, DamageValue, Radius);
+		return Info;
+	}
+	
+	// 폭발 - 한 번 실행 - Box Collision
+	static FVFXSpawn_Info CreateExplosionOnce_BoxCollision(
+		TObjectPtr<ACharacterBase> Owner,
+		TObjectPtr<UNiagaraSystem> Asset,
+		const FVector& SpawnLoc,
+		bool bUseAttack,
+		FName CollisionName,
+		float DamageValue,
+		const FVector& BoxExtents
+	)
+	{
+		FVFXSpawn_Info Info = CreateExplosionOnce_NoCollision(Owner, Asset, SpawnLoc);
+		Info.SetBoxCollision(bUseAttack, CollisionName, DamageValue, BoxExtents);
+		return Info;
+	}
+	
+	// 폭발 - LifeTime 기반 - Box Collision
+	static FVFXSpawn_Info CreateExplosionLifeTime_BoxCollision(
+		TObjectPtr<ACharacterBase> Owner,
+		TObjectPtr<UNiagaraSystem> Asset,
+		const FVector& SpawnLoc,
+		float LifeTime,
+		bool bUseAttack,
+		FName CollisionName,
+		float DamageValue,
+		const FVector& BoxExtents
+	)
+	{
+		FVFXSpawn_Info Info = CreateExplosionLifeTime_NoCollision(Owner, Asset, SpawnLoc, LifeTime);
+		Info.SetBoxCollision(bUseAttack, CollisionName, DamageValue, BoxExtents);
+		return Info;
+	}
+	
 private:
 	static FVFXSpawn_Info MakeBaseProjectile(
 		TObjectPtr<ACharacterBase> Owner,
@@ -437,4 +521,5 @@ private:
 	}
 	
 	
+
 };

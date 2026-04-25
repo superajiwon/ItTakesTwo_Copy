@@ -38,9 +38,13 @@ public:
 	TObjectPtr<UHitBoxComponent> HitBoxComponent;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mage|Attack")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack_Niagara")
 	TObjectPtr<UNiagaraSystem> ProjectileNiagara;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack_Niagara")
+	TObjectPtr<UNiagaraSystem> OverlapNiagara;
+
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
 	float ProjectileSpeed = 1200.0f;
 
@@ -57,6 +61,6 @@ protected:
 	float SpawnForwardOffset = 120.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
-	float SpawnUpOffset = 70.0f;
+	float SpawnUpOffset = 0.0f;
 
 };

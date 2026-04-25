@@ -45,7 +45,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/AIModule/Private/AIController.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/Containers/ContainerAllocationPolicies.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/Math/Vector.h" root0="FORCE_HIGHLIGHTING" />
@@ -61,6 +60,7 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/SkillComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/UltimateComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Interfaces/Healable.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Actor/VFXExplosionObject.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Actor/VFXObject.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Actor/VFXProjectileObject.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/ITTGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -73,6 +73,7 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/SkillComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/UltimateComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Interfaces/Healable.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Actor/VFXExplosionObject.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Actor/VFXObject.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Actor/VFXProjectileObject.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/ITTGameInstance.h" root0="FORCE_HIGHLIGHTING" />
@@ -93,7 +94,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Debug",
+    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -229,6 +230,7 @@
       <workItem from="1777099008932" duration="6176000" />
       <workItem from="1777106256312" duration="647000" />
       <workItem from="1777107746692" duration="14471000" />
+      <workItem from="1777125713577" duration="5037000" />
     </task>
     <servers />
   </component>
