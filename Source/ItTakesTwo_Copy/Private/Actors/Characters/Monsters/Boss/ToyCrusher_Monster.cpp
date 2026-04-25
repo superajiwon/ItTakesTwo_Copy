@@ -2,19 +2,26 @@
 
 
 #include "Actors/Characters/Monsters/Boss/ToyCrusher_Monster.h"
-
-#include "Actors/Characters/Monsters/HitBoxComponent.h"
-#include "Actors/Characters/Monsters/Struct/HitComp_Info.h"
+#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Struct/HitComp_Info.h"
 
 
 AToyCrusher_Monster::AToyCrusher_Monster()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	MonsterMoveType = EMonsterMoveType::BasicMove;
-	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
-	// HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	FHitComp_Info HitCompInfo(FName("Monster"), FName("Monster"), FVector(0.f, 0.f, 45.0f), FVector(20.f, 20.f, 40.f));
-	HitBoxComponent->InitializeHitComp(HitCompInfo);
+	
+	MoveSpeed = 300.f;
+	MonsterMoveType = EMonsterMoveType::MoveForward;
+	
+	BoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
+	BoxComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+	BoxComponent->SetBoxExtent(FVector(130.f, 700.f, 570.f));
+	BoxComponent->SetRelativeLocation(FVector::ZeroVector);
+	BoxComponent->SetCollisionProfileName("MonsterWeapon");
+	BoxComponent->SetGenerateOverlapEvents(true);
+	BoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AToyCrusher_Monster::OnHitBoxBeginOverlap);
+
 }
 
 void AToyCrusher_Monster::BeginPlay()
@@ -23,13 +30,18 @@ void AToyCrusher_Monster::BeginPlay()
 	
 }
 
+void AToyCrusher_Monster::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	
+	bOverlapedToTarget = true;
+	
+}
+
 void AToyCrusher_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void AToyCrusher_Monster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
+
 

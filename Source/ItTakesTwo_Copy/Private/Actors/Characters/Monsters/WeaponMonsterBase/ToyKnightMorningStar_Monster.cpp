@@ -3,8 +3,8 @@
 
 #include "Actors/Characters/Monsters/WeaponMonsterBase/ToyKnightMorningStar_Monster.h"
 
-#include "Actors/Characters/Monsters/HitBoxComponent.h"
-
+#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Struct/HitComp_Info.h"
 
 AToyKnightMorningStar_Monster::AToyKnightMorningStar_Monster()
 {

@@ -40,7 +40,7 @@ private:
 	void MoveToTargetLocation();
 	void TeleportToTarget();
 	void Standing();
-	
+	void MoveToForward();
 	
 public:
 	void NotifyAttackAnimationFinished();

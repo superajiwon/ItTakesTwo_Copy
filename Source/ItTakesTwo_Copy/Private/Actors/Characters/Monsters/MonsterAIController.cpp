@@ -20,7 +20,6 @@ void AMonsterAIController::BeginPlay()
 	
 	if (CachedMonster)
 	{
-		
 		DetectRadius = CachedMonster->GetDetectRadius();
 		AttackRange = CachedMonster->GetAttackRange();
 		MonsterMoveType = CachedMonster->GetMoveType();
@@ -134,13 +133,19 @@ void AMonsterAIController::UpdateMovement()
 		}
 	case EMonsterMoveType::Teleport:
 		{
-			// 텔레포트 시작과 끝으로 나누어짐, 내 생각엔 로직 자체를 나누는게 맞는듯 
 			TeleportToTarget();
 			break;
 		}
 	case EMonsterMoveType::Standing:
-		Standing();
-		break;
+		{
+			Standing();
+			break;
+		}
+	case EMonsterMoveType::MoveForward:
+		{
+			MoveToForward();
+			break;
+		}
 	case EMonsterMoveType::End:
 		break;
 	}
@@ -349,6 +354,29 @@ void AMonsterAIController::Standing()
 		return;
 	}
 
+}
+
+void AMonsterAIController::MoveToForward()
+{
+	if (!CachedMonster)
+	{
+		return;
+	}
+	
+	TargetLocation = CachedMonster->GetMesh()->GetComponentLocation() + 
+		CachedMonster->GetActorForwardVector() * 800.f;
+	MoveToLocation(TargetLocation);
+	
+	if (CachedMonster->GetOverlapToTarget())
+	{
+		if (CachedMonster->GetMonsterState() != EMonsterState::Swing)
+			CachedMonster->SetMonsterState(EMonsterState::Swing);
+	}
+	else
+	{
+		if (CachedMonster->GetMonsterState() != EMonsterState::Chase)
+			CachedMonster->SetMonsterState(EMonsterState::Chase);
+	}
 }
 
 void AMonsterAIController::NotifyAttackAnimationFinished()
