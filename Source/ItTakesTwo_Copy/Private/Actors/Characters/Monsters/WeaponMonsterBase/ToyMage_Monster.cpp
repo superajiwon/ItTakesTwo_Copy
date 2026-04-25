@@ -3,9 +3,9 @@
 
 #include "Actors/Characters/Monsters/WeaponMonsterBase/ToyMage_Monster.h"
 
-#include "Actors/Characters/Monsters/HitBoxComponent.h"
 #include "Actors/Characters/Monsters/MonsterAIController.h"
-#include "Actors/Characters/Monsters/Struct/HitComp_Info.h"
+#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Struct/HitComp_Info.h"
 
 
 AToyMage_Monster::AToyMage_Monster()

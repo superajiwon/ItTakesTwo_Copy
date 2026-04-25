@@ -3,6 +3,8 @@
 
 #include "Actors/Characters/Monsters/HitBoxComponent.h"
 #include "Actors/Characters/Monsters/Struct/HitComp_Info.h"
+#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Struct/HitComp_Info.h"
 #include "Shared/Components/HitSphereComponent.h"
 
 ACodyCharacter::ACodyCharacter()

@@ -2,9 +2,8 @@
 
 
 #include "Actors/Characters/Monsters/Boss/ToyCrusher_Monster.h"
-
-#include "Actors/Characters/Monsters/HitBoxComponent.h"
-#include "Actors/Characters/Monsters/Struct/HitComp_Info.h"
+#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Struct/HitComp_Info.h"
 
 
 AToyCrusher_Monster::AToyCrusher_Monster()

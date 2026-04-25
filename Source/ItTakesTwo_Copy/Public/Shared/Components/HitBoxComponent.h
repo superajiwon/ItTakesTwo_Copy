@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
-#include "Struct/HitComp_Info.h"
 #include "HitBoxComponent.generated.h"
 
+
+struct FHitComp_Info;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ITTAKESTWO_COPY_API UHitBoxComponent : public UBoxComponent
