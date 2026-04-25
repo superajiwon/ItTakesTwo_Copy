@@ -39,7 +39,9 @@ private:
 	void MoveToTarget();
 	void MoveToTargetLocation();
 	void TeleportToTarget();
-
+	void Standing();
+	
+	
 public:
 	void NotifyAttackAnimationFinished();
 	
@@ -65,12 +67,15 @@ private:
 private:
 	bool bTeleport{false};
 	bool bWaitingAttackEnd{false};
+	bool bRestTime{false};
+
 	
 	int32 FireCount{0};
 
 	
 	float CurrentIdleTime{0.0f};
 	float MaxIdleTime{1.0f};
-	
+	float ReTargetTime{0.0f};
+	float MaxReTargetTime{3.0f};
 	ETeleportTypeState TeleportStep = ETeleportTypeState::IdleWait;
 };

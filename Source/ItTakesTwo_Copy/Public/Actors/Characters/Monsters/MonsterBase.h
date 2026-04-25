@@ -7,6 +7,7 @@
 #include "MonsterBase.generated.h"
 
 
+class UMonsterAnimInstance;
 class AMonsterAIController;
 class APlayerBase;
 
@@ -14,6 +15,7 @@ UENUM(BlueprintType)
 enum class EMonsterState : uint8
 {
 	Idle,
+	Detect,
 	Chase,
 	TeleportEnter,
 	TeleportExit,
@@ -55,6 +57,10 @@ public:
 	
 public:
 	void SetMonsterState(EMonsterState NewState);
+	void SetDetectPlayer(bool bDetectPlayer);
+	
+	
+public:
 	EMonsterState GetMonsterState() const
 	{
 		return MonsterState;	
@@ -67,7 +73,10 @@ public:
 	{
 		return MaxIdleTime;
 	}
-	
+	bool GetDetectedPlayer() const
+	{
+		return bDetectPlayer;
+	}
 public:
 	bool GetMontagePlayingState() const;
 	float GetDetectRadius() const;
@@ -82,6 +91,9 @@ public:
 	void AnimNotify_MontageEnd();
 	
 protected:
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	bool bDetectPlayer{false};
+	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bPlayingMontage{false};
 	
@@ -108,7 +120,7 @@ protected:
 	TWeakObjectPtr<AActor> CurrentTarget;
 
 	UPROPERTY()
-	UAnimInstance* AnimInstance;
+	UMonsterAnimInstance* AnimInstance;
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Montage")
 	TObjectPtr<UAnimMontage> AttackMontage;
@@ -124,6 +136,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Montage")
 	TObjectPtr<UAnimMontage> TeleportExitMontage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Montage")
+	TObjectPtr<UAnimMontage> DetectMontage;
 	
 	
 };

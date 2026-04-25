@@ -3,6 +3,7 @@
 #include "Actors/Characters/Monsters/MonsterBase.h"
 
 #include "Actors/Characters/Monsters/MonsterAIController.h"
+#include "Actors/Characters/Monsters/MonsterAnimInstance.h"
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -40,6 +41,7 @@ void AMonsterBase::BeginPlay()
 void AMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
 }
 
 void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -67,6 +69,11 @@ void AMonsterBase::SetMonsterState(EMonsterState NewState)
 	OnRep_MonsterState();
 }
 
+void AMonsterBase::SetDetectPlayer(bool bNewDetectPlayer)
+{
+	AnimInstance->bIsDetect = bNewDetectPlayer;
+}
+
 bool AMonsterBase::GetMontagePlayingState() const
 {
 	return bPlayingMontage;
@@ -85,7 +92,7 @@ float AMonsterBase::GetAttackRange() const
 void AMonsterBase::MontagePlay()
 {
 	if (!AnimInstance)
-		AnimInstance = GetMesh() ? GetMesh()->GetAnimInstance() : nullptr;
+		AnimInstance = GetMesh() ? Cast<UMonsterAnimInstance>(GetMesh()->GetAnimInstance()) : nullptr;
 	
 	if (!AnimInstance)
 		return;
@@ -94,30 +101,34 @@ void AMonsterBase::MontagePlay()
 
 	switch (MonsterState)
 	{
-		case EMonsterState::Attack:
+	case EMonsterState::Attack:
 		{
 			MontageToPlay =	AttackMontage;
 			break;
 		}
-		case EMonsterState::Swing:
+	case EMonsterState::Swing:
 		{
 			MontageToPlay = SwingMontage;
 			break;
 		}
-		case EMonsterState::Fire:
+	case EMonsterState::Fire:
 		{
 			MontageToPlay = FireMontage;
 			break;
 		}
-		case EMonsterState::TeleportEnter:
+	case EMonsterState::TeleportEnter:
 		{
 			MontageToPlay = TeleportEnterMontage;
 			break;
 		}
-		case EMonsterState::TeleportExit:
+	case EMonsterState::TeleportExit:
 		{
 			MontageToPlay = TeleportExitMontage;
 			break;
+		}
+	case EMonsterState::Detect:
+		{
+			MontageToPlay = DetectMontage;
 		}
 		default:
 			break;

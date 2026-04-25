@@ -10,11 +10,17 @@ AToyShielder_Monster::AToyShielder_Monster()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	MonsterMoveType = EMonsterMoveType::BasicMove;
+	DetectRadius = 2000.0f;
+	AttackRange = 100.f;
+	MaxIdleTime = 0.8f;
+	MoveSpeed = 300.f;
+	
+	
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
 	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	FHitComp_Info HitCompInfo(FName("Monster"), FName("Monster"), FVector(0.f, 0.f, 5.00001f), FVector(50.f, 70.f, 100.f));
+	FHitComp_Info HitCompInfo(FName("Monster"), FName("MonsterWeapon"), FVector(0.f, 0.f, 5.00001f), FVector(50.f, 70.f, 100.f));
 	HitBoxComponent->InitializeHitComp(HitCompInfo);
-	
+	RightHand_WeaponMeshComponent->SetupAttachment(GetMesh(), FName(TEXT("LeftHandSocket")));
 }
 
 void AToyShielder_Monster::BeginPlay()
@@ -25,6 +31,17 @@ void AToyShielder_Monster::BeginPlay()
 void AToyShielder_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	DrawDebugBox(
+		GetWorld(),
+		HitBoxComponent->GetComponentLocation(),
+		HitBoxComponent->GetScaledBoxExtent(),
+		HitBoxComponent->GetComponentQuat(),
+		FColor::Red,
+		false,
+		-1,
+		0,
+		2.f
+	);
 }
 
 

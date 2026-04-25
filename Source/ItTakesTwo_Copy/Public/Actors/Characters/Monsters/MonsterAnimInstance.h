@@ -23,6 +23,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AnimationSetting")
 	EMonsterState CurrentState{EMonsterState::Idle};
 	
+	UPROPERTY(BlueprintReadOnly, Category = "AnimationSetting")
+	bool bIsDetect{false};
+
+	
 public:
 	UPROPERTY(BlueprintReadOnly, Category = "Animation")
 	TObjectPtr<AMonsterBase> CachedMonster{nullptr};	

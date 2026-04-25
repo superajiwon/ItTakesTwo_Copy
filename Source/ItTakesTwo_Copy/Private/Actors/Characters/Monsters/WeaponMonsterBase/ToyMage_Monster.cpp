@@ -3,7 +3,9 @@
 
 #include "Actors/Characters/Monsters/WeaponMonsterBase/ToyMage_Monster.h"
 
+#include "Actors/Characters/Monsters/HitBoxComponent.h"
 #include "Actors/Characters/Monsters/MonsterAIController.h"
+#include "Actors/Characters/Monsters/Struct/HitComp_Info.h"
 
 
 AToyMage_Monster::AToyMage_Monster()
@@ -11,11 +13,16 @@ AToyMage_Monster::AToyMage_Monster()
 	PrimaryActorTick.bCanEverTick = true;
 	MonsterMoveType = EMonsterMoveType::Teleport;
 	DetectRadius = 1500.0f;
-	AttackRange = 500.f;
+	AttackRange = 150.f;
 	MaxIdleTime = 1.f;
 	TargetLocationMap.Add(0, FVector(1940.0f, 0.0f, 100.0f));
 	TargetLocationMap.Add(1, FVector(720.0f, -330.0f, 100.0f));
 	TargetLocationMap.Add(2, FVector(720.0f, 580.0f, 100.0f));
+	
+	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
+	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	FHitComp_Info HitCompInfo(FName("Monster"), FName("MonsterWeapon"), FVector(0.f, 0.f, 27.0f), FVector(20.f, 20.f, 130.f));
+	HitBoxComponent->InitializeHitComp(HitCompInfo);
 }
 
 void AToyMage_Monster::BeginPlay()
@@ -52,6 +59,19 @@ void AToyMage_Monster::MoveTeleport(AMonsterAIController* MonsterController, FVe
 void AToyMage_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	Super::Tick(DeltaTime);
+	DrawDebugBox(
+		GetWorld(),
+		HitBoxComponent->GetComponentLocation(),
+		HitBoxComponent->GetScaledBoxExtent(),
+		HitBoxComponent->GetComponentQuat(),
+		FColor::Red,
+		false,
+		-1,
+		0,
+		2.f
+	);
 }
 
 

@@ -6,6 +6,8 @@
 #include "WeaponMonsterBase.h"
 #include "ToyMage_Monster.generated.h"
 
+class UHitBoxComponent;
+
 UCLASS()
 class ITTAKESTWO_COPY_API AToyMage_Monster : public AWeaponMonsterBase
 {
@@ -26,6 +28,9 @@ private:
 	TMap<int32, FVector> TargetLocationMap;// 순간이동 위치를 담은 배열
 	int32 CurrentLocationIndex{0};
 	
-	
+public:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UHitBoxComponent> HitBoxComponent;
+
 	
 };
