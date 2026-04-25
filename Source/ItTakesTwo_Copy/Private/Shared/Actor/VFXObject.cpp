@@ -55,8 +55,30 @@ void AVFXObject::BeginPlay()
 	Super::BeginPlay();
 	// SetActorHiddenInGame(true);
 	// SetActorTickEnabled(false);
-
+	if (VFXComponent)
+	{
+		VFXComponent->OnSystemFinished.RemoveDynamic(this, &AVFXObject::OnVFXSystemFinished);
+		VFXComponent->OnSystemFinished.AddDynamic(this, &AVFXObject::OnVFXSystemFinished);
+	}
 	FinishVFXObject();
+}
+
+void AVFXObject::OnVFXSystemFinished(UNiagaraComponent* FinishedComponent)
+{
+	if (!bUsing)
+	{
+		return;
+	}
+
+	if (FinishedComponent != VFXComponent)
+	{
+		return;
+	}
+
+	if (VFXInfo.VFXType == EAttackType::Explosion_Once)
+	{
+		FinishVFXObject();
+	}
 }
 
 void AVFXObject::Tick(float DeltaTime)
@@ -115,7 +137,6 @@ void AVFXObject::UseVFXObject(const FVFXSpawn_Info& SpawnInfo)
 	{
 		UseCollision();
 	}
-	
 	
 	SetActorHiddenInGame(false);
 	SetActorTickEnabled(true);

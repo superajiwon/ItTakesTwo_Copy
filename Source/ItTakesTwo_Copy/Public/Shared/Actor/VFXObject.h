@@ -22,7 +22,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	UFUNCTION()
+	void OnVFXSystemFinished(UNiagaraComponent* FinishedComponent);
+	
+	
 public:
 	virtual void Tick(float DeltaTime) override;
 	
@@ -37,8 +40,7 @@ public:
 		return bUsing;
 	}
 	
-	
-	
+
 private:
 	void UseCollision();
 	void FinishCollision();

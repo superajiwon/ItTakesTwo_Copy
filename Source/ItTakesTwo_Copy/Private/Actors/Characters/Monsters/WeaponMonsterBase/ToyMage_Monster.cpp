@@ -9,6 +9,8 @@
 #include "Shared/Struct/FVFXSpawn_Info.h"
 #include "Shared/Struct/HitComp_Info.h"
 #include "NiagaraSystem.h"
+#include "UObject/ConstructorHelpers.h"
+
 
 AToyMage_Monster::AToyMage_Monster()
 {
@@ -32,6 +34,13 @@ AToyMage_Monster::AToyMage_Monster()
 	{
 		ProjectileNiagara = Niagara.Object;
 	}
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> OverlapAsset(
+		TEXT("/Game/VFX/Using/NS_MageProjectileEnd.NS_MageProjectileEnd"));
+	if (Niagara.Succeeded())
+	{
+		OverlapNiagara = OverlapAsset.Object;
+	}
+	
 }
 
 void AToyMage_Monster::BeginPlay()
@@ -67,8 +76,6 @@ void AToyMage_Monster::MoveTeleport(AMonsterAIController* MonsterController, FVe
 
 void AToyMage_Monster::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-	
 	Super::Tick(DeltaTime);
 	DrawDebugBox(
 		GetWorld(),
@@ -107,19 +114,51 @@ void AToyMage_Monster::ProjectileFire()
 	const FVector SpawnLocation =
 		GetActorLocation()	+ GetActorForwardVector() * SpawnForwardOffset
 		+ FVector(0.0f, 0.0f, SpawnUpOffset);
-	const FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTimeSphere(
+	
+	FVector ForwardDir = GetActorForwardVector();
+	 FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTimeSphere(
 		this,
 		ProjectileNiagara,
 		ProjectileSpeed,
 		SpawnLocation,
-		GetActorForwardVector(),
+		ForwardDir,
 		ProjectileLifeTime,
 		true,
 		FName(TEXT("MonsterWeapon")),
 		ProjectileDamage,
 		ProjectileRadius
 	);
-
+	SpawnInfo.CreateOverlapExplosion(OverlapNiagara, 0);
+	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
+	
+	SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTimeSphere(
+		this,
+		ProjectileNiagara,
+		ProjectileSpeed,
+		SpawnLocation,
+		FRotator(0.f, -45.f, 0.f).RotateVector(ForwardDir),
+		ProjectileLifeTime,
+		true,
+		FName(TEXT("MonsterWeapon")),
+		ProjectileDamage,
+		ProjectileRadius
+	);
+	SpawnInfo.CreateOverlapExplosion(OverlapNiagara, 0);
+	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
+	
+	SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTimeSphere(
+			this,
+			ProjectileNiagara,
+			ProjectileSpeed,
+			SpawnLocation,
+			FRotator(0.f, 45.f, 0.f).RotateVector(ForwardDir),
+			ProjectileLifeTime,
+			true,
+			FName(TEXT("MonsterWeapon")),
+			ProjectileDamage,
+			ProjectileRadius
+		);
+	SpawnInfo.CreateOverlapExplosion(OverlapNiagara, 0);
 	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 }
 
