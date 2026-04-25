@@ -1,10 +1,12 @@
 
 #include "Actors/Characters/Players/May/MayCharacter.h"
 #include "Actors/Characters/Players/PlayerActionData.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/RootMotionSource.h"
+#include "Net/UnrealNetwork.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
-#include "Net/UnrealNetwork.h"
 
 AMayCharacter::AMayCharacter()
 {
@@ -52,9 +54,22 @@ void AMayCharacter::SetWeaponCollision(bool bEnable)
 	if (!SwordCollision) return;
 	
 	if (bEnable)
+	{
+		// Debug
+		SwordCollision->SetHiddenInGame(false);
 		SwordCollision->CollisionOn();
+	}
 	else
+	{
+		// Debug
+		SwordCollision->SetHiddenInGame(true);
 		SwordCollision->CollisionOff();
+	}
+}
+
+void AMayCharacter::SpecialAttack(const FInputActionValue& Value)
+{
+	Super::SpecialAttack(Value);
 }
 
 FAttackModeData* AMayCharacter::GetCurrentAttackData()
@@ -68,10 +83,36 @@ FAttackModeData* AMayCharacter::GetCurrentAttackData()
 }
 
 // Server_ExecuteSkill_Implementation에서 서버 단독 호출
-// bIsUltimateForm이 Replicated이므로 변경 시 클라이언트로 자동 동기화
 void AMayCharacter::OnUltimateActivated()
 {
 	// 서버에서만 호출되므로 HasAuthority() 체크 불필요
 	bIsUltimateForm = !bIsUltimateForm;
 }
 
+void AMayCharacter::Ultimate(const FInputActionValue& Value)
+{
+	Super::Ultimate(Value);
+}
+
+void AMayCharacter::MayDash(FVector DashDir, float Strength, float Duration)
+{
+	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+	{
+		TSharedPtr<FRootMotionSource_ConstantForce> ConstantForce = MakeShared<FRootMotionSource_ConstantForce>();
+		ConstantForce->InstanceName = TEXT("MayDash");
+		ConstantForce->AccumulateMode = ERootMotionAccumulateMode::Override;
+		ConstantForce->Priority = 5;
+		ConstantForce->Force = DashDir * Strength;
+		ConstantForce->Duration = Duration;
+		
+		ConstantForce->FinishVelocityParams.Mode = ERootMotionFinishVelocityMode::ClampVelocity;
+		ConstantForce->FinishVelocityParams.ClampVelocity = 600.0f;
+		
+		MoveComp->ApplyRootMotionSource(ConstantForce);
+	}
+}
+
+void AMayCharacter::Server_MayDash_Implementation()
+{
+	MayDash(GetActorForwardVector(), DashStrength, DashDuration);
+}

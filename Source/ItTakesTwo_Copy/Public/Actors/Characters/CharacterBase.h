@@ -9,7 +9,6 @@
 
 class UHPComponent;
 class UStatComponent;
-class USkillComponent;
 
 UCLASS()
 class ITTAKESTWO_COPY_API ACharacterBase : public ACharacter, public IDamagable, public IHealable

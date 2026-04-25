@@ -5,6 +5,25 @@
 #include "Shared/Components/HitSphereComponent.h"
 
 
+void UMayAnimInstance::AnimNotify_DashOn()
+{
+	Super::AnimNotify_DashOn();
+	
+	auto* Owner = Cast<AMayCharacter>(GetOwningActor());
+	if (!Owner) return;
+	
+	if (Owner->IsLocallyControlled())
+	{
+		FVector DashDir = Owner->GetActorForwardVector();
+		Owner->MayDash(DashDir, Owner->DashStrength, Owner->DashDuration);
+	
+		if (Owner->GetLocalRole() < ROLE_Authority)
+		{
+			Owner->Server_MayDash();
+		}
+	}
+}
+
 void UMayAnimInstance::AnimNotify_SpecialOn()
 {
 	Super::AnimNotify_SpecialOn();
@@ -12,6 +31,8 @@ void UMayAnimInstance::AnimNotify_SpecialOn()
 	auto* Owner = Cast<AMayCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
+	// Debug
+	Owner->SpecialCollision->SetHiddenInGame(false);
 	Owner->SpecialCollision->CollisionOn();
 }
 
@@ -22,6 +43,8 @@ void UMayAnimInstance::AnimNotify_SpecialOff()
 	auto* Owner = Cast<AMayCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
+	// Debug
+	Owner->SpecialCollision->SetHiddenInGame(true);
 	Owner->SpecialCollision->CollisionOff();
 }
 

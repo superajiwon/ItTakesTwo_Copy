@@ -20,15 +20,33 @@ public:
 public:
 	// === Collision ===
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<USceneComponent> AttackColliderPoint;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UHitSphereComponent> BaseCollision;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UHitBoxComponent> UltimateCollision;
 	
+	
+	// === Base Attack ===
 	virtual void SetWeaponCollision(bool bEnable) override;
 	
-	// === Input Actions ===
+	
+	// === Special Attack === 
+	// todo
 	virtual void SpecialAttack(const FInputActionValue& Value) override;
-	virtual void Dash(const FInputActionValue& Value) override;
+	
+	
+	// === Ultimate Attack === 
+	// todo
 	virtual void Ultimate(const FInputActionValue& Value) override;
 	
+	
+	// === Dash ===
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat|State")
+	float TeleportLength = 300.0f;
+	
+	void CodyTeleport(float Distance);
+	
+	UFUNCTION(Server, Reliable)
+	void Server_CodyTeleport();
 };

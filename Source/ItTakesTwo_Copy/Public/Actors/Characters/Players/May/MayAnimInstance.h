@@ -12,6 +12,8 @@ class ITTAKESTWO_COPY_API UMayAnimInstance : public UPlayerAnimInstance
 	
 public:
 	// === Anim Notify ===
+	virtual void AnimNotify_DashOn() override;
+	
 	virtual void AnimNotify_SpecialOn() override;
 	
 	virtual void AnimNotify_SpecialOff() override;

@@ -40,5 +40,4 @@ protected:
 	// 서버 → 전체 클라이언트 (실제 몽타주 재생)
 	UFUNCTION(NetMulticast, Unreliable)
 	void Multicast_PlayerSkillEffect(EActionType ActionType, int32 ComboStep, int32 MontageIdx);
-	
 };

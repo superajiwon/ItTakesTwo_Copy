@@ -28,6 +28,9 @@ public:
 	
 	// === Anim Notify ===
 	UFUNCTION()
+	virtual void AnimNotify_DashOn() {};
+	
+	UFUNCTION()
 	virtual void AnimNotify_SpecialOn() {};
 	
 	UFUNCTION()

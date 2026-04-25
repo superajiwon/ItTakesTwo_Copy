@@ -4,6 +4,7 @@
 
 #include "Components/CapsuleComponent.h"
 #include "Components/SkillComponent.h"
+#include "Components/UltimateComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -14,6 +15,8 @@ class UEnhancedInputLocalPlayerSubsystem;
 
 APlayerBase::APlayerBase()
 {
+	PrimaryActorTick.bCanEverTick = true;
+	
 	bUseControllerRotationYaw = false; // 컨트롤러 회전에 적용 되지 않도록 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
@@ -25,6 +28,7 @@ APlayerBase::APlayerBase()
 	
 	// === Component ===
 	SkillComp = CreateDefaultSubobject<USkillComponent>(TEXT("SkillComp"));
+	UltimateComp = CreateDefaultSubobject<UUltimateComponent>(TEXT("UltimateComp"));
 	
 	// === Input ===
 	ConstructorHelpers::FObjectFinder<UInputMappingContext> TempIMC(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Inputs/IMC_PlayerMapping.IMC_PlayerMapping'"));
@@ -45,12 +49,21 @@ void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (USkeletalMeshComponent* MeshComp = GetMesh())
+	{
+		if (UAnimInstance* AnimInstance = MeshComp->GetAnimInstance())
+		{
+			// 몽타주 종료 시 자동으로 호출되도록 바인딩
+			AnimInstance->OnMontageEnded.AddDynamic(this, &APlayerBase::OnMontageEnded);
+		}
+	}
 }
 
 void APlayerBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	PrintNetLog();
 }
 
 void APlayerBase::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -75,16 +88,20 @@ void APlayerBase::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	}
 }
 
-// ============================================================
-//  현재 상태 (Normal / Ultimate)에 맞는 공격 데이터 반환
-//  MayCharacter가 override하여 bIsUltimateForm 상태를 반영합니다.
-// ============================================================
+void APlayerBase::PrintNetLog()
+{
+	const FString conStr = GetNetConnection() != nullptr ? TEXT("Valid Connection") : TEXT("Invalid Connection");
+	const FString logStr = FString::Printf(TEXT("Connection : %s\n궁 게이지 : %f"), *conStr, UltimateComp->CurUltimateGauge);
+	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, logStr, nullptr, FColor::White, 0, true, 1);
+}
+
+// 현재 상태 (Normal / Ultimate)에 맞는 공격 데이터 반환
+// MayCharacter가 override하여 bIsUltimateForm 상태를 반영합니다.
 FAttackModeData* APlayerBase::GetCurrentAttackData()
 {
 	if (!ActionData) return nullptr;
 	return &ActionData->NormalAttackData;
 }
-
 
 void APlayerBase::Move(const FInputActionValue& Value)
 {
@@ -110,6 +127,15 @@ void APlayerBase::ResetCombo()
 	CurComboIndex = 0;
 }
 
+void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	// bInterrupted가 false라는 것은, 
+	// 다음 콤보 몽타주에 의해 끊기지 않고 애니메이션이 "끝까지 무사히 다 재생되었다"는 뜻입니다.
+	// 즉, 유저가 마우스 연타를 멈춰서 공격이 끝난 것이므로 이때만 콤보를 안전하게 리셋합니다!
+	if (!bInterrupted)
+		ResetCombo();
+}
+
 // ===
 //  기본 공격 (LMB)
 //  랜덤 인덱스를 로컬에서 미리 결정 → SkillComp에 전달 
@@ -128,11 +154,14 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 		// 공격 중이 아닐 때 첫번째 공격 시작
 		bIsAttacking = true;
 		CurComboIndex = 0;
+		UE_LOG(LogTemp, Warning, TEXT("첫번째 공격임"))
 	}
 	else
 	{
 		// 콤보가 불가능 할 때 입력이 들어올 경우
 		if (!bCanCombo) return;
+		
+		UE_LOG(LogTemp, Warning, TEXT("콤보로 들어왔을 때"))
 		
 		// 콤보 구간 내 입력 시 다음 콤보 증가
 		bCanCombo = false; // 이 구간에서 입력 중복 처리 방지
@@ -140,15 +169,15 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 	}
 	
 	// 최대 콤보를 넘어선 경우 콤보 리셋
-	if (!CurData->BasicAttackCombos.IsValidIndex(CurComboIndex))
+	if (!CurData->BasicAttackCombos.IsValidIndex(CurComboIndex) || CurData->BasicAttackCombos[CurComboIndex].Montages.IsEmpty())
 	{
 		ResetCombo();
 		return;
 	}
 	
-	TArray<UAnimMontage*> Montages = CurData->BasicAttackCombos[CurComboIndex].Montages;
-	int32 RanIndex = FMath::RandRange(0, Montages.Num() - 1);
-	SkillComp->RequestExecuteSkill(EActionType::Basic, CurComboIndex, RanIndex);
+	TArray<UAnimMontage*>& Montages = CurData->BasicAttackCombos[CurComboIndex].Montages;
+	const int32 RandomIdx = FMath::RandRange(0, Montages.Num() - 1);
+	SkillComp->RequestExecuteSkill(EActionType::Basic, CurComboIndex, RandomIdx);
 }
 
 void APlayerBase::SpecialAttack(const FInputActionValue& Value)
@@ -166,7 +195,9 @@ void APlayerBase::Dash(const FInputActionValue& Value)
 
 void APlayerBase::Ultimate(const FInputActionValue& Value)
 {
-	if (!SkillComp) return;
+	if (!SkillComp && !UltimateComp) return;
+	
+	if (UltimateComp->bIsUltimateActive)
 	CurComboIndex = 0; // 콤보 초기화 
 	SkillComp->RequestExecuteSkill(EActionType::Ultimate, CurComboIndex, 0);
 }

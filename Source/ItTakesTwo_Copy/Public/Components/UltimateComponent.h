@@ -17,8 +17,17 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
-	// virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ultimate")
+	float MaxUltimateGauge = 100.0f;
+	float CurUltimateGauge = 0.0f;
+	
+	bool bIsUltimateActive = false;
+	bool bCanUltimate = false;
+	
+	void AddGauge(float GaugeAmount);
+	
+	// bool CanUseUltimate();
+	//
+	// void ActivateUltimate();
 };

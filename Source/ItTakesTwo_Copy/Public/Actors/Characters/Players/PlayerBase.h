@@ -6,7 +6,8 @@
 #include "Actors/Characters/Players/PlayerActionData.h"
 #include "PlayerBase.generated.h"
 
-class USpringArmComponent;
+class USkillComponent;
+class UUltimateComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
@@ -22,16 +23,25 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Components")
 	USkillComponent* GetSkillComponent() { return SkillComp; }
 	
+	UFUNCTION(BlueprintCallable, Category="Components")
+	UUltimateComponent* GetUltimateComponent() { return UltimateComp; }
+	
 protected:
 	virtual void BeginPlay() override;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	
+	void PrintNetLog();
 	
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
+	// === Components ===
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	USkillComponent* SkillComp;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	UUltimateComponent* UltimateComp;
 	
 public:
 	// === Action ===	
@@ -62,6 +72,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Combat|Combo")
 	void ResetCombo();
+	
+	// 콤보가 끊기는 치명적 버그를 막기 위한 몽타주 종료 자동 감지 콜백
+	UFUNCTION()
+	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 	
 	// === Input ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")

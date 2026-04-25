@@ -4,8 +4,9 @@
 
 UUltimateComponent::UUltimateComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
+	CurUltimateGauge = MaxUltimateGauge;
 }
 
 
@@ -13,4 +14,12 @@ void UUltimateComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+}
+
+void UUltimateComponent::AddGauge(float GaugeAmount)
+{	
+	CurUltimateGauge += GaugeAmount;
+	
+	if (CurUltimateGauge >= MaxUltimateGauge)
+		CurUltimateGauge = MaxUltimateGauge;
 }
