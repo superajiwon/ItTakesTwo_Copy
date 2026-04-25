@@ -6,6 +6,7 @@
 #include "WeaponMonsterBase.h"
 #include "ToyMage_Monster.generated.h"
 
+class UNiagaraSystem;
 class UHitBoxComponent;
 
 UCLASS()
@@ -21,8 +22,12 @@ protected:
 	virtual void MoveTeleport(AMonsterAIController* MonsterController, FVector PlayerLocation) override;
 public:
 	virtual void Tick(float DeltaTime) override;
-
+	virtual void AnimNotify_MontageEnd() override;
 	
+	
+private:
+	void ProjectileFire();
+
 	
 private:
 	TMap<int32, FVector> TargetLocationMap;// 순간이동 위치를 담은 배열
@@ -32,5 +37,26 @@ public:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UHitBoxComponent> HitBoxComponent;
 
-	
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mage|Attack")
+	TObjectPtr<UNiagaraSystem> ProjectileNiagara;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
+	float ProjectileSpeed = 1200.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
+	float ProjectileLifeTime = 3.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
+	float ProjectileDamage = 10.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
+	float ProjectileRadius = 60.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
+	float SpawnForwardOffset = 120.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
+	float SpawnUpOffset = 70.0f;
+
 };

@@ -94,7 +94,7 @@ public:
 	void OnRep_MonsterState();
 	
 	UFUNCTION(BlueprintCallable, Category = "Montage")
-	void AnimNotify_MontageEnd();
+	virtual void AnimNotify_MontageEnd();
 	
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)

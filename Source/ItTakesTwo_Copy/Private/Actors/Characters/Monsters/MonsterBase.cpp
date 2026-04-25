@@ -156,7 +156,7 @@ void AMonsterBase::AnimNotify_MontageEnd()
 	AMonsterAIController* MonsterController = Cast<AMonsterAIController>(GetController());
 	if (!MonsterController)
 		return;
-
+	
 	MonsterController->NotifyAttackAnimationFinished();
 }
 

@@ -19,10 +19,12 @@ public class ItTakesTwo_Copy : ModuleRules
 			"SlateCore",
 			"OnlineSubsystem",
 			"OnlineSubsystemUtils",
-			"AIModule"
+			"AIModule",
+			"AIModule",
+			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "AIModule" });
+		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
