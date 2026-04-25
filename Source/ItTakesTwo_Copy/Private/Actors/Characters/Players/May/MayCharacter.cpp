@@ -1,8 +1,9 @@
 
 #include "Actors/Characters/Players/May/MayCharacter.h"
 #include "Actors/Characters/Players/PlayerActionData.h"
-#include "Actors/Characters/Monsters/HitBoxComponent.h"
+#include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
+#include "Shared/Struct/HitComp_Info.h"
 #include "Net/UnrealNetwork.h"
 
 AMayCharacter::AMayCharacter()

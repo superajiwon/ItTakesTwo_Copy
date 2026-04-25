@@ -1,7 +1,6 @@
 
 #include "Actors/Characters/Players/May/MayAnimInstance.h"
 
-#include "Actors/Characters/Monsters/HitBoxComponent.h"
 #include "Actors/Characters/Players/May/MayCharacter.h"
 #include "Shared/Components/HitSphereComponent.h"
 

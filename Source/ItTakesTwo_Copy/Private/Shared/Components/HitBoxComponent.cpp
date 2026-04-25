@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "Actors/Characters/Monsters/HitBoxComponent.h"
+#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Struct/HitComp_Info.h"
 
 UHitBoxComponent::UHitBoxComponent()
 {

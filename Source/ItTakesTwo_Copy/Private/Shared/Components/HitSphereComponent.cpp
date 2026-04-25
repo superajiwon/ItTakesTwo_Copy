@@ -1,7 +1,6 @@
 ﻿
 #include "Shared/Components/HitSphereComponent.h"
-
-#include "Actors/Characters/Monsters/Struct/HitComp_Info.h"
+#include "Shared/Struct/HitComp_Info.h"
 
 
 UHitSphereComponent::UHitSphereComponent()
