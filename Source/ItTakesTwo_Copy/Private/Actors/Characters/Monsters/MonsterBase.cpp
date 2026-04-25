@@ -4,6 +4,7 @@
 
 #include "Actors/Characters/Monsters/MonsterAIController.h"
 #include "Actors/Characters/Players/PlayerBase.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
@@ -22,6 +23,11 @@ AMonsterBase::AMonsterBase()
 	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
+	
+	// [나지원이 테스트로 추가함 헤헤..]
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("MonsterBody"));
+	this->Tags.AddUnique(TEXT("Monster"));
+	SetTargetName(TEXT("Player"));
 }
 
 void AMonsterBase::BeginPlay()

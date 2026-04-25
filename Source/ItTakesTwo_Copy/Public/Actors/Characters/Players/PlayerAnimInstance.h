@@ -15,26 +15,24 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
 	float MovementSpeed;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
 	bool bIsMoving;
 	
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Montage")
 	bool bIsMontagePlaying = false;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Montage")
 	bool bCanCombo = false;
 	
+	
 	// === Anim Notify ===
 	UFUNCTION()
-	virtual void AnimNotify_CollisionOn() {};
-	UFUNCTION()
-	virtual void AnimNotify_CollisionOff() {};
+	virtual void AnimNotify_SpecialOn() {};
 	
 	UFUNCTION()
-	virtual void AnimNotify_CanCombo() {};
-	UFUNCTION()
-	virtual void AnimNotify_SpecialOn() {};
+	virtual void AnimNotify_SpecialOff() {};
+	
 	UFUNCTION()
 	virtual void AnimNotify_UltimateOn() {};
-	
 };

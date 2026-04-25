@@ -19,7 +19,9 @@ AToyKnightMorningStar_Monster::AToyKnightMorningStar_Monster()
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
 	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FHitComp_Info HitCompInfo(FName("Monster"), FName("Monster"), FVector(0.f, 0.f, 45.0f), FVector(20.f, 20.f, 40.f));
-	HitBoxComponent->InitializeHitComp(HitCompInfo);
+	// HitBoxComponent->InitializeHitComp(HitCompInfo);
+	// [나지원이 테스트로 추가함 헤헤..] 	
+	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
 }
 
 void AToyKnightMorningStar_Monster::BeginPlay()

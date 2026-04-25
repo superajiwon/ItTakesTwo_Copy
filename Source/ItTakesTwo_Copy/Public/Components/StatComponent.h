@@ -20,10 +20,6 @@ protected:
 	// 네트워크 변수 복제 규칙 정의 함수
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
-public:	
-	// 네트워크에서는 사용하지 않는 것이 좋다...?
-	// virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-			
 //! 변수
 private:   
 	UPROPERTY(EditAnywhere, Replicated, Category = "Stat")

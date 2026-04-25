@@ -20,13 +20,15 @@ public:
 public:
 	// === Collision ===
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UHitSphereComponent> BasicCollision;
+	TObjectPtr<UHitSphereComponent> BaseCollision;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UHitBoxComponent> UltimateCollision;
 	
+	virtual void SetWeaponCollision(bool bEnable) override;
+	
 	// === Input Actions ===
-	virtual void BaseAttack(const FInputActionValue& Value) override;
 	virtual void SpecialAttack(const FInputActionValue& Value) override;
 	virtual void Dash(const FInputActionValue& Value) override;
 	virtual void Ultimate(const FInputActionValue& Value) override;
+	
 };

@@ -19,7 +19,7 @@ void UHitBoxComponent::BeginPlay()
 	OnComponentBeginOverlap.AddDynamic(this, &UHitBoxComponent::OnHitBoxBeginOverlap);
 }
 
-void UHitBoxComponent::InitializeHitComp(FHitComp_Info HitInfo)
+void UHitBoxComponent::InitializeHitComp(FHitComp_Info HitInfo, FName TargetName)
 {
 	ComponentTags.Reset();
 	ComponentTags.Add(HitInfo.HitTagName);
@@ -28,6 +28,7 @@ void UHitBoxComponent::InitializeHitComp(FHitComp_Info HitInfo)
 	SetCollisionProfileName(HitInfo.CollisionProfileName);
 	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetGenerateOverlapEvents(false);
+	TargetTag = TargetName;
 }
 
 void UHitBoxComponent::CollisionOn()
@@ -56,8 +57,10 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	
 	// 충돌 액터 찾으면
 	// 인터페이스 호출해서 데미지 주거나 어떤 공통된 로직이 있으면 좋을듯함
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s 와 충돌!"), *OtherActor->GetName());
-	// 충돌하면 무적상태 돌입
+	if (OtherActor->Tags.Contains(TargetTag)) // 이런식으로..? 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s 와 충돌!"), *OtherActor->GetName());
+		// 충돌하면 충돌한 상대 무적상태 돌입
+	}
 }
 

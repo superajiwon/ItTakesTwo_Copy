@@ -36,7 +36,7 @@ private:
 public:
 	// === Action ===	
 	// 액션 데이터 (DataAsset)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CombatData")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat|Data")
 	UPlayerActionData* ActionData;
 	
 	// 현재 폼에 맞는 공격 데이터를 반환하는 헬퍼	
@@ -44,12 +44,24 @@ public:
 	// May: bIsUltimateForm 상태에 따라 Normal / Ultimate 반환
 	virtual FAttackModeData* GetCurrentAttackData();
 	
-	// 궁극기 활성화 콜백 (virtual — MayCharacter가 override)
-	// Server_ExecuteSkill에서 Ultimate(ActionType==3) 수신 시 서버에서 호출됩니다.
+	// 궁극기 활성화 콜백 (MayCharacter)
 	virtual void OnUltimateActivated() {}
 	
+	// Base Collider 제어
+	UFUNCTION(BlueprintCallable, Category = "Combat|Data")
+	virtual void SetWeaponCollision(bool bEnable) {}
+	
+	// === Combo ===
 	// 현재 콤보 단계 (로컬 상태 — 소유 클라이언트/방장에서만 증가)
 	int32 CurComboIndex = 0;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat|Combo")
+	bool bIsAttacking = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat|Combo")
+	bool bCanCombo = false;
+	
+	UFUNCTION(BlueprintCallable, Category = "Combat|Combo")
+	void ResetCombo();
 	
 	// === Input ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")

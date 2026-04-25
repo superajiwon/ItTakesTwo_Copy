@@ -22,14 +22,20 @@ AMayCharacter::AMayCharacter()
 	SwordCollision = CreateDefaultSubobject<UHitBoxComponent>(TEXT("SwordCollision"));
 	SwordCollision->AttachToComponent(SwordComp, FAttachmentTransformRules::KeepRelativeTransform);
 	FHitComp_Info SwordHitCompInfo(FName("Player_MaySword"), FName("PlayerWeapon"), FVector(0.0f,-5.679186f,119.102255f), FVector( 10.0f, 40.0f, 90.0f));
-	SwordCollision->InitializeHitComp(SwordHitCompInfo);
+	SwordCollision->InitializeHitComp(SwordHitCompInfo, GetTargetName());
 	SwordCollision->CollisionOff();
 	
 	SpecialCollision = CreateDefaultSubobject<UHitSphereComponent>(TEXT("SpecialCollision"));
 	SpecialCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Root"));
 	FHitComp_Info SpecialHitCompInfo(FName("Player_MaySpecial"), FName("PlayerWeapon"), FVector(0.0f,0.0f,0.0f), 500.f);
-	SpecialCollision->InitializeHitComp(SpecialHitCompInfo);
+	SpecialCollision->InitializeHitComp(SpecialHitCompInfo, GetTargetName());
 	SpecialCollision->CollisionOff();
+	
+	UltimateCollision = CreateDefaultSubobject<UHitSphereComponent>(TEXT("UltimateCollision"));
+	UltimateCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Root"));
+	FHitComp_Info UltimateHitCompInfo(FName("Player_MayUltimate"), FName("PlayerWeapon"), FVector(0.0f,0.0f,0.0f), 300.f);
+	UltimateCollision->InitializeHitComp(UltimateHitCompInfo, GetTargetName());
+	UltimateCollision->CollisionOff();
 }
 
 void AMayCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -38,6 +44,16 @@ void AMayCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& 
 	
 	// bIsUltimateForm을 모든 클라이언트에 복제
 	DOREPLIFETIME(AMayCharacter, bIsUltimateForm);
+}
+
+void AMayCharacter::SetWeaponCollision(bool bEnable)
+{
+	if (!SwordCollision) return;
+	
+	if (bEnable)
+		SwordCollision->CollisionOn();
+	else
+		SwordCollision->CollisionOff();
 }
 
 FAttackModeData* AMayCharacter::GetCurrentAttackData()

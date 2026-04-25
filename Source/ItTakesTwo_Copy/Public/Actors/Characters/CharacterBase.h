@@ -32,6 +32,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Components")
 	UStatComponent* GetStatComponent() { return StatComp; }
 
+	UFUNCTION(BlueprintCallable, Category="Components")
+	FName GetTargetName() { return TargetName; }
+	UFUNCTION(BlueprintCallable, Category="Components")
+	void SetTargetName(FName NameTag) { TargetName = NameTag; }
+	
 	virtual void OnHit();
 	virtual void OnDie();
 	
@@ -40,4 +45,7 @@ private:
 	UHPComponent* HPComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UStatComponent* StatComp;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Setting", meta=(AllowPrivateAccess = "true"))
+	FName TargetName = "";
 };

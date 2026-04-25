@@ -2,12 +2,13 @@
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Actors/Characters/Players/ITTPlayerController.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Components/SkillComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
-#include "GameFramework/CharacterMovementComponent.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
 
@@ -16,6 +17,11 @@ APlayerBase::APlayerBase()
 	bUseControllerRotationYaw = false; // 컨트롤러 회전에 적용 되지 않도록 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+
+	// === Setting for Collision === 
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("PlayerBody"));	
+	this->Tags.AddUnique(TEXT("Player"));
+	SetTargetName(TEXT("Monster"));
 	
 	// === Component ===
 	SkillComp = CreateDefaultSubobject<USkillComponent>(TEXT("SkillComp"));
@@ -79,6 +85,7 @@ FAttackModeData* APlayerBase::GetCurrentAttackData()
 	return &ActionData->NormalAttackData;
 }
 
+
 void APlayerBase::Move(const FInputActionValue& Value)
 {
 	if (!Controller) return;
@@ -96,6 +103,13 @@ void APlayerBase::Move(const FInputActionValue& Value)
 	AddMovementInput(RightDirection, V.Y);
 }
 
+void APlayerBase::ResetCombo()
+{
+	bIsAttacking = false;
+	bCanCombo = false;
+	CurComboIndex = 0;
+}
+
 // ===
 //  기본 공격 (LMB)
 //  랜덤 인덱스를 로컬에서 미리 결정 → SkillComp에 전달 
@@ -106,39 +120,35 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 {
 	if (!SkillComp || !ActionData) return;
 	
-	//! UE_LOG(LogTemp, Warning, TEXT("왜요왜요왜?"));
-	
 	FAttackModeData* CurData = GetCurrentAttackData();
 	if (!CurData) return;
 	
-	// 재생하려는 콤보 인덱스가 있는지 확인
+	if (!bIsAttacking)
+	{
+		// 공격 중이 아닐 때 첫번째 공격 시작
+		bIsAttacking = true;
+		CurComboIndex = 0;
+	}
+	else
+	{
+		// 콤보가 불가능 할 때 입력이 들어올 경우
+		if (!bCanCombo) return;
+		
+		// 콤보 구간 내 입력 시 다음 콤보 증가
+		bCanCombo = false; // 이 구간에서 입력 중복 처리 방지
+		CurComboIndex++; 
+	}
+	
+	// 최대 콤보를 넘어선 경우 콤보 리셋
 	if (!CurData->BasicAttackCombos.IsValidIndex(CurComboIndex))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("재생하려는 콤보 인덱스가 있는지 확인: %d"), CurComboIndex);
+		ResetCombo();
 		return;
 	}
 	
-	TArray<UAnimMontage*>& Montages = CurData->BasicAttackCombos[CurComboIndex].Montages;
-	if (Montages.IsEmpty())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("몽타주가 비어있어요: %d"), CurComboIndex);
-		return;
-	}
-	
-	// 로컬에서 랜덤 결정 → 결과 인덱스를 RPC에 실어 전송
-	// 이렇게 해야 서버/클라이언트 모두 동일한 몽타주를 재생할 수 있음
-	const int32 RandomIdx = FMath::RandRange(0, Montages.Num() - 1);
-	SkillComp->RequestExecuteSkill(EActionType::Basic, CurComboIndex, RandomIdx);
-
-	//! UE_LOG(LogTemp, Warning, TEXT("CurComboIndex: %d / RandomIdx: %d"), CurComboIndex, RandomIdx);
-	
-	// 다음 콤보 단계로 진행
-	// 최대 콤보를 넘기면 0으로 리셋
-	// (실제 리셋 타이밍은 AnimNotify "ComboReset"에서 CurrentComboIndex = 0 으로 처리 권장)
-	// 콤보 인덱스는 소유 클라이언트/방장 로컬에서 관리
-	CurComboIndex++;
-	if (CurComboIndex >= CurData->BasicAttackCombos.Num())
-		CurComboIndex = 0;
+	TArray<UAnimMontage*> Montages = CurData->BasicAttackCombos[CurComboIndex].Montages;
+	int32 RanIndex = FMath::RandRange(0, Montages.Num() - 1);
+	SkillComp->RequestExecuteSkill(EActionType::Basic, CurComboIndex, RanIndex);
 }
 
 void APlayerBase::SpecialAttack(const FInputActionValue& Value)

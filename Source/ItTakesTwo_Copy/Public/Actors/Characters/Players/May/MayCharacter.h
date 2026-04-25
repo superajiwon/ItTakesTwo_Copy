@@ -32,6 +32,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UHitSphereComponent> SpecialCollision;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UHitSphereComponent> UltimateCollision;
+	
+	virtual void SetWeaponCollision(bool bEnable) override;
+	
 	// =========================================================
 	//  May 전용: 궁극기 폼 체인지 상태
 	//  Replicated → 서버에서 변경하면 클라이언트로 자동 동기화

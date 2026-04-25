@@ -19,7 +19,7 @@ void UHitSphereComponent::BeginPlay()
 	OnComponentBeginOverlap.AddDynamic(this, &UHitSphereComponent::OnHitSphereBeginOverlap);
 }
 
-void UHitSphereComponent::InitializeHitComp(FHitComp_Info HitInfo)
+void UHitSphereComponent::InitializeHitComp(FHitComp_Info HitInfo, FName TargetName)
 {
 	ComponentTags.Reset();
 	ComponentTags.Add(HitInfo.HitTagName);
@@ -28,6 +28,7 @@ void UHitSphereComponent::InitializeHitComp(FHitComp_Info HitInfo)
 	SetCollisionProfileName(HitInfo.CollisionProfileName);
 	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetGenerateOverlapEvents(false);
+	TargetTag = TargetName;
 }
 
 void UHitSphereComponent::CollisionOn()

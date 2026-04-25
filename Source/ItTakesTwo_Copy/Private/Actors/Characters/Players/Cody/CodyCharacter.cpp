@@ -14,23 +14,27 @@ ACodyCharacter::ACodyCharacter()
 		GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -88.0f));
 	}
 	
-	BasicCollision = CreateDefaultSubobject<UHitSphereComponent>(TEXT("BasicCollision"));
-	BasicCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Root"));
+	BaseCollision = CreateDefaultSubobject<UHitSphereComponent>(TEXT("BaseCollision"));
+	BaseCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Root"));
 	FHitComp_Info BasicHitCompInfo(FName("Player_CodyBasic"), FName("PlayerWeapon"), FVector(250.0f,0.0f,0.0f), 200.f);
-	BasicCollision->InitializeHitComp(BasicHitCompInfo);
-	BasicCollision->CollisionOff();
+	BaseCollision->InitializeHitComp(BasicHitCompInfo, GetTargetName());
+	BaseCollision->CollisionOff();
 	
 	UltimateCollision = CreateDefaultSubobject<UHitBoxComponent>(TEXT("SwordCollision"));
 	UltimateCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Root"));
 	FHitComp_Info SwordHitCompInfo(FName("Player_CodyUltimate"), FName("PlayerWeapon"), FVector(0.0f,0.0f,0.0f), FVector( 500.0f, 50.0f, 50.0f));
-	UltimateCollision->InitializeHitComp(SwordHitCompInfo);
+	UltimateCollision->InitializeHitComp(SwordHitCompInfo, GetTargetName());
 	UltimateCollision->CollisionOff();
 }
 
-void ACodyCharacter::BaseAttack(const FInputActionValue& Value)
+void ACodyCharacter::SetWeaponCollision(bool bEnable)
 {
-	Super::BaseAttack(Value);
-	
+	if (!BaseCollision) return;
+
+	if (bEnable)
+		BaseCollision->CollisionOn();
+	else
+		BaseCollision->CollisionOff();
 }
 
 void ACodyCharacter::SpecialAttack(const FInputActionValue& Value)
@@ -47,4 +51,5 @@ void ACodyCharacter::Ultimate(const FInputActionValue& Value)
 {
 	Super::Ultimate(Value);
 }
+
 

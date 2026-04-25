@@ -31,7 +31,7 @@ public:
 		);
 	
 public:
-	void InitializeHitComp(FHitComp_Info HitInfo); // Extents, Location, TagName , ProfileName
+	void InitializeHitComp(FHitComp_Info HitInfo, FName TargetName = NAME_None); // Extents, Location, TagName , ProfileName
 	void CollisionOn();
 	void CollisionOff();
 	
@@ -44,4 +44,5 @@ public:
 private:
 	bool bCollisionOn{false};
 	
+	FName TargetTag{NAME_None};
 };
