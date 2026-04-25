@@ -3,7 +3,6 @@
 
 #include "Actors/Characters/Monsters/HitBoxComponent.h"
 
-
 UHitBoxComponent::UHitBoxComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;

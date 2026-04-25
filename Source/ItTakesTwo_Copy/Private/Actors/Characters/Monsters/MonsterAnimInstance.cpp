@@ -23,6 +23,7 @@ void UMonsterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Speed = 0.0f;
 		bIsMoving = false;
+		bIsDetect = false;
 		CurrentState = EMonsterState::Idle;
 		return;
 	}

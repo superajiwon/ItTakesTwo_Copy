@@ -25,6 +25,7 @@ void AMonsterAIController::BeginPlay()
 		AttackRange = CachedMonster->GetAttackRange();
 		MonsterMoveType = CachedMonster->GetMoveType();
 		MaxIdleTime = CachedMonster->GetMaxIdleTime();
+	
 	}
 	
 }
@@ -47,6 +48,16 @@ void AMonsterAIController::OnPossess(APawn* InPawn)
 void AMonsterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	FString StateStr = UEnum::GetValueAsString(CachedMonster->GetMonsterState());
+	DrawDebugString(
+	GetWorld(),
+	CachedMonster->GetActorLocation() + FVector(0, 0, 100.f),
+	StateStr,
+	nullptr,
+	FColor::White,
+	0.f,
+	true
+);
 	
 	if (!HasAuthority())
 	{
@@ -57,14 +68,20 @@ void AMonsterAIController::Tick(float DeltaTime)
 	{
 		return;
 	}
-
+	if (CurrentTarget.IsValid())
+	{
+		ReTargetTime += DeltaTime;
+	}
 	if (MonsterMoveType == EMonsterMoveType::Teleport &&
 		TeleportStep == ETeleportTypeState::IdleWait &&
 		CachedMonster->GetMonsterState() == EMonsterState::Idle)
 	{
 		CurrentIdleTime += DeltaTime;
 	}
-
+	else if (bRestTime)
+	{
+		CurrentIdleTime += DeltaTime;
+	}
 	UpdateMovement();
 }
 
@@ -96,7 +113,7 @@ APlayerBase* AMonsterAIController::FindNearestPlayer() const
 			NearestPlayer = Player;
 		}
 	}
-
+	
 	return NearestPlayer;
 }
 
@@ -122,6 +139,7 @@ void AMonsterAIController::UpdateMovement()
 			break;
 		}
 	case EMonsterMoveType::Standing:
+		Standing();
 		break;
 	case EMonsterMoveType::End:
 		break;
@@ -133,21 +151,40 @@ void AMonsterAIController::MoveToTarget()
 	if (!CurrentTarget.IsValid())
 	{
 		CurrentTarget = FindNearestPlayer();
+		ReTargetTime = 0.f;
 	}
-
+	if (ReTargetTime > MaxReTargetTime)
+	{
+		CurrentTarget = FindNearestPlayer();
+		ReTargetTime = 0.f;
+	}
 	if (!CurrentTarget.IsValid())
 	{
-	//	if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
+		if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
 			CachedMonster->SetMonsterState(EMonsterState::Idle);
 		StopMovement();
 		return;
 	}
+	if (bRestTime)
+	{ 
+		if (CurrentIdleTime < MaxIdleTime)
+		{	
+			StopMovement();
+			return;
+		}
+		else
+		{
+			bRestTime = false;
+			CurrentIdleTime = 0.f;
+		}
+	}
+	
 	const float DistanceToTarget = FVector::Dist(CachedMonster->GetActorLocation(), CurrentTarget->GetActorLocation());
 	
 	if (DistanceToTarget >= DetectRadius)
 	{
 		CurrentTarget = nullptr;
-	//	if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
+		if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
 			CachedMonster->SetMonsterState(EMonsterState::Idle);
 		StopMovement();
 		return;
@@ -155,16 +192,16 @@ void AMonsterAIController::MoveToTarget()
 
 	if (DistanceToTarget <= AttackRange)
 	{
-		//if (CachedMonster->GetMonsterState() != EMonsterState::Swing)
+		if (CachedMonster->GetMonsterState() != EMonsterState::Swing)
 			CachedMonster->SetMonsterState(EMonsterState::Swing);	
 		StopMovement();
 		return;
 	}
-	//if (CachedMonster->GetMonsterState() != EMonsterState::Chase)
+	
+	if (CachedMonster->GetMonsterState() != EMonsterState::Chase)
 		CachedMonster->SetMonsterState(EMonsterState::Chase);
 
-	MoveToActor(CurrentTarget.Get(), AttackRange - 50.f);
-	
+	MoveToActor(CurrentTarget.Get());
 }
 
 void AMonsterAIController::MoveToTargetLocation()
@@ -241,48 +278,135 @@ void AMonsterAIController::TeleportToTarget()
 	}
 }
 
+void AMonsterAIController::Standing()
+{
+	if (!CachedMonster)
+	{
+		return;
+	}
+
+	if (!CurrentTarget.IsValid())
+	{
+		CurrentTarget = FindNearestPlayer();
+		if (CurrentTarget.IsValid())
+		{
+			ReTargetTime= 0.f;
+			if (CachedMonster->GetMonsterState() != EMonsterState::Detect)
+				CachedMonster->SetMonsterState(EMonsterState::Detect);
+			SetFocalPoint(CurrentTarget->GetActorLocation());
+			CachedMonster->SetDetectPlayer(true);
+			return;
+		}
+	}
+	// 못찾으면
+	if (!CurrentTarget.IsValid())
+	{
+		CurrentIdleTime = 0.0f;
+		if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
+			CachedMonster->SetMonsterState(EMonsterState::Idle);
+		return;
+	}
+	
+	SetFocalPoint(CurrentTarget->GetActorLocation());
+	
+	if (ReTargetTime > MaxReTargetTime)
+	{
+		CurrentTarget = FindNearestPlayer();
+		ReTargetTime = 0.f;
+	}
+	
+	if (bRestTime)
+	{ 
+		if (CurrentIdleTime < MaxIdleTime)
+		{	
+			StopMovement();
+			return;
+		}
+		else
+		{
+			bRestTime = false;
+			CurrentIdleTime = 0.f;
+		}
+	}
+	
+	const float DistanceToTarget = FVector::Dist(CachedMonster->GetActorLocation(), CurrentTarget->GetActorLocation());
+	
+	if (DistanceToTarget >= DetectRadius)
+	{
+		CurrentTarget = nullptr;
+		if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
+			CachedMonster->SetMonsterState(EMonsterState::Idle);
+		StopMovement();
+		CachedMonster->SetDetectPlayer(false);
+		return;
+	}
+
+	if (DistanceToTarget <= AttackRange)
+	{
+		if (CachedMonster->GetMonsterState() != EMonsterState::Fire)
+			CachedMonster->SetMonsterState(EMonsterState::Fire);	
+		StopMovement();
+		return;
+	}
+
+}
+
 void AMonsterAIController::NotifyAttackAnimationFinished()
 {
 	if (!CachedMonster)
 		return;
-	if (!bTeleport && TeleportStep == ETeleportTypeState::Attack)
+	if (CachedMonster->GetMoveType() == EMonsterMoveType::Teleport)
 	{
-		// 만약 텔레포트 못하는데 공격상태면 Idle로 
-		TeleportStep = ETeleportTypeState::IdleWait;
-		CurrentIdleTime = 0.0f;
-		CachedMonster->SetMonsterState(EMonsterState::Idle);
-		return;
-	}
-	
-	switch (TeleportStep)
-	{
-		case ETeleportTypeState::Attack:
+		if (!bTeleport && TeleportStep == ETeleportTypeState::Attack)
 		{
-			TeleportStep = ETeleportTypeState::TeleportEnter;
-			CachedMonster->SetMonsterState(EMonsterState::TeleportEnter);
-			break;
-		}
-		case ETeleportTypeState::TeleportEnter:
-		{
-			TeleportStep = ETeleportTypeState::TeleportMove;
-			if (CurrentTarget.IsValid())
-			{
-				CachedMonster->MoveTeleport(this, CurrentTarget->GetActorLocation());
-			}
-			TeleportStep = ETeleportTypeState::TeleportExit;
-			CachedMonster->SetMonsterState(EMonsterState::TeleportExit);
-			break;
-		}
-		case ETeleportTypeState::TeleportExit:
-		{
+			// 만약 텔레포트 못하는데 공격상태면 Idle로 
 			TeleportStep = ETeleportTypeState::IdleWait;
 			CurrentIdleTime = 0.0f;
 			CachedMonster->SetMonsterState(EMonsterState::Idle);
-			bTeleport = false;
-			break;
+			return;
 		}
-		default:
-			break;
+	
+		switch (TeleportStep)
+		{
+			case ETeleportTypeState::Attack:
+			{
+				TeleportStep = ETeleportTypeState::TeleportEnter;
+				CachedMonster->SetMonsterState(EMonsterState::TeleportEnter);
+				break;
+			}
+			case ETeleportTypeState::TeleportEnter:
+			{
+				TeleportStep = ETeleportTypeState::TeleportMove;
+				if (CurrentTarget.IsValid())
+				{
+					CachedMonster->MoveTeleport(this, CurrentTarget->GetActorLocation());
+				}
+				TeleportStep = ETeleportTypeState::TeleportExit;
+				CachedMonster->SetMonsterState(EMonsterState::TeleportExit);
+				break;
+			}
+			case ETeleportTypeState::TeleportExit:
+			{
+				TeleportStep = ETeleportTypeState::IdleWait;
+				CurrentIdleTime = 0.0f;
+				CachedMonster->SetMonsterState(EMonsterState::Idle);
+				bTeleport = false;
+				break;
+			}
+			default:
+				break;
+		}
+	}
+	else
+	{
+		if (CachedMonster->GetMonsterState() == EMonsterState::Swing ||
+			CachedMonster->GetMonsterState() == EMonsterState::Attack ||
+			CachedMonster->GetMonsterState() == EMonsterState::Fire)
+		{
+			CachedMonster->SetMonsterState(EMonsterState::Idle);
+			CurrentIdleTime = 0.0f;
+			bRestTime = true;
+		}
 	}
 }
 

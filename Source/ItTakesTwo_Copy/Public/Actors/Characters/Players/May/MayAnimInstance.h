@@ -11,9 +11,7 @@ class ITTAKESTWO_COPY_API UMayAnimInstance : public UPlayerAnimInstance
 	GENERATED_BODY()
 	
 public:
-	// === Anim Notify ===
-	UFUNCTION()
-	virtual void AnimNotify_CollisionOn();
-	UFUNCTION()
-	virtual void AnimNotify_CollisionOff();
+	// === Anim Notify === 
+	virtual void AnimNotify_CollisionOn() override ;
+	virtual void AnimNotify_CollisionOff() override ;
 };
