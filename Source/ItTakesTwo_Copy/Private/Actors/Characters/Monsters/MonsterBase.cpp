@@ -146,6 +146,7 @@ void AMonsterBase::OnRep_MonsterState()
 void AMonsterBase::AnimNotify_MontageEnd()
 {
 	bPlayingMontage = false;
+	bOverlapedToTarget = false;
 	AMonsterAIController* MonsterController = Cast<AMonsterAIController>(GetController());
 	if (!MonsterController)
 		return;

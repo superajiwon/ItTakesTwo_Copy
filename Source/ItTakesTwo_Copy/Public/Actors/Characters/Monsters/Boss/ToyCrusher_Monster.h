@@ -6,23 +6,32 @@
 #include "BossBase.h"
 #include "ToyCrusher_Monster.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class ITTAKESTWO_COPY_API AToyCrusher_Monster : public ABossBase
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AToyCrusher_Monster();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	UFUNCTION()
+	void OnHitBoxBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult
+	);
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+private:
+	UPROPERTY()
+	UBoxComponent* BoxComponent;
 };

@@ -34,6 +34,7 @@ enum class EMonsterMoveType : uint8
 	BasicMove,
 	Teleport,
 	Standing,
+	MoveForward,
 	End
 };
 
@@ -77,8 +78,13 @@ public:
 	{
 		return bDetectPlayer;
 	}
+	bool GetOverlapToTarget() const
+	{
+		return bOverlapedToTarget;
+	}
 public:
 	bool GetMontagePlayingState() const;
+	
 	float GetDetectRadius() const;
 	float GetAttackRange() const;
 	
@@ -93,6 +99,9 @@ public:
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bDetectPlayer{false};
+	
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	bool bOverlapedToTarget{false};
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bPlayingMontage{false};

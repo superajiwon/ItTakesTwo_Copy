@@ -45,11 +45,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://7" root0="FORCE_HIGHLIGHTING" />
-    <setting file="cidr-memory-view://8" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://6" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/AIModule/Private/AIController.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/Containers/ContainerAllocationPolicies.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectPtr.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/Character.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -84,7 +84,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Run",
+    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -217,6 +217,7 @@
       <workItem from="1777010417384" duration="9317000" />
       <workItem from="1777036001199" duration="93000" />
       <workItem from="1777036156463" duration="13445000" />
+      <workItem from="1777099008932" duration="6176000" />
     </task>
     <servers />
   </component>
@@ -243,6 +244,11 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyCrusher_Monster.cpp</url>
+          <line>37</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
