@@ -26,14 +26,14 @@ class ITTAKESTWO_COPY_API AMonsterAIController : public AAIController
 	GENERATED_BODY()
 public:
 	AMonsterAIController();
-
+	TObjectPtr<ACharacterBase> FindNearestPlayer() const;
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
 	
 private:
-	APlayerBase* FindNearestPlayer() const;
+	
 	void UpdateMovement();
 
 	void MoveToTarget();

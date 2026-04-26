@@ -26,7 +26,6 @@ void AVFXExplosionObject::BeginPlay()
 		CollisionBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AVFXExplosionObject::OnExplosionBeginOverlap);
 	}
 
-	FinishVFXObject();
 }
 
 void AVFXExplosionObject::Tick(float DeltaTime)
@@ -52,15 +51,12 @@ void AVFXExplosionObject::OnExplosionBeginOverlap(UPrimitiveComponent* Overlappe
 		return;
 	}
 
-	if (OtherActor == VFXInfo.OwnedActor)
+	if (OtherActor == VFXInfo.OwnerActor)
 	{
 		return;
 	}
 
-	// if (VFXInfo.VFXType == EAttackType::Explosion_Once)
-	// {
-	// 	return;
-	// }
+	
 	
 }
 

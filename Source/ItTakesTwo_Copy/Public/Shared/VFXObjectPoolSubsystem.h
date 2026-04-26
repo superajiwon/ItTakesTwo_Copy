@@ -24,6 +24,9 @@ public:
 	
 	
 private:
+	void Initialize_Pool();
+	
+private:
 	UPROPERTY()
 	TArray<TObjectPtr<AVFXProjectileObject>> ProjectileList;
 	

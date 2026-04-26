@@ -7,6 +7,8 @@
 #include "Actors/Characters/CharacterBase.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
+#include "Net/UnrealNetwork.h"
+#include "NiagaraSystem.h"
 
 AVFXObject::AVFXObject()
 {
@@ -53,14 +55,20 @@ AVFXObject::AVFXObject()
 void AVFXObject::BeginPlay()
 {
 	Super::BeginPlay();
-	// SetActorHiddenInGame(true);
-	// SetActorTickEnabled(false);
 	if (VFXComponent)
 	{
 		VFXComponent->OnSystemFinished.RemoveDynamic(this, &AVFXObject::OnVFXSystemFinished);
 		VFXComponent->OnSystemFinished.AddDynamic(this, &AVFXObject::OnVFXSystemFinished);
 	}
-	FinishVFXObject();
+
+	if (HasAuthority())
+	{
+		FinishVFXObject();
+	}
+	else if (!VFXRepState.bUsing)
+	{
+		FinishVisualState();
+	}
 }
 
 void AVFXObject::OnVFXSystemFinished(UNiagaraComponent* FinishedComponent)
@@ -75,7 +83,7 @@ void AVFXObject::OnVFXSystemFinished(UNiagaraComponent* FinishedComponent)
 		return;
 	}
 
-	if (VFXInfo.VFXType == EAttackType::Explosion_Once)
+	if (VFXInfo.VFXType == EVFXSpawnType::Explosion_Once)
 	{
 		FinishVFXObject();
 	}
@@ -85,40 +93,45 @@ void AVFXObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	// 충돌 박스 그리기
-	if (!VFXInfo.bUseBoxCollision)
-	{
-		DrawDebugSphere(
-		   GetWorld(),CollisionSphereComponent->GetComponentLocation(),  CollisionSphereComponent->GetScaledSphereRadius(),
-		   24, FColor::Blue, false,-1.f,0,2.f );
-	}
-	else
-	{
-		DrawDebugBox(GetWorld(),CollisionBoxComponent->GetComponentLocation(),CollisionBoxComponent->GetScaledBoxExtent(),
-			FColor::Blue,false,-1.f,0,2.f);
-	}
+	 switch (VFXInfo.CollisionInfo.CollisionShape)
+	 {
+	 case EVFXCollisionShape::Sphere:
+	 	DrawDebugSphere(GetWorld(),CollisionSphereComponent->GetComponentLocation(),CollisionSphereComponent->GetScaledSphereRadius(),24,FColor::Blue,false,-1.f,0,2.f);
+	 	break;
+	
+	 case EVFXCollisionShape::Box:
+	 	DrawDebugBox(
+	 		GetWorld(),CollisionBoxComponent->GetComponentLocation(),CollisionBoxComponent->GetScaledBoxExtent(),FColor::Blue,false,-1.f,0,2.f);
+	 	break;
+	
+	 default:
+	 	break;
+	 }
 	
 	
 	switch (VFXInfo.VFXType) 
 	{
-		case EAttackType::Projectile_Distance:
+		case EVFXSpawnType::Projectile_Distance:
 		{
 			CheckDistance(DeltaTime);
 			break;
 		}
-		case EAttackType::Projectile_LifeTime:
-		case EAttackType::Explosion_LifeTime:
+		case EVFXSpawnType::Projectile_LifeTime:
+		case EVFXSpawnType::Explosion_LifeTime:
 		{
 			CheckLifeTime(DeltaTime);
 			break;
 		}
-		case EAttackType::Explosion_Once:
+		case EVFXSpawnType::Explosion_Once:
 			break;
-		case EAttackType::Projectile_Hit:
+		case EVFXSpawnType::Projectile_Homing:
+			break;
+		case EVFXSpawnType::Projectile_Hit:
 		{
 			CheckDistance(DeltaTime);
 			break;
 		}	
-		case EAttackType::End:
+		case EVFXSpawnType::End:
 			break;
 	}
 
@@ -128,41 +141,45 @@ void AVFXObject::Tick(float DeltaTime)
 void AVFXObject::UseVFXObject(const FVFXSpawn_Info& SpawnInfo)
 {
 	VFXInfo = SpawnInfo;
-	VFXComponent->SetAsset(VFXInfo.NiagaraAsset);
-	VFXComponent->Activate(true);
-	// 시작을 위한 공통 변수 초기화
-	Initialize_ForStart();
-	// 공격용이면 콜리전 켜라
-	if (VFXInfo.bAttack)
+
+	if (HasAuthority())
+	{
+		SetVFXRepStateFromSpawnInfo(SpawnInfo);
+	}
+
+	ApplyVisualState(SpawnInfo);
+
+	if (HasAuthority() && VFXInfo.CollisionInfo.bAttack)
 	{
 		UseCollision();
 	}
-	
-	SetActorHiddenInGame(false);
-	SetActorTickEnabled(true);
-	SetActorLocationAndRotation(VFXInfo.StartLocation, VFXInfo.StartRotation);
+
 	ForceNetUpdate();
 }
 
 void AVFXObject::FinishVFXObject()
 {
-	// 콜리전 설정 끄기
-	if (VFXInfo.bAttack)
+	if (HasAuthority() && VFXInfo.CollisionInfo.bAttack)
 	{
 		FinishCollision();
 	}
-	VFXComponent->Deactivate();
+
+	if (HasAuthority())
+	{
+		VFXRepState.bUsing = false;
+		++VFXRepState.ActivationId;
+		ForceNetUpdate();
+	}
+
+	FinishVisualState();
+
 	VFXInfo = FVFXSpawn_Info();
-	bUsing = false;
-	SetActorHiddenInGame(true);
-	SetActorTickEnabled(false);
-	
 }
 
 void AVFXObject::CheckLifeTime(float DeltaTime)
 {
 	CurrentLifeTime += DeltaTime;
-	if (VFXInfo.Life_Time < CurrentLifeTime)
+	if (VFXInfo.LifeTime < CurrentLifeTime)
 	{
 		// 사용 종료
 		FinishVFXObject();
@@ -172,59 +189,172 @@ void AVFXObject::CheckLifeTime(float DeltaTime)
 
 void AVFXObject::CheckDistance(float DeltaTime)
 {
-	if (VFXInfo.Life_Distance <= 0.f)
+	if (VFXInfo.LifeDistance <= 0.f)
 		return;
 	// 시작 위치에서 현재 위치의 거리 계산
 	float Dist = FVector::Dist2D(VFXInfo.StartLocation, GetActorLocation());
-	if (VFXInfo.Life_Distance <= Dist)
+	if (VFXInfo.LifeDistance <= Dist)
 	{
 		FinishVFXObject();
 	}
 }
-
 void AVFXObject::UseCollision()
 {
-	if (VFXInfo.bUseBoxCollision)
+	const FVFXCollision_Info& Col = VFXInfo.CollisionInfo;
+
+	switch (Col.CollisionShape)
 	{
-		if (CollisionBoxComponent)
+	case EVFXCollisionShape::Sphere:
 		{
-			CollisionBoxComponent->SetBoxExtent(VFXInfo.Extents);
-			CollisionBoxComponent->SetCollisionProfileName(VFXInfo.CollisionPresetName);
-			CollisionBoxComponent->SetGenerateOverlapEvents(true);
-			CollisionBoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-			CollisionBoxComponent->UpdateOverlaps();
+			if (CollisionSphereComponent)
+			{
+				CollisionBoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+				CollisionSphereComponent->SetSphereRadius(Col.SphereRadius);
+				CollisionSphereComponent->SetCollisionProfileName(Col.CollisionPresetName);
+				CollisionSphereComponent->SetGenerateOverlapEvents(true);
+				CollisionSphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+				CollisionSphereComponent->UpdateOverlaps();
+			}
+			break;
 		}
-	}
-	else
-	{
-		if (CollisionSphereComponent)
+
+	case EVFXCollisionShape::Box:
 		{
-			CollisionSphereComponent->SetSphereRadius(VFXInfo.SphereRadius);
-			CollisionSphereComponent->SetCollisionProfileName(VFXInfo.CollisionPresetName);
-			CollisionSphereComponent->SetGenerateOverlapEvents(true);
-			CollisionSphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-			CollisionSphereComponent->UpdateOverlaps();
+			if (CollisionBoxComponent)
+			{
+				CollisionSphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+				CollisionBoxComponent->SetBoxExtent(Col.BoxExtents);
+				CollisionBoxComponent->SetCollisionProfileName(Col.CollisionPresetName);
+				CollisionBoxComponent->SetGenerateOverlapEvents(true);
+				CollisionBoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+				CollisionBoxComponent->UpdateOverlaps();
+			}
+			break;
 		}
+
+	case EVFXCollisionShape::None:
+	default:
+		break;
 	}
 }
-
 void AVFXObject::FinishCollision()
 {
-	if (VFXInfo.bUseBoxCollision)
+	switch (VFXInfo.CollisionInfo.CollisionShape)
 	{
-		if (CollisionBoxComponent)
-		{
-			CollisionBoxComponent->SetGenerateOverlapEvents(false);
-			CollisionBoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		}
-	}
-	else
-	{
+	case EVFXCollisionShape::Sphere:
 		if (CollisionSphereComponent)
 		{
 			CollisionSphereComponent->SetGenerateOverlapEvents(false);
 			CollisionSphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
+		break;
+
+	case EVFXCollisionShape::Box:
+		if (CollisionBoxComponent)
+		{
+			CollisionBoxComponent->SetGenerateOverlapEvents(false);
+			CollisionBoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
+		break;
+
+	default:
+		break;
 	}
+}
+
+void AVFXObject::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(AVFXObject, VFXRepState);
+	
+}
+
+void AVFXObject::OnRep_VFXRepState()
+{
+	UE_LOG(LogTemp, Warning, TEXT("[VFX OnRep] %s bUsing=%d Asset=%s ActivationId=%d"),
+		*GetName(),
+		VFXRepState.bUsing,
+		*GetNameSafe(Cast<UObject>(VFXRepState.NiagaraAsset)),
+		VFXRepState.ActivationId);
+	
+	if (!VFXRepState.bUsing)
+	{
+		FinishVisualState();
+		return;
+	}
+
+	FVFXSpawn_Info SpawnInfo;
+	SpawnInfo.VFXType = VFXRepState.VFXType;
+	SpawnInfo.NiagaraAsset = VFXRepState.NiagaraAsset;
+	SpawnInfo.StartLocation = VFXRepState.StartLocation;
+	SpawnInfo.StartRotation = VFXRepState.StartRotation;
+	SpawnInfo.Direction = VFXRepState.Direction;
+	SpawnInfo.Speed = VFXRepState.Speed;
+	SpawnInfo.LifeTime = VFXRepState.LifeTime;
+	SpawnInfo.LifeDistance = VFXRepState.LifeDistance;
+	SpawnInfo.TargetActor = VFXRepState.TargetActor;
+
+	ApplyVisualState(SpawnInfo);
+}
+
+void AVFXObject::SetVFXRepStateFromSpawnInfo(const FVFXSpawn_Info& SpawnInfo)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	VFXRepState.bUsing = true;
+	VFXRepState.NiagaraAsset = SpawnInfo.NiagaraAsset;
+	VFXRepState.VFXType = SpawnInfo.VFXType;
+	VFXRepState.StartLocation = SpawnInfo.StartLocation;
+	VFXRepState.StartRotation = SpawnInfo.StartRotation;
+	VFXRepState.Direction = SpawnInfo.Direction;
+	VFXRepState.Speed = SpawnInfo.Speed;
+	VFXRepState.LifeTime = SpawnInfo.LifeTime;
+	VFXRepState.LifeDistance = SpawnInfo.LifeDistance;
+	VFXRepState.TargetActor = SpawnInfo.TargetActor;
+	++VFXRepState.ActivationId;
+}
+
+void AVFXObject::ApplyVisualState(const FVFXSpawn_Info& SpawnInfo)
+{
+	UE_LOG(LogTemp, Warning, TEXT("[VFX ApplyVisual] %s Auth=%d Asset=%s Loc=%s"),
+	*GetName(),
+	HasAuthority(),
+			*GetNameSafe(Cast<UObject>(VFXRepState.NiagaraAsset)),
+	*SpawnInfo.StartLocation.ToString());
+	VFXInfo = SpawnInfo;
+
+	SetActorLocationAndRotation(SpawnInfo.StartLocation, SpawnInfo.StartRotation);
+
+	if (VFXComponent)
+	{
+		VFXComponent->SetAsset(SpawnInfo.NiagaraAsset);
+		VFXComponent->Activate(true);
+	}
+
+	Initialize_ForStart();
+
+	SetActorHiddenInGame(false);
+	SetActorTickEnabled(true);
+}
+
+void AVFXObject::FinishVisualState()
+{
+	UE_LOG(LogTemp, Warning, TEXT("[VFX FinishVisual] %s Auth=%d"),
+			*GetName(),
+			HasAuthority());
+	if (VFXComponent)
+	{
+		VFXComponent->Deactivate();
+	}
+
+	bUsing = false;
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
 }
 

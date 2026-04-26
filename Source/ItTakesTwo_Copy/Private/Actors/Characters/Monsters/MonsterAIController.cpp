@@ -84,7 +84,7 @@ void AMonsterAIController::Tick(float DeltaTime)
 	UpdateMovement();
 }
 
-APlayerBase* AMonsterAIController::FindNearestPlayer() const
+TObjectPtr<ACharacterBase> AMonsterAIController::FindNearestPlayer() const
 {
 	if (!CachedMonster)
 	{

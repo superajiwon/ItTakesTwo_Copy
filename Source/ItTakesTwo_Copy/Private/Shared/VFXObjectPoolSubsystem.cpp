@@ -13,7 +13,13 @@ void UVFXObjectPoolSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	if (!GetWorld())
+	ExplosionList.Empty();
+	ProjectileList.Empty();
+}
+void UVFXObjectPoolSubsystem::Initialize_Pool()
+{
+	UWorld* World = GetWorld();
+	if (!World || World->GetNetMode() == NM_Client)
 	{
 		return;
 	}
@@ -34,12 +40,14 @@ void UVFXObjectPoolSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 			ExplosionList.Add(Explosion);
 		}
 	}
+	
 }
 
 
 
 TObjectPtr<AVFXProjectileObject> UVFXObjectPoolSubsystem::UseVFX_Projectile(const FVFXSpawn_Info& VFXInfo)
 {
+	Initialize_Pool();
 	for (AVFXProjectileObject* Projectile : ProjectileList)
 	{
 		if (Projectile && !Projectile->IsUsing())
@@ -63,7 +71,6 @@ TObjectPtr<AVFXExplosionObject> UVFXObjectPoolSubsystem::UseVFX_Explosion(const 
 	}
 	return nullptr;
 }
-
 
 
 

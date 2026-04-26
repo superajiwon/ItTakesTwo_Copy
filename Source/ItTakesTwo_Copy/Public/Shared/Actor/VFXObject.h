@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Shared/Struct/FVFXSpawn_Info.h"
+#include "Shared/Struct/VFXSpawnRep_Info.h"
 #include "VFXObject.generated.h"
 
 class UBoxComponent;
@@ -46,7 +47,20 @@ private:
 	void FinishCollision();
 	void Initialize_ForStart();
 	
-	
+public:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+protected:
+	UFUNCTION()
+	void OnRep_VFXRepState();
+
+	void SetVFXRepStateFromSpawnInfo(const FVFXSpawn_Info& SpawnInfo);
+	void ApplyVisualState(const FVFXSpawn_Info& SpawnInfo);
+	void FinishVisualState();
+
+protected:
+	UPROPERTY(ReplicatedUsing=OnRep_VFXRepState)
+	FVFXSpawnRep_Info VFXRepState;
 protected:
 	UPROPERTY()
 	TObjectPtr<USceneComponent> SceneComp;

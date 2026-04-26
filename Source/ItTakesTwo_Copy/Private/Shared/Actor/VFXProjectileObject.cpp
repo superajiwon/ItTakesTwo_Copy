@@ -32,26 +32,45 @@ void AVFXProjectileObject::BeginPlay()
 		CollisionBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AVFXProjectileObject::OnProjectileBeginOverlap);
 	}
 	
-	FinishVFXObject();
 }
 
 void AVFXProjectileObject::UseVFXObject(const FVFXSpawn_Info& SpawnInfo)
 {
 	Super::UseVFXObject(SpawnInfo);
 	
+	if (!HasAuthority() || !ProjectileMovement)
+	{
+		return;
+	}
+
+	
 	ProjectileMovement->InitialSpeed = FMath::Clamp( SpawnInfo.Speed - 100.f,100.f, SpawnInfo.Speed);
 	ProjectileMovement->MaxSpeed = SpawnInfo.Speed;
 	ProjectileMovement->Velocity = SpawnInfo.Direction.GetSafeNormal() * SpawnInfo.Speed;
 	ProjectileMovement->Activate();
+	
+	if (SpawnInfo.VFXType == EVFXSpawnType::Projectile_Homing && IsValid(SpawnInfo.TargetActor))
+	{
+		ProjectileMovement->bIsHomingProjectile = true;
+		ProjectileMovement->HomingTargetComponent = SpawnInfo.TargetActor->GetRootComponent();
+		ProjectileMovement->HomingAccelerationMagnitude = SpawnInfo.Speed * 6.f;
+		
+		// 나중에 혹시 Target이 죽거나 하면 직진하도록 추가해야할지도
+	}
+	
+	
 }
 
 void AVFXProjectileObject::FinishVFXObject()
 {
-	if (ProjectileMovement)
+	if (HasAuthority() && ProjectileMovement)
 	{
+		ProjectileMovement->bIsHomingProjectile = false;
+		ProjectileMovement->HomingTargetComponent = nullptr;
 		ProjectileMovement->StopMovementImmediately();
 		ProjectileMovement->Deactivate();
 	}
+
 	Super::FinishVFXObject();
 	
 }
@@ -66,7 +85,7 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 		return;
 	}
 
-	if (OtherActor == VFXInfo.OwnedActor)
+	if (OtherActor == VFXInfo.OwnerActor)
 	{
 		return;
 	}
@@ -76,8 +95,8 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 		UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
 		if (PoolSubsystem)
 		{
-			const FVFXSpawn_Info ExplosionInfo = FVFXSpawn_Info::CreateExplosionOnce_NoCollision(
-				VFXInfo.OwnedActor,
+			const FVFXSpawn_Info ExplosionInfo = FVFXSpawn_Info::CreateExplosionOnce(
+				VFXInfo.OwnerActor,
 				VFXInfo.OverlapExplosionNiagara,
 				GetActorLocation()
 			);
