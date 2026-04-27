@@ -26,19 +26,6 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	UFUNCTION(BlueprintCallable, Category="Components")
-	UHPComponent* GetHPComponent() { return HPComp; }
-	UFUNCTION(BlueprintCallable, Category="Components")
-	UStatComponent* GetStatComponent() { return StatComp; }
-
-	UFUNCTION(BlueprintCallable, Category="Components")
-	FName GetTargetName() { return TargetName; }
-	UFUNCTION(BlueprintCallable, Category="Components")
-	void SetTargetName(FName NameTag) { TargetName = NameTag; }
-	
-	virtual void OnHit();
-	virtual void OnDie();
-	
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UHPComponent* HPComp;
@@ -47,4 +34,19 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Setting", meta=(AllowPrivateAccess = "true"))
 	FName TargetName = "";
+
+public:
+	UFUNCTION(BlueprintCallable, Category="Components")
+	UHPComponent* GetHPComponent() { return HPComp; }
+	UFUNCTION(BlueprintCallable, Category="Components")
+	UStatComponent* GetStatComponent() { return StatComp; }
+
+	virtual void Heal(float HealAmount) override;
+	virtual void Damage(float DamageAmount, AActor* Causer) override;
+	
+	UFUNCTION(BlueprintCallable, Category="Components")
+	FName GetTargetName() { return TargetName; }
+	UFUNCTION(BlueprintCallable, Category="Components")
+	void SetTargetName(FName NameTag) { TargetName = NameTag; }
+	
 };

@@ -20,12 +20,20 @@ protected:
 	// 네트워크 변수 복제 규칙 정의 함수
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
+	
+public:
+	UFUNCTION(BlueprintCallable, Category="Stat")
+	float GetMoveSpeed() const { return MoveSpeed; }
+	
+	UFUNCTION(BlueprintCallable, Category="Stat")
+	float GetAttackPower() const { return AttackPower; }
+	
 //! 변수
 private:   
 	UPROPERTY(EditAnywhere, Replicated, Category = "Stat")
 	float MoveSpeed = 500.0f;
+	
 	UPROPERTY(EditAnywhere, Replicated, Category = "Stat")
 	float AttackPower = 10.0f;
-	UPROPERTY(EditAnywhere, Replicated, Category = "Stat")
-	float CooldownMultiplier = 1.0f;
+	
 };

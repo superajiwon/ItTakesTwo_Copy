@@ -10,6 +10,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "Components/HPComponent.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
 
@@ -90,9 +91,9 @@ void APlayerBase::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
 void APlayerBase::PrintNetLog()
 {
-	const FString conStr = GetNetConnection() != nullptr ? TEXT("Valid Connection") : TEXT("Invalid Connection");
-	const FString logStr = FString::Printf(TEXT("Connection : %s\n궁 게이지 : %f"), *conStr, UltimateComp->CurUltimateGauge);
-	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, logStr, nullptr, FColor::White, 0, true, 1);
+	const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
+	const FString LogStr = FString::Printf(TEXT("%s\nHP : %f / 궁 : %f"), *ConStr, GetHPComponent()->GetCurHP(), UltimateComp->CurUltimateGauge);
+	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 }
 
 // 현재 상태 (Normal / Ultimate)에 맞는 공격 데이터 반환
@@ -154,14 +155,14 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 		// 공격 중이 아닐 때 첫번째 공격 시작
 		bIsAttacking = true;
 		CurComboIndex = 0;
-		UE_LOG(LogTemp, Warning, TEXT("첫번째 공격임"))
+		UE_LOG(LogTemp, Log, TEXT("jiwon [Combo] 첫번째 공격임"))
 	}
 	else
 	{
 		// 콤보가 불가능 할 때 입력이 들어올 경우
 		if (!bCanCombo) return;
 		
-		UE_LOG(LogTemp, Warning, TEXT("콤보로 들어왔을 때"))
+		UE_LOG(LogTemp, Log, TEXT("jiwon [Combo] 콤보로 들어왔을 때"))
 		
 		// 콤보 구간 내 입력 시 다음 콤보 증가
 		bCanCombo = false; // 이 구간에서 입력 중복 처리 방지
@@ -208,7 +209,7 @@ void APlayerBase::TakeDamageAction()
 	
 	if (ActionData->TakeDamageData.Montages.IsEmpty())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Take Damage 몽타주가 비어있어요"));
+		UE_LOG(LogTemp, Warning, TEXT("jiwon Take Damage 몽타주가 비어있어요"));
 		return;
 	}
 	

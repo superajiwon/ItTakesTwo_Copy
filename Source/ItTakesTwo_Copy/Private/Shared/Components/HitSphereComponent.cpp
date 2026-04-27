@@ -1,6 +1,8 @@
 ﻿
 #include "Shared/Components/HitSphereComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
+#include "Shared/Struct/HitRequest.h"
+#include "Shared/Subsystems/CombatSystem.h"
 
 
 UHitSphereComponent::UHitSphereComponent()
@@ -58,7 +60,15 @@ void UHitSphereComponent::OnHitSphereBeginOverlap(UPrimitiveComponent* Overlappe
 	// 충돌 액터 찾으면
 	// 인터페이스 호출해서 데미지 주거나 어떤 공통된 로직이 있으면 좋을듯함
 	
-	UE_LOG(LogTemp, Warning, TEXT("%s 와 충돌!"), *OtherActor->GetName());
 	// 충돌하면 충돌한 대상 무적상태 돌입
+	if (!OtherActor->Tags.Contains(TargetTag)) return;
+	
+	UE_LOG(LogTemp, Log, TEXT("%s 와 충돌!"), *OtherActor->GetName());
+	
+	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
+	{
+		FHitRequest Request(GetOwner(), OtherActor, Damage, SweepResult.ImpactPoint);
+		CombatSystem->ProcessHit(Request);
+	}
 }
 

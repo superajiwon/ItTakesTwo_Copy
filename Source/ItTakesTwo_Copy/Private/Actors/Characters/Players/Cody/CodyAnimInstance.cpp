@@ -33,6 +33,8 @@ void UCodyAnimInstance::AnimNotify_UltimateOn()
 	auto* Owner = Cast<ACodyCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
+	int32 RandDamage = FMath::RandRange(5, 18);
+	Owner->UltimateCollision->SetDamage(RandDamage);
 	Owner->UltimateCollision->CollisionOn();
 }
 

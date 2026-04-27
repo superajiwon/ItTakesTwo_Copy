@@ -24,5 +24,5 @@ void UStatComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	// 변수 네트워크 복제
 	DOREPLIFETIME(UStatComponent, MoveSpeed);
 	DOREPLIFETIME(UStatComponent, AttackPower);
-	DOREPLIFETIME(UStatComponent, CooldownMultiplier);
 }
+

@@ -5,12 +5,11 @@
 
 UHPComponent::UHPComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// 리슨 서버에서 이 컴포넌트가 복제되도록 설정
 	SetIsReplicatedByDefault(true);
 }
-
 
 void UHPComponent::BeginPlay()
 {
@@ -33,20 +32,22 @@ void UHPComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& O
 	DOREPLIFETIME(UHPComponent, bIsDead);
 	DOREPLIFETIME(UHPComponent, bIsInInvincible);
 	DOREPLIFETIME(UHPComponent, InvincibleTime);
-	DOREPLIFETIME(UHPComponent, CurInvincibleTime);
+	//DOREPLIFETIME(UHPComponent, CurInvincibleTime);
 	DOREPLIFETIME(UHPComponent, bIsRecovering);
 	DOREPLIFETIME(UHPComponent, MaxRecoverTime);
 	DOREPLIFETIME(UHPComponent, CurRecoverTime);
 	DOREPLIFETIME(UHPComponent, RecoverAmount);
 }
 
-void UHPComponent::ApplyDamage(float DamageAmount)
+void UHPComponent::ApplyDamage(int32 DamageAmount, AActor* Causer)
 {
 	// 서버에서만 판정할 수 있도록
-	if (!GetOwner()->HasAuthority() || bIsDead || bIsInInvincible) return;
+	if (!GetOwner()->HasAuthority() || bIsDead) return;
+	if (bIsInInvincible) return;
 	
 	CurHp = FMath::Clamp(CurHp - DamageAmount, 0.0f, MaxHp);
-	
+	UE_LOG(LogTemp, Log, TEXT("jiwon [HPComponent]  %s → %s | Damage: %d | 남은 HP: %.1f"), *Causer->GetName(), *GetNameSafe(GetOwner()), DamageAmount, CurHp);
+
 	// 호스트의 UI 갱신
 	OnHPChanged.Broadcast(CurHp, MaxHp);
 	
@@ -55,6 +56,12 @@ void UHPComponent::ApplyDamage(float DamageAmount)
 		bIsDead = true;
 		
 		// todo 사망했을 때 
+	}
+	else
+	{
+		bIsInInvincible = true;
+		
+		GetWorld()->GetTimerManager().SetTimer(InvincibleTimer, this, &UHPComponent::EndInvincible, InvincibleTime, false);
 	}
 }
 
@@ -78,4 +85,13 @@ void UHPComponent::OnRep_CurHP()
 	OnHPChanged.Broadcast(CurHp, MaxHp);
 }
 
+void UHPComponent::OnRep_Invincible()
+{
+}
+
+void UHPComponent::EndInvincible()
+{
+	bIsInInvincible = false;
+	UE_LOG(LogTemp, Log, TEXT("jiwon [서버] 피격 가능!"));
+}
 

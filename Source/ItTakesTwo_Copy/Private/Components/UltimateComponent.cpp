@@ -23,3 +23,13 @@ void UUltimateComponent::AddGauge(float GaugeAmount)
 	if (CurUltimateGauge >= MaxUltimateGauge)
 		CurUltimateGauge = MaxUltimateGauge;
 }
+
+bool UUltimateComponent::CanUseUltimate()
+{
+	return true;
+}
+
+void UUltimateComponent::ActivateUltimate()
+{
+	
+}

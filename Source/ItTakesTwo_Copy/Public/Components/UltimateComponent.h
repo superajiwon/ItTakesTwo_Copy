@@ -27,7 +27,7 @@ public:
 	
 	void AddGauge(float GaugeAmount);
 	
-	// bool CanUseUltimate();
-	//
-	// void ActivateUltimate();
+	bool CanUseUltimate();
+	
+	void ActivateUltimate();
 };

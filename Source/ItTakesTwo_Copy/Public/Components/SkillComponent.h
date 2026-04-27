@@ -40,4 +40,8 @@ protected:
 	// 서버 → 전체 클라이언트 (실제 몽타주 재생)
 	UFUNCTION(NetMulticast, Unreliable)
 	void Multicast_PlayerSkillEffect(EActionType ActionType, int32 ComboStep, int32 MontageIdx);
+	
+private:
+	UPROPERTY(EditAnywhere, Replicated, Category = "Stat")
+	float CooldownMultiplier = 1.0f; // 쿨타임 배속 
 };

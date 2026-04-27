@@ -6,8 +6,8 @@
 #include "Components/BoxComponent.h"
 #include "HitBoxComponent.generated.h"
 
-
 struct FHitComp_Info;
+class UCombatSystem;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ITTAKESTWO_COPY_API UHitBoxComponent : public UBoxComponent
@@ -51,4 +51,11 @@ private:
 	bool bCollisionOn{false};
 
 	FName TargetTag{NAME_None};
+	
+	/** 이 히트박스로 가할 데미지 수치 (InitializeHitComp 또는 외부에서 세팅) */
+	int Damage{0};
+
+public:
+	void SetDamage(int InDamage) { Damage = InDamage; }
+	int GetDamage() const { return Damage; }
 };

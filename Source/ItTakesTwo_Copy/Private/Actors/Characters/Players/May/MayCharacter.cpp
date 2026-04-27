@@ -57,6 +57,8 @@ void AMayCharacter::SetWeaponCollision(bool bEnable)
 	{
 		// Debug
 		SwordCollision->SetHiddenInGame(false);
+		int32 RandDamage = FMath::RandRange(5, 18);
+		SwordCollision->SetDamage(RandDamage);
 		SwordCollision->CollisionOn();
 	}
 	else

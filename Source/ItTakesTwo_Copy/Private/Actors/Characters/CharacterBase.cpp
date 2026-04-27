@@ -1,5 +1,4 @@
 
-
 #include "Actors/Characters/CharacterBase.h"
 
 #include "Components/HPComponent.h"
@@ -19,26 +18,29 @@ ACharacterBase::ACharacterBase()
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
-void ACharacterBase::OnHit()
+void ACharacterBase::Heal(float HealAmount)
 {
+	IHealable::Heal(HealAmount);
+	
+	GetHPComponent()->ApplyHeal(HealAmount);
 }
 
-void ACharacterBase::OnDie()
+void ACharacterBase::Damage(float DamageAmount, AActor* Causer)
 {
+	IDamagable::Damage(DamageAmount, Causer);
+	
+	GetHPComponent()->ApplyDamage(DamageAmount, Causer);
 }
 

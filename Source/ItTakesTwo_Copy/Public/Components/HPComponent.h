@@ -17,16 +17,13 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	
 	// 네트워크 변수 복제 규칙 정의 함수
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 public:	
-	// 네트워크에서는 사용하지 않는 것이 좋다...?
-	// virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
 	UFUNCTION(BlueprintCallable, Category="HP")
-	void ApplyDamage(float DamageAmount);
+	void ApplyDamage(int32 DamageAmount, AActor* Causer);
 	UFUNCTION(BlueprintCallable, Category="HP")
 	void ApplyHeal(float HealAmount);
 
@@ -48,13 +45,16 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="HP")
 	bool GetIsDead() const { return bIsDead; }
+	
+	UFUNCTION(BlueprintCallable, Category="HP")
+	void SetInvincibleTime(float Time) { InvincibleTime = Time; };
 	UFUNCTION(BlueprintCallable, Category="HP")
 	bool GetIsInInvincible() const { return bIsInInvincible; }
 	UFUNCTION(BlueprintCallable, Category="HP")
 	bool GetIsRecovering() const { return bIsRecovering; }
 	
 //! 변수
-private:   
+protected:   
 	// HP
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
 	float MaxHp = 100.0f;
@@ -66,21 +66,24 @@ private:
 	bool bIsDead = false;
 	
 	// 무적
-	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
+	FTimerHandle InvincibleTimer;
+	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Invincible")
 	bool bIsInInvincible = false;
-	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
-	float InvincibleTime = 0.0f;
-	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
-	float CurInvincibleTime = 0.0f;
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Invincible, Category = "HP|Invincible")
+	float InvincibleTime = 0.5f;
+	UFUNCTION()
+	void OnRep_Invincible();
+	void EndInvincible();
+
 	
 	// 자동 회복
-	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
+	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	bool bIsRecovering = false;
-	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
+	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	float MaxRecoverTime = 0.0f;
-	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
+	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	float CurRecoverTime = 0.0f;
-	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
+	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	float RecoverAmount = 0.0f;
 
 };
