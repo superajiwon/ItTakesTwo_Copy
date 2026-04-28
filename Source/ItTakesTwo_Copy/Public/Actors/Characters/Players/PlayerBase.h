@@ -45,6 +45,13 @@ private:
 	
 public:
 	// === Action ===	
+	// 공격 시 이동 제한 플래그
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat|Movement")
+	bool bIsActionLocked = false;
+	
+	// BeginPlay에서 저장할 기본 이동속도 (잠금 해제 시 복구용)
+	float DefaultMaxWalkSpeed = 500.0f;
+	
 	// 액션 데이터 (DataAsset)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat|Data")
 	UPlayerActionData* ActionData;
@@ -56,6 +63,10 @@ public:
 	
 	// 궁극기 활성화 콜백 (MayCharacter)
 	virtual void OnUltimateActivated() {}
+	
+	// 궁극기 종료
+	UFUNCTION()
+	virtual void EndUltimate() {}
 	
 	// Base Collider 제어
 	UFUNCTION(BlueprintCallable, Category = "Combat|Data")

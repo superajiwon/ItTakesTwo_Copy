@@ -2,7 +2,7 @@
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Components/DotHitBoxComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
 
@@ -25,9 +25,9 @@ ACodyCharacter::ACodyCharacter()
 	BaseCollision->InitializeHitComp(BasicHitCompInfo, GetTargetName());
 	BaseCollision->CollisionOff();
 	
-	UltimateCollision = CreateDefaultSubobject<UHitBoxComponent>(TEXT("SwordCollision"));
+	UltimateCollision = CreateDefaultSubobject<UDotHitBoxComponent>(TEXT("UltimateCollision"));
 	UltimateCollision->AttachToComponent(AttackColliderPoint, FAttachmentTransformRules::KeepRelativeTransform);
-	FHitComp_Info SwordHitCompInfo(FName("Player_CodyUltimate"), FName("PlayerWeapon"), FVector(0.0f,0.0f,0.0f), FVector( 500.0f, 50.0f, 50.0f));
+	FHitComp_Info SwordHitCompInfo(FName("Player_CodyUltimate"), FName("PlayerWeapon"), FVector(550.0f,0.0f,88.0f), FVector(500.0f, 50.0f, 50.0f));
 	UltimateCollision->InitializeHitComp(SwordHitCompInfo, GetTargetName());
 	UltimateCollision->CollisionOff();
 }
@@ -74,6 +74,21 @@ void ACodyCharacter::Server_CodyTeleport_Implementation()
 void ACodyCharacter::Ultimate(const FInputActionValue& Value)
 {
 	Super::Ultimate(Value);
+	
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+}
+
+void ACodyCharacter::EndUltimate()
+{
+	Super::EndUltimate();
+	
+	if (UltimateCollision)
+	{
+		UltimateCollision->CollisionOff();
+		UltimateCollision->SetHiddenInGame(true);
+	}
+	
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 

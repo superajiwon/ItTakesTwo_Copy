@@ -2,6 +2,7 @@
 #include "Components/SkillComponent.h"
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Actors/Characters/Players/PlayerActionData.h"
+#include "Components/UltimateComponent.h"
 
 USkillComponent::USkillComponent()
 {
@@ -54,6 +55,11 @@ void USkillComponent::Server_ExecuteSkill_Implementation(EActionType ActionType,
 	
 	if (ActionType == EActionType::Ultimate)
 	{
+		if (Owner->GetUltimateComponent())
+		{
+			Owner->GetUltimateComponent()->ActivateUltimate();
+		}
+		
 		Owner->OnUltimateActivated();
 	}
 	

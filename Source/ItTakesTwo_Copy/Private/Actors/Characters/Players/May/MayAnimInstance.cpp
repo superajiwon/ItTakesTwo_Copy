@@ -2,6 +2,8 @@
 #include "Actors/Characters/Players/May/MayAnimInstance.h"
 
 #include "Actors/Characters/Players/May/MayCharacter.h"
+#include "Shared/Components/DotHitBoxComponent.h"
+#include "Shared/Components/DotHitSphereComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
 
 
@@ -58,7 +60,7 @@ void UMayAnimInstance::AnimNotify_UltimateOn()
 	if (!Owner) return;
 	
 	int32 RandDamage = FMath::RandRange(5, 18);
-	Owner->SpecialCollision->SetDamage(RandDamage);
+	Owner->UltimateCollision->SetDamage(RandDamage);
 	Owner->UltimateCollision->CollisionOn();
 }
 

@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "Shared/Subsystems/CombatSystem.h"
 
@@ -27,7 +25,6 @@ bool UCombatSystem::IsValidHitRequest(const FHitRequest& Request) const
 {
 	if (!IsValid(Request.Attacker) || !IsValid(Request.Target)) return false;
 	if (Request.Attacker == Request.Target) return false;
-	// if (Request.Damage <= 0.f) return false;
 
 	// 서버 권한 검증 — Listen Server 구조에서 판정은 서버에서만 처리
 	if (!Request.Attacker->HasAuthority()) return false;
