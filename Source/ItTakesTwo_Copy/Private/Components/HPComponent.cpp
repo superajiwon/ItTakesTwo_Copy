@@ -54,13 +54,11 @@ void UHPComponent::ApplyDamage(int32 DamageAmount, AActor* Causer)
 	if (CurHp <= 0.0f)
 	{
 		bIsDead = true;
-		
 		// todo 사망했을 때 
 	}
 	else
 	{
 		bIsInInvincible = true;
-		
 		GetWorld()->GetTimerManager().SetTimer(InvincibleTimer, this, &UHPComponent::EndInvincible, InvincibleTime, false);
 	}
 }

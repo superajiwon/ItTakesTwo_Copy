@@ -1,6 +1,7 @@
 
 #include "Actors/Characters/Players/Cody/CodyAnimInstance.h"
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
+#include "Shared/Components/DotHitBoxComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 
 

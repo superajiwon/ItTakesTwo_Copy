@@ -3,10 +3,11 @@
 #include "Actors/Characters/Players/PlayerActionData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/RootMotionSource.h"
-#include "Net/UnrealNetwork.h"
+#include "Shared/Components/DotHitSphereComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
+#include "Net/UnrealNetwork.h"
 
 AMayCharacter::AMayCharacter()
 {
@@ -34,7 +35,7 @@ AMayCharacter::AMayCharacter()
 	SpecialCollision->InitializeHitComp(SpecialHitCompInfo, GetTargetName());
 	SpecialCollision->CollisionOff();
 	
-	UltimateCollision = CreateDefaultSubobject<UHitSphereComponent>(TEXT("UltimateCollision"));
+	UltimateCollision = CreateDefaultSubobject<UDotHitSphereComponent>(TEXT("UltimateCollision"));
 	UltimateCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Root"));
 	FHitComp_Info UltimateHitCompInfo(FName("Player_MayUltimate"), FName("PlayerWeapon"), FVector(0.0f,0.0f,0.0f), 300.f);
 	UltimateCollision->InitializeHitComp(UltimateHitCompInfo, GetTargetName());
@@ -94,6 +95,23 @@ void AMayCharacter::OnUltimateActivated()
 void AMayCharacter::Ultimate(const FInputActionValue& Value)
 {
 	Super::Ultimate(Value);
+}
+
+void AMayCharacter::EndUltimate()
+{
+	Super::EndUltimate();
+	
+	// 서버에서 관리되는 상태 롤백
+	if (HasAuthority())
+	{
+		bIsUltimateForm = false;
+	}
+	
+	if (UltimateCollision)
+	{
+		UltimateCollision->SetHiddenInGame(true);
+		UltimateCollision->CollisionOff();
+	}
 }
 
 void AMayCharacter::MayDash(FVector DashDir, float Strength, float Duration)

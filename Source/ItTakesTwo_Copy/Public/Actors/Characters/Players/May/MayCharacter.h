@@ -8,6 +8,7 @@
 
 class UHitBoxComponent;
 class UHitSphereComponent;
+class UDotHitSphereComponent;
 
 UCLASS()
 class ITTAKESTWO_COPY_API AMayCharacter : public APlayerBase
@@ -29,12 +30,10 @@ public:
 	// === Collision ===
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UHitBoxComponent> SwordCollision;
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UHitSphereComponent> SpecialCollision;
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UHitSphereComponent> UltimateCollision;
+	TObjectPtr<UDotHitSphereComponent> UltimateCollision;
 
 	
 	// === Base Attack ===
@@ -60,6 +59,7 @@ public:
 	
 	// todo
 	virtual void Ultimate(const FInputActionValue& Value) override;
+	virtual void EndUltimate() override;
 
 	
 	// === Dash ===

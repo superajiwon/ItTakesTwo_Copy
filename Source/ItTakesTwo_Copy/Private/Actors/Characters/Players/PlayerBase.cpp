@@ -49,6 +49,9 @@ APlayerBase::APlayerBase()
 void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
+		
+	// 기본 이동속도 기억 (이동 잠금 해제 시 복구용)
+	DefaultMaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	
 	if (USkeletalMeshComponent* MeshComp = GetMesh())
 	{
@@ -57,6 +60,11 @@ void APlayerBase::BeginPlay()
 			// 몽타주 종료 시 자동으로 호출되도록 바인딩
 			AnimInstance->OnMontageEnded.AddDynamic(this, &APlayerBase::OnMontageEnded);
 		}
+	}
+	
+	if (UltimateComp)
+	{
+		UltimateComp->OnUltimateFinish.AddDynamic(this, &APlayerBase::EndUltimate);
 	}
 }
 
@@ -107,13 +115,24 @@ FAttackModeData* APlayerBase::GetCurrentAttackData()
 void APlayerBase::Move(const FInputActionValue& Value)
 {
 	if (!Controller) return;
+	// if (bIsActionLocked) return;
 
-	FVector2D V = Value.Get<FVector2D>(); // X: 좌우, Y: 상하 (일반적인 IA_Move 설정 기준)
-
+	// 이동 잠금 상태에서도 회전이 필요한 경우(Ex. 코디 궁)를 위해
+	// return대신 MaxWalkSpeed를 0으로 세팅하여 AddMovementInput은 허용 (회전 방향 전달)
+	if (bIsActionLocked)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 0.0f;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = DefaultMaxWalkSpeed;
+	}
+	
+	FVector2D V = Value.Get<FVector2D>(); 
+	
 	const FRotator Rotation = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-	// 카메라 기준 정면과 오른쪽 방향 계산
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	
@@ -130,11 +149,15 @@ void APlayerBase::ResetCombo()
 
 void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-	// bInterrupted가 false라는 것은, 
-	// 다음 콤보 몽타주에 의해 끊기지 않고 애니메이션이 "끝까지 무사히 다 재생되었다"는 뜻입니다.
-	// 즉, 유저가 마우스 연타를 멈춰서 공격이 끝난 것이므로 이때만 콤보를 안전하게 리셋합니다!
+	// bInterrupted가 false라는 것은, 다른 스킬에 의해 끊기지 않고 정상 종료되었음을 의미
+	// 즉, 이 타이밍에만 이동 제한을 풀고 콤보를 리셋해야 안전합니다.
 	if (!bInterrupted)
+	{
 		ResetCombo();
+		bIsActionLocked = false;
+		GetCharacterMovement()->MaxWalkSpeed = DefaultMaxWalkSpeed;
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
 }
 
 // ===
@@ -154,6 +177,10 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 	{
 		// 공격 중이 아닐 때 첫번째 공격 시작
 		bIsAttacking = true;
+		
+		bIsActionLocked = true; // 이동 불가
+		GetCharacterMovement()->bOrientRotationToMovement = false; 
+		
 		CurComboIndex = 0;
 		UE_LOG(LogTemp, Log, TEXT("jiwon [Combo] 첫번째 공격임"))
 	}
@@ -184,6 +211,13 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 void APlayerBase::SpecialAttack(const FInputActionValue& Value)
 {
 	if (!SkillComp) return;
+	
+	// 다른 공격 중이라면 갈아타기 (콤보 강제 리셋 및 상태 덮어쓰기)
+	ResetCombo();
+	
+	bIsActionLocked = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	
 	SkillComp->RequestExecuteSkill(EActionType::Special, 0, 0);
 }
 
@@ -196,9 +230,14 @@ void APlayerBase::Dash(const FInputActionValue& Value)
 
 void APlayerBase::Ultimate(const FInputActionValue& Value)
 {
-	if (!SkillComp && !UltimateComp) return;
+	if (!SkillComp || !UltimateComp || !UltimateComp->CanUseUltimate()) return;
 	
-	if (UltimateComp->bIsUltimateActive)
+	ResetCombo();
+
+	bIsActionLocked = true; // 코디, 메이 공통으로 시전 중 일단 이동 정지
+	
+	UltimateComp->ActivateUltimate();
+	
 	CurComboIndex = 0; // 콤보 초기화 
 	SkillComp->RequestExecuteSkill(EActionType::Ultimate, CurComboIndex, 0);
 }
