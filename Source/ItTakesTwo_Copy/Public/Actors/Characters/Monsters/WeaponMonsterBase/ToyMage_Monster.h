@@ -55,7 +55,7 @@ protected:
 	float ProjectileDamage = 10.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
-	float ProjectileRadius = 60.0f;
+	float ProjectileRadius = 30.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
 	float SpawnForwardOffset = 120.0f;

@@ -58,6 +58,9 @@
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/MenuController.gen.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerActionData.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObjectBase.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Attackable.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Attacker.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/SkillComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Components/UltimateComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Interfaces/Healable.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -71,6 +74,9 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/VFXObjectPoolSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Monsters/MonsterBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerActionData.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObjectBase.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObject_Attackable.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObject_Attacker.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/SkillComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/UltimateComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Interfaces/Healable.h" root0="FORCE_HIGHLIGHTING" />
@@ -235,6 +241,12 @@
       <workItem from="1777125713577" duration="5037000" />
       <workItem from="1777131066748" duration="200000" />
       <workItem from="1777209380679" duration="10660000" />
+      <workItem from="1777248639902" duration="582000" />
+      <workItem from="1777249286301" duration="43000" />
+      <workItem from="1777265141798" duration="25826000" />
+      <workItem from="1777358842849" duration="429000" />
+      <workItem from="1777360511901" duration="4034000" />
+      <workItem from="1777375555604" duration="2856000" />
     </task>
     <servers />
   </component>
@@ -265,6 +277,16 @@
           <url>file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyCrusher_Monster.cpp</url>
           <line>36</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Attackable.cpp</url>
+          <line>42</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Attackable.cpp</url>
+          <line>38</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

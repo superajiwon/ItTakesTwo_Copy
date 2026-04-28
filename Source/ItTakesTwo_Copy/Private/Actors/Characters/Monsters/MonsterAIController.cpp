@@ -18,14 +18,14 @@ void AMonsterAIController::BeginPlay()
 	Super::BeginPlay();
 	TargetLocation = (FVector(1940.0f, 0.0f, 100.0f));
 	
-	if (CachedMonster)
-	{
-		DetectRadius = CachedMonster->GetDetectRadius();
-		AttackRange = CachedMonster->GetAttackRange();
-		MonsterMoveType = CachedMonster->GetMoveType();
-		MaxIdleTime = CachedMonster->GetMaxIdleTime();
-	
-	}
+	// if (CachedMonster)
+	// {
+	// 	DetectRadius = CachedMonster->GetDetectRadius();
+	// 	AttackRange = CachedMonster->GetAttackRange();
+	// 	MonsterMoveType = CachedMonster->GetMoveType();
+	// 	MaxIdleTime = CachedMonster->GetMaxIdleTime();
+	//
+	// }
 	
 }
 
@@ -35,29 +35,22 @@ void AMonsterAIController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	
 	CachedMonster = Cast<AMonsterBase>(InPawn);
-	
 	if (!CachedMonster)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No CachedMonster"));
 		return;
 	}
 
+	DetectRadius = CachedMonster->GetDetectRadius();
+	AttackRange = CachedMonster->GetAttackRange();
+	MonsterMoveType = CachedMonster->GetMoveType();
+	MaxIdleTime = CachedMonster->GetMaxIdleTime();
+
 }
 
 void AMonsterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FString StateStr = UEnum::GetValueAsString(CachedMonster->GetMonsterState());
-	DrawDebugString(
-	GetWorld(),
-	CachedMonster->GetActorLocation() + FVector(0, 0, 100.f),
-	StateStr,
-	nullptr,
-	FColor::White,
-	0.f,
-	true
-);
-	
 	if (!HasAuthority())
 	{
 		return;
@@ -65,12 +58,29 @@ void AMonsterAIController::Tick(float DeltaTime)
 
 	if (!CachedMonster)
 	{
-		return;
+		CachedMonster = Cast<AMonsterBase>(GetPawn());
+		if (!CachedMonster)
+		{
+			return;
+		}
 	}
+
+	FString StateStr = UEnum::GetValueAsString(CachedMonster->GetMonsterState());
+	DrawDebugString(
+		GetWorld(),
+		CachedMonster->GetActorLocation() + FVector(0, 0, 100.f),
+		StateStr,
+		nullptr,
+		FColor::White,
+		0.f,
+		true
+	);
+
 	if (CurrentTarget.IsValid())
 	{
 		ReTargetTime += DeltaTime;
 	}
+
 	if (MonsterMoveType == EMonsterMoveType::Teleport &&
 		TeleportStep == ETeleportTypeState::IdleWait &&
 		CachedMonster->GetMonsterState() == EMonsterState::Idle)
@@ -81,6 +91,7 @@ void AMonsterAIController::Tick(float DeltaTime)
 	{
 		CurrentIdleTime += DeltaTime;
 	}
+
 	UpdateMovement();
 }
 

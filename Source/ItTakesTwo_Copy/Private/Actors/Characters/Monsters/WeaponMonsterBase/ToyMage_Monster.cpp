@@ -111,67 +111,59 @@ void AToyMage_Monster::ProjectileFire()
 	if (!PoolSubsystem)
 		return;
 
-	const FVector SpawnLocation =
-		GetActorLocation()	+ GetActorForwardVector() * SpawnForwardOffset
-		+ FVector(0.0f, 0.0f, SpawnUpOffset);
+	 const FVector SpawnLocation =
+	 	GetActorLocation()	+ GetActorForwardVector() * SpawnForwardOffset
+	 	+ FVector(0.0f, 0.0f, SpawnUpOffset);
+	//
+	//
+	// FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateHomingProjectile(
+	// this,
+	// ProjectileNiagara,
+	// ProjectileSpeed,
+	// SpawnLocation,
+	// Cast<AMonsterAIController>(Controller)->FindNearestPlayer()
+	// );
+	// SpawnInfo.WithSphereCollision(
+	// 	true,
+	// 	FName(TEXT("MonsterWeapon")),
+	// 	ProjectileDamage,
+	// 	ProjectileRadius
+	// );
+	// SpawnInfo.WithOverlapExplosion(
+	// 	OverlapNiagara,
+	// 	0.f
+	// );
+	//
+	// PoolSubsystem->UseVFX_Projectile(SpawnInfo);
+	 FVector ForwardDir = GetActorForwardVector();
+	 const TArray<FVector> ProjectileDirections =
+	 {
+	 	ForwardDir,
+	 	FRotator(0.f, -45.f, 0.f).RotateVector(ForwardDir),
+	 	FRotator(0.f, 45.f, 0.f).RotateVector(ForwardDir)
+	 };
+	 for (const FVector& Direction : ProjectileDirections)
+	 {
+	 	
+	 	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
+	 		this,
+	 		ProjectileNiagara,
+	 		ProjectileSpeed,
+	 		SpawnLocation,
+	 		Direction,
+	 		ProjectileLifeTime
+	 	);
+	 	SpawnInfo.WithSphereCollision(
+	 		true,
+	 		FName(TEXT("MonsterWeapon")),
+	 		ProjectileDamage,
+	 		ProjectileRadius
+	 	);
+	 	SpawnInfo.WithOverlapExplosion(
+	 		OverlapNiagara,
+	 		0.f
+	 	);
 	
-	
-	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateHomingProjectile(
-	this,
-	ProjectileNiagara,
-	ProjectileSpeed,
-	SpawnLocation,
-	Cast<AMonsterAIController>(Controller)->FindNearestPlayer()
-
-);
-
-	SpawnInfo.WithSphereCollision(
-		true,
-		FName(TEXT("MonsterWeapon")),
-		ProjectileDamage,
-		ProjectileRadius
-	);
-
-	SpawnInfo.WithOverlapExplosion(
-		OverlapNiagara,
-		0.f
-	);
-
-	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
-	//
-	// FVector ForwardDir = GetActorForwardVector();
-	// const TArray<FVector> ProjectileDirections =
-	// {
-	// 	ForwardDir,
-	// 	FRotator(0.f, -45.f, 0.f).RotateVector(ForwardDir),
-	// 	FRotator(0.f, 45.f, 0.f).RotateVector(ForwardDir)
-	// };
-	//
-	// for (const FVector& Direction : ProjectileDirections)
-	// {
-	// 	
-	// 	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
-	// 		this,
-	// 		ProjectileNiagara,
-	// 		ProjectileSpeed,
-	// 		SpawnLocation,
-	// 		Direction,
-	// 		ProjectileLifeTime
-	// 	);
-	// 	SpawnInfo.WithSphereCollision(
-	// 		true,
-	// 		FName(TEXT("MonsterWeapon")),
-	// 		ProjectileDamage,
-	// 		ProjectileRadius
-	// 	);
-	// 	SpawnInfo.WithOverlapExplosion(
-	// 		OverlapNiagara,
-	// 		0.f
-	// 	);
-	//
-	// 	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
-	// }
+	 	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
+	 }
 }
-
-
-
