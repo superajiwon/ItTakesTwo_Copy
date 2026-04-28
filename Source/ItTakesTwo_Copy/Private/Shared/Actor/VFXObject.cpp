@@ -93,20 +93,20 @@ void AVFXObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	// 충돌 박스 그리기
-	 switch (VFXInfo.CollisionInfo.CollisionShape)
-	 {
-	 case EVFXCollisionShape::Sphere:
-	 	DrawDebugSphere(GetWorld(),CollisionSphereComponent->GetComponentLocation(),CollisionSphereComponent->GetScaledSphereRadius(),24,FColor::Blue,false,-1.f,0,2.f);
-	 	break;
-	
-	 case EVFXCollisionShape::Box:
-	 	DrawDebugBox(
-	 		GetWorld(),CollisionBoxComponent->GetComponentLocation(),CollisionBoxComponent->GetScaledBoxExtent(),FColor::Blue,false,-1.f,0,2.f);
-	 	break;
-	
-	 default:
-	 	break;
-	 }
+	 // switch (VFXInfo.CollisionInfo.CollisionShape)
+	 // {
+	 // case EVFXCollisionShape::Sphere:
+	 // 	DrawDebugSphere(GetWorld(),CollisionSphereComponent->GetComponentLocation(),CollisionSphereComponent->GetScaledSphereRadius(),24,FColor::Blue,false,-1.f,0,2.f);
+	 // 	break;
+	 //
+	 // case EVFXCollisionShape::Box:
+	 // 	DrawDebugBox(
+	 // 		GetWorld(),CollisionBoxComponent->GetComponentLocation(),CollisionBoxComponent->GetScaledBoxExtent(),FColor::Blue,false,-1.f,0,2.f);
+	 // 	break;
+	 //
+	 // default:
+	 // 	break;
+	 // }
 	
 	
 	switch (VFXInfo.VFXType) 
@@ -274,11 +274,11 @@ void AVFXObject::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeti
 
 void AVFXObject::OnRep_VFXRepState()
 {
-	UE_LOG(LogTemp, Warning, TEXT("[VFX OnRep] %s bUsing=%d Asset=%s ActivationId=%d"),
-		*GetName(),
-		VFXRepState.bUsing,
-		*GetNameSafe(Cast<UObject>(VFXRepState.NiagaraAsset)),
-		VFXRepState.ActivationId);
+	// UE_LOG(LogTemp, Warning, TEXT("[VFX OnRep] %s bUsing=%d Asset=%s ActivationId=%d"),
+	// 	*GetName(),
+	// 	VFXRepState.bUsing,
+	// 	*GetNameSafe(Cast<UObject>(VFXRepState.NiagaraAsset)),
+	// 	VFXRepState.ActivationId);
 	
 	if (!VFXRepState.bUsing)
 	{
@@ -322,11 +322,11 @@ void AVFXObject::SetVFXRepStateFromSpawnInfo(const FVFXSpawn_Info& SpawnInfo)
 
 void AVFXObject::ApplyVisualState(const FVFXSpawn_Info& SpawnInfo)
 {
-	UE_LOG(LogTemp, Warning, TEXT("[VFX ApplyVisual] %s Auth=%d Asset=%s Loc=%s"),
-	*GetName(),
-	HasAuthority(),
-			*GetNameSafe(Cast<UObject>(VFXRepState.NiagaraAsset)),
-	*SpawnInfo.StartLocation.ToString());
+	// UE_LOG(LogTemp, Warning, TEXT("[VFX ApplyVisual] %s Auth=%d Asset=%s Loc=%s"),
+	// *GetName(),
+	// HasAuthority(),
+	// 		*GetNameSafe(Cast<UObject>(VFXRepState.NiagaraAsset)),
+	// *SpawnInfo.StartLocation.ToString());
 	VFXInfo = SpawnInfo;
 
 	SetActorLocationAndRotation(SpawnInfo.StartLocation, SpawnInfo.StartRotation);
@@ -345,9 +345,9 @@ void AVFXObject::ApplyVisualState(const FVFXSpawn_Info& SpawnInfo)
 
 void AVFXObject::FinishVisualState()
 {
-	UE_LOG(LogTemp, Warning, TEXT("[VFX FinishVisual] %s Auth=%d"),
-			*GetName(),
-			HasAuthority());
+	// UE_LOG(LogTemp, Warning, TEXT("[VFX FinishVisual] %s Auth=%d"),
+	// 		*GetName(),
+	// 		HasAuthority());
 	if (VFXComponent)
 	{
 		VFXComponent->Deactivate();

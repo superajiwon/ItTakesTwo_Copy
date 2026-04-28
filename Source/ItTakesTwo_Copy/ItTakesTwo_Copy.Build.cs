@@ -20,8 +20,10 @@ public class ItTakesTwo_Copy : ModuleRules
 			"OnlineSubsystem",
 			"OnlineSubsystemUtils",
 			"AIModule",
-			"AIModule",
-			"Niagara"
+			"Niagara",
+			"GeometryCollectionEngine",
+			"Chaos"
+			
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
