@@ -115,15 +115,13 @@ void AToyMage_Monster::ProjectileFire()
 		GetActorLocation()	+ GetActorForwardVector() * SpawnForwardOffset
 		+ FVector(0.0f, 0.0f, SpawnUpOffset);
 	
-	
 	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateHomingProjectile(
-	this,
-	ProjectileNiagara,
-	ProjectileSpeed,
-	SpawnLocation,
-	Cast<AMonsterAIController>(Controller)->FindNearestPlayer()
-
-);
+		this,
+		ProjectileNiagara,
+		ProjectileSpeed,
+		SpawnLocation,
+		Cast<AMonsterAIController>(Controller)->FindNearestPlayer()
+	);
 
 	SpawnInfo.WithSphereCollision(
 		true,
@@ -138,7 +136,7 @@ void AToyMage_Monster::ProjectileFire()
 	);
 
 	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
-	//
+	
 	// FVector ForwardDir = GetActorForwardVector();
 	// const TArray<FVector> ProjectileDirections =
 	// {

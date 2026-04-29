@@ -32,7 +32,6 @@ void UHPComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& O
 	DOREPLIFETIME(UHPComponent, bIsDead);
 	DOREPLIFETIME(UHPComponent, bIsInInvincible);
 	DOREPLIFETIME(UHPComponent, InvincibleTime);
-	//DOREPLIFETIME(UHPComponent, CurInvincibleTime);
 	DOREPLIFETIME(UHPComponent, bIsRecovering);
 	DOREPLIFETIME(UHPComponent, MaxRecoverTime);
 	DOREPLIFETIME(UHPComponent, CurRecoverTime);

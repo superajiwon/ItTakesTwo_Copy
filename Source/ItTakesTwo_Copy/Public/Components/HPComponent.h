@@ -85,5 +85,6 @@ protected:
 	float CurRecoverTime = 0.0f;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	float RecoverAmount = 0.0f;
+	
 
 };

@@ -2,6 +2,7 @@
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Shared/VFXObjectPoolSubsystem.h"
 #include "Shared/Components/DotHitBoxComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
@@ -24,6 +25,8 @@ ACodyCharacter::ACodyCharacter()
 	FHitComp_Info BasicHitCompInfo(FName("Player_CodyBasic"), FName("PlayerWeapon"), FVector(250.0f,0.0f,0.0f), 200.f);
 	BaseCollision->InitializeHitComp(BasicHitCompInfo, GetTargetName());
 	BaseCollision->CollisionOff();
+	
+	SpecialProjectilePoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpecialProjectilePoint"));
 	
 	UltimateCollision = CreateDefaultSubobject<UDotHitBoxComponent>(TEXT("UltimateCollision"));
 	UltimateCollision->AttachToComponent(AttackColliderPoint, FAttachmentTransformRules::KeepRelativeTransform);
@@ -55,6 +58,13 @@ void ACodyCharacter::SetWeaponCollision(bool bEnable)
 void ACodyCharacter::SpecialAttack(const FInputActionValue& Value)
 {
 	Super::SpecialAttack(Value);
+	
+	if (!ProjectileNiagara) return;
+	
+	UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
+	if (!PoolSubsystem) return;
+	
+	// const FVector SpawnLocation = 
 }
 
 void ACodyCharacter::CodyTeleport(float Distance)
