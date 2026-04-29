@@ -144,7 +144,6 @@ void AToyMage_Monster::ProjectileFire()
 	 };
 	 for (const FVector& Direction : ProjectileDirections)
 	 {
-	 	
 	 	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
 	 		this,
 	 		ProjectileNiagara,

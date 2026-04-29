@@ -6,6 +6,11 @@
 #include "MapObjectBase.h"
 #include "MapObject_Attacker.generated.h"
 
+
+
+
+class USplineComponent;
+class UHitBoxComponent;
 UCLASS()
 class ITTAKESTWO_COPY_API AMapObject_Attacker : public AMapObjectBase
 {
@@ -22,7 +27,26 @@ public:
 	
 	
 protected:
-	float Damage{40.f};
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Spline")
+	TObjectPtr<AActor> SplineActor;
+
+	UPROPERTY()
+	TObjectPtr<USplineComponent> SplineComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Spline")
+	float Speed{300.f};
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attack")
+	float RotationSpeed {600.f};
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attack")
+	float Damage {40.f};
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Attack")
+	TObjectPtr<UHitBoxComponent> HitBoxComponent;
+	
+	float CurrentDistance = 0.f;
+	int32 MoveDirection = 1;
 	
 };

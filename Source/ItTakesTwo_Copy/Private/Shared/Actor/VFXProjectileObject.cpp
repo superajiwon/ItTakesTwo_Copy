@@ -1,10 +1,15 @@
 ﻿
 #include "Shared/Actor/VFXProjectileObject.h"
 
+#include "Actors/Characters/Players/Cody/CodyCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/StatComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Shared/VFXObjectPoolSubsystem.h"
+#include "Shared/Struct/HitRequest.h"
+#include "Shared/Subsystems/CombatSystem.h"
+
 
 
 AVFXProjectileObject::AVFXProjectileObject()
@@ -100,8 +105,20 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 				VFXInfo.OverlapExplosionNiagara,
 				GetActorLocation()
 			);
-
 			PoolSubsystem->UseVFX_Explosion(ExplosionInfo);
+			
+			if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
+			{
+				if (Cast<ACodyCharacter>(VFXInfo.OwnerActor))
+				{
+					
+				}
+				else
+				{
+					FHitRequest Request(GetOwner(), OtherActor, VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower(), SweepResult.ImpactPoint);
+					CombatSystem->ProcessHit(Request);
+				}
+			}
 		}
 	}
 

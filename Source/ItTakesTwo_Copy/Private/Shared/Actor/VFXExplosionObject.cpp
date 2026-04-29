@@ -3,8 +3,12 @@
 
 #include "Shared/Actor/VFXExplosionObject.h"
 
+#include "Actors/Characters/Players/Cody/CodyCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/StatComponent.h"
+#include "Shared/Struct/HitRequest.h"
+#include "Shared/Subsystems/CombatSystem.h"
 
 
 AVFXExplosionObject::AVFXExplosionObject()
@@ -56,6 +60,20 @@ void AVFXExplosionObject::OnExplosionBeginOverlap(UPrimitiveComponent* Overlappe
 		return;
 	}
 
+	
+	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
+	{
+		if (Cast<ACodyCharacter>(VFXInfo.OwnerActor))
+		{
+		}
+		else
+		{
+			FHitRequest Request(GetOwner(), OtherActor, 
+				VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower(), 
+				SweepResult.ImpactPoint);
+			CombatSystem->ProcessHit(Request);
+		}
+	}
 	
 	
 }

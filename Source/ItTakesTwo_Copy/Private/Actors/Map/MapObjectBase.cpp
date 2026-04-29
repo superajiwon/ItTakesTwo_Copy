@@ -19,7 +19,6 @@ AMapObjectBase::AMapObjectBase()
 	// MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// MeshComp->SetVisibility(true);
 	// MeshComp->SetupAttachment(RootComponent);
-	
 }
 
 void AMapObjectBase::BeginPlay()
@@ -32,7 +31,6 @@ void AMapObjectBase::BeginPlay()
 void AMapObjectBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
 	
 }
 

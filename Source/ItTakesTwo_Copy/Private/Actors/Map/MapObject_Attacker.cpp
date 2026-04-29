@@ -3,24 +3,85 @@
 
 #include "Actors/Map/MapObject_Attacker.h"
 
+#include "Components/SplineComponent.h"
+#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Struct/HitComp_Info.h"
 
-// Sets default values
+
 AMapObject_Attacker::AMapObject_Attacker()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called when the game starts or when spawned
-void AMapObject_Attacker::BeginPlay()
-{
-	Super::BeginPlay();
+	
+	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(TEXT("HitBoxComponent"));
+	HitBoxComponent->SetupAttachment(RootComponent);
+	HitBoxComponent->SetDamage(Damage);
 	
 }
 
-// Called every frame
+void AMapObject_Attacker::BeginPlay()
+{
+	Super::BeginPlay();
+	if (SplineActor)
+	{
+		SplineComponent = SplineActor->FindComponentByClass<USplineComponent>();
+	}
+
+	if (!SplineComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[MapObject_Attacker] No SplineComponent: %s"), *GetName());
+		SetActorTickEnabled(false);
+		return;
+	}
+
+	CurrentDistance = SplineComponent->GetDistanceAlongSplineAtSplineInputKey(
+		SplineComponent->FindInputKeyClosestToWorldLocation(GetActorLocation())
+	);
+
+	if (HasAuthority() && HitBoxComponent)
+	{
+		FHitComp_Info HitInfo(
+			FName(TEXT("MapObject")),
+			FName(TEXT("MonsterWeapon")),
+			FVector::ZeroVector,
+			FVector(100.f, 100.f, 100.f)
+		);
+
+		HitBoxComponent->InitializeHitComp(HitInfo, FName(TEXT("Player")));
+		HitBoxComponent->SetDamage(static_cast<int32>(Damage));
+		HitBoxComponent->CollisionOn();
+	}
+}
+
 void AMapObject_Attacker::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (!HasAuthority())
+		return;
+
+	if (!SplineComponent)
+		return;
+	
+	const float SplineLength = SplineComponent->GetSplineLength();
+	if (SplineLength <= 0.f)
+		return;
+
+	CurrentDistance += Speed * DeltaTime * MoveDirection;
+	if (CurrentDistance >= SplineLength)
+	{
+		CurrentDistance = SplineLength;
+		MoveDirection = -1;
+	}
+	else if (CurrentDistance <= 0.f)
+	{
+		CurrentDistance = 0.f;
+		MoveDirection = 1;
+	}
+	const FVector NewLocation =
+	SplineComponent->GetLocationAtDistanceAlongSpline(CurrentDistance, ESplineCoordinateSpace::World);
+	SetActorLocation(NewLocation);
+	FRotator Rotation = GetActorRotation();
+	Rotation.Yaw += RotationSpeed * DeltaTime;
+	SetActorRotation(Rotation );
 }
 
