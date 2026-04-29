@@ -52,17 +52,12 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	if (!bCollisionOn) return; 
 	if (OtherActor == GetOwner()) return;
 	
-	// 충돌 액터 찾으면
-	// 인터페이스 호출해서 데미지 주거나 어떤 공통된 로직이 있으면 좋을듯함
-	
 	if (!OtherActor->Tags.Contains(TargetTag)) return;
 	
 	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 	{
 		FHitRequest Request(GetOwner(), OtherActor, Damage, SweepResult.ImpactPoint);
 		CombatSystem->ProcessHit(Request);
-		
-		// 충돌하면 충돌한 상대 무적상태 돌입
 	}
 }
 

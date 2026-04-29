@@ -1,6 +1,7 @@
 
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/StatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Shared/VFXObjectPoolSubsystem.h"
 #include "Shared/Components/DotHitBoxComponent.h"
@@ -27,6 +28,8 @@ ACodyCharacter::ACodyCharacter()
 	BaseCollision->CollisionOff();
 	
 	SpecialProjectilePoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpecialProjectilePoint"));
+	SpecialProjectilePoint->SetupAttachment(AttackColliderPoint);
+	SpecialProjectilePoint->SetRelativeLocation(FVector(70.0f,0.0f,125.0f));
 	
 	UltimateCollision = CreateDefaultSubobject<UDotHitBoxComponent>(TEXT("UltimateCollision"));
 	UltimateCollision->AttachToComponent(AttackColliderPoint, FAttachmentTransformRules::KeepRelativeTransform);
@@ -64,16 +67,37 @@ void ACodyCharacter::SpecialAttack(const FInputActionValue& Value)
 	UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
 	if (!PoolSubsystem) return;
 	
-	// const FVector SpawnLocation = 
+	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
+		this,
+		ProjectileNiagara,
+		ProjectileSpeed,
+		SpecialProjectilePoint->GetComponentLocation(),
+		GetActorForwardVector(),
+		ProjectileLifeTime
+	);
+	
+	SpawnInfo.WithSphereCollision(
+		true,
+		FName(TEXT("PlayerWeapon")),
+		GetStatComponent()->GetAttackPower(),
+		ProjectileRadius
+	);
+	
+	SpawnInfo.WithOverlapExplosion(
+		OverlapNiagara,
+		0.f
+	);
+	
+	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 }
 
 void ACodyCharacter::CodyTeleport(float Distance)
 {
 	FVector DistLocation = GetActorLocation() + GetActorForwardVector() * Distance;
 
-	// todo Ray 로 
+	// todo Ray로 넘어갈 수 있는 오브젝트인지 확인 하고 마지막 bool값으로 넘기기
 	// bNoCheck = true : 철창이나 좁은 틈새를 무시하고 통과하기 위해 '체크 안 함' 설정!
-	TeleportTo(DistLocation, GetActorRotation(), false, true); // 
+	TeleportTo(DistLocation, GetActorRotation(), false, true); 
 }
 
 void ACodyCharacter::Server_CodyTeleport_Implementation()
@@ -94,8 +118,8 @@ void ACodyCharacter::EndUltimate()
 	
 	if (UltimateCollision)
 	{
+		UltimateCollision->SetHiddenInGame(false);
 		UltimateCollision->CollisionOff();
-		UltimateCollision->SetHiddenInGame(true);
 	}
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
