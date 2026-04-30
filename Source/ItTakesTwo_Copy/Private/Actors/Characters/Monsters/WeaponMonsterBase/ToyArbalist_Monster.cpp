@@ -54,7 +54,6 @@ void AToyArbalist_Monster::ProjectileFire()
 		GetActorLocation()	+ GetActorForwardVector() * SpawnForwardOffset
 		+ FVector(0.0f, 0.0f, SpawnUpOffset);
 	
-
 	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
 			 this,
 			 ProjectileNiagara,

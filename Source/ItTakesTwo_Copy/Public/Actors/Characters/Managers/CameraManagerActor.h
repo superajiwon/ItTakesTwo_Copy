@@ -43,7 +43,7 @@ protected:
 	float MaxZoomDist = 2500.0f;
 	// 최소 줌 아웃 거리
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shared Camera")
-	float MinZoomDist = 1200.0f;
+	float MinZoomDist = 2000.0f;
 	
 	// 최소 줌 아웃 거리
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shared Camera")
