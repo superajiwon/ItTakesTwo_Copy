@@ -11,14 +11,14 @@ AMapObject_Attackable::AMapObject_Attackable()
 	PrimaryActorTick.bCanEverTick = true;
 
 	GeometryCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("GeometryCollection"));
-	// RootComponent = GeometryCollection;
 	GeometryCollection->SetupAttachment(RootComponent);
 	GeometryCollection->SetSimulatePhysics(false);
 	GeometryCollection->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GeometryCollection->SetCollisionProfileName(FName("MapObject"));
 	HitCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("HitCollision"));
 	HitCollision->SetupAttachment(RootComponent);
-	HitCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+	Tags.Add(FName("Monster"));
 }
 
 void AMapObject_Attackable::BeginPlay()
@@ -28,15 +28,21 @@ void AMapObject_Attackable::BeginPlay()
 	{
 		CurrentHP = MaxHP;
 	}
+	if (HitCollision)
+		HitCollision->OnComponentBeginOverlap.AddDynamic(this,&AMapObject_Attackable::OnBeginOverlap);
+	
 }
 
 void AMapObject_Attackable::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
+	const FString LogStr = FString::Printf(TEXT("%s\nHP : %f"), *ConStr, CurrentHP );
+	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, LogStr, nullptr, FColor::White, 0, true, 1);
+	
 	if (!HasAuthority() || bDestroyed)
 		return;
-	CurrentHP -= DeltaTime * 10.f; // 초당 10씩 감소
-	CurrentHP = FMath::Clamp(CurrentHP, 0.f, MaxHP);
 
 	if (CurrentHP <= 0.f)
 	{
@@ -50,6 +56,34 @@ void AMapObject_Attackable::GetLifetimeReplicatedProps(TArray<class FLifetimePro
 	
 	DOREPLIFETIME(AMapObject_Attackable, CurrentHP);
 	DOREPLIFETIME(AMapObject_Attackable, bDestroyed);
+	DOREPLIFETIME(AMapObject_Attackable, LastHitLocation);
+	DOREPLIFETIME(AMapObject_Attackable, LastHitDirection);
+}
+
+void AMapObject_Attackable::Damage(float DamageAmount, AActor* Causer)
+{
+	IDamagable::Damage(DamageAmount, Causer);
+	if (!HasAuthority() || bDestroyed)
+		return;
+
+	if (Causer)
+	{
+		LastHitLocation = Causer->GetActorLocation();
+		LastHitDirection = (GetActorLocation() - Causer->GetActorLocation()).GetSafeNormal();
+	}
+	else
+	{
+		LastHitLocation = GetActorLocation();
+		LastHitDirection = GetActorForwardVector();
+	}
+	ApplyDamage(DamageAmount);
+}
+
+void AMapObject_Attackable::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	
+	
 }
 
 void AMapObject_Attackable::ApplyDamage(float Damage)
@@ -64,8 +98,6 @@ void AMapObject_Attackable::ApplyDamage(float Damage)
 	{
 		DestroyObject();
 	}
-	
-	
 }
 
 void AMapObject_Attackable::DestroyObject()
@@ -77,8 +109,11 @@ void AMapObject_Attackable::DestroyObject()
 	CurrentHP = 0.f;
 
 	HitCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	PlayDestroyEffect();
+	if (GeometryCollection)
+	{
+		GeometryCollection->SetCollisionProfileName(FName("MapObject_Crush"));
+	}
+	PlayDestroyEffect(LastHitLocation, LastHitDirection);
 
 	FTimerHandle DestroyTimerHandle;
 	GetWorldTimerManager().SetTimer(
@@ -90,29 +125,30 @@ void AMapObject_Attackable::DestroyObject()
 	);
 }
 
-void AMapObject_Attackable::PlayDestroyEffect()
+void AMapObject_Attackable::PlayDestroyEffect(const FVector& HitLocation, const FVector& HitDirection)
 {
 	if (!GeometryCollection)
 		return;
 
+	GeometryCollection->SetCollisionProfileName(FName("MapObject_Crush"));
 	GeometryCollection->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
 	GeometryCollection->SetSimulatePhysics(true);
 
 	const FVector Center = GeometryCollection->GetComponentLocation();
-	const FVector Dir = FVector(1.f, 0.f, 0.5f).GetSafeNormal();
+	const FVector Dir = HitDirection.GetSafeNormal();
 
-	// 주 방향 힘
 	GeometryCollection->AddImpulse(
-		Dir * 400.f, // 어디서 어느 방향으로 때렸는지 받아와야 할듯
-		NAME_None,
-		true
-	);
+	Dir * 500.f, // 어디서 어느 방향으로 때렸는지 받아와야 할듯
+	NAME_None,
+	true
+);
 
 	// 살짝 퍼지는 힘
 	GeometryCollection->AddRadialImpulse(
-		Center,
-		600.f,
-		200.f,
+		HitLocation,
+		500.f,
+		300.f,
 		ERadialImpulseFalloff::RIF_Linear,
 		true
 	);
@@ -134,8 +170,11 @@ void AMapObject_Attackable::OnRep_Destroyed()
 		{
 			HitCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
-
-		PlayDestroyEffect();
+		if (GeometryCollection)
+		{
+			GeometryCollection->SetCollisionProfileName(FName("MapObject_Crush"));
+		}
+		PlayDestroyEffect(LastHitLocation, LastHitDirection);
 	}
 }
 

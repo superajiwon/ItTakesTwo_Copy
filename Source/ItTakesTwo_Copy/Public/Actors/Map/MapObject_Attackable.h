@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "MapObjectBase.h"
+#include "Interfaces/Damagable.h"
 #include "MapObject_Attackable.generated.h"
 
 class UBoxComponent;
 class UGeometryCollectionComponent;
 UCLASS()
-class ITTAKESTWO_COPY_API AMapObject_Attackable : public AMapObjectBase
+class ITTAKESTWO_COPY_API AMapObject_Attackable : public AMapObjectBase, public IDamagable
 {
 	GENERATED_BODY()
 
@@ -20,11 +21,22 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-
+	virtual void Damage(float DamageAmount, AActor* Causer) override;
+	
+protected:
+	UFUNCTION()
+	void OnBeginOverlap(
+		UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult
+	);
 public:
 	void ApplyDamage(float Damage);	
 	void DestroyObject();
-	void PlayDestroyEffect();
+	void PlayDestroyEffect(const FVector& HitLocation,	const FVector& HitDirection);
 	
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -37,15 +49,18 @@ protected:
 	UPROPERTY(EditAnywhere, Category="ObjectSetting")
 	float MaxHP = 100.f;
 	
-protected:
 	UPROPERTY(ReplicatedUsing=OnRep_CurrentHP)
 	float CurrentHP{100.f};
 
 	UPROPERTY(ReplicatedUsing=OnRep_Destroyed)
 	bool bDestroyed = false;
 
-	
-	
+	UPROPERTY(Replicated)
+	FVector_NetQuantize LastHitLocation;
+
+	UPROPERTY(Replicated)
+	FVector_NetQuantizeNormal LastHitDirection;
+
 protected:
 	UFUNCTION()
 	void OnRep_CurrentHP();
