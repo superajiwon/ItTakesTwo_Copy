@@ -10,7 +10,8 @@ UENUM(BlueprintType)
 enum class EMapObjectState : uint8
 {
 	Hidden,
-	InActive,
+	BeforePressed,
+	AfterPressed,
 	Active,
 	Destroyed
 };
@@ -25,12 +26,23 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-public:
 	virtual void Tick(float DeltaTime) override;
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+public:
+	EMapObjectState GetMapObjectState() const
+	{
+		return CurrentState;
+	}
 	
-
+public:
+	void SetMapObjectState(EMapObjectState NewState)
+	{
+		CurrentState = NewState;
+	}
+	
+	
 protected:
+	UPROPERTY(Replicated)
 	EMapObjectState CurrentState{EMapObjectState::Hidden};
 	
 	
