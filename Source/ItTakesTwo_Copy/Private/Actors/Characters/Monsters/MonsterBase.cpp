@@ -6,6 +6,7 @@
 #include "Actors/Characters/Monsters/MonsterAnimInstance.h"
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/HPComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
@@ -41,7 +42,14 @@ void AMonsterBase::BeginPlay()
 void AMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+	if (GetHPComponent()->GetIsDead())
+	{
+		Destroy();
+	}
+	const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
+	const FString LogStr = FString::Printf(TEXT("%s\nHP : %f "), *ConStr, GetHPComponent()->GetCurHP());
+	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, LogStr, nullptr, FColor::White, 0, true, 1);
+
 }
 
 void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -129,6 +137,10 @@ void AMonsterBase::MontagePlay()
 	case EMonsterState::Detect:
 		{
 			MontageToPlay = DetectMontage;
+		}
+	case EMonsterState::Dead:
+		{
+			MontageToPlay = DeadMontage;
 		}
 		default:
 			break;

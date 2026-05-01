@@ -93,6 +93,6 @@ void AMenuController::Server_StartGame_Implementation()
 	if (GI->HostSelectedRole != EPlayerRole::None && GI->ClientSelectedRole != EPlayerRole::None)
 	{
 		// 서버와 클라이언트 모두 던전 맵으로 이동 (listen 옵션 포함)
-		GetWorld()->ServerTravel("Lv_ServerTestInGame?listen");
+		GetWorld()->ServerTravel("Lv_Dungeon?listen");
 	}
 }

@@ -26,8 +26,9 @@ AToyMage_Monster::AToyMage_Monster()
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
 	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FHitComp_Info HitCompInfo(FName("Monster"), FName("MonsterWeapon"), FVector(0.f, 0.f, 27.0f), FVector(20.f, 20.f, 130.f));
-	HitBoxComponent->InitializeHitComp(HitCompInfo);
 	
+	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
+	HitBoxComponent->SetDamage(30);
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> Niagara(
 		TEXT("/Game/VFX/Using/NS_MageProjectile.NS_MageProjectile"));
 	if (Niagara.Succeeded())

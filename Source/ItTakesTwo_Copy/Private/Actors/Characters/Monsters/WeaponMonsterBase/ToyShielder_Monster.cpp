@@ -19,7 +19,8 @@ AToyShielder_Monster::AToyShielder_Monster()
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
 	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FHitComp_Info HitCompInfo(FName("Monster"), FName("MonsterWeapon"), FVector(0.f, 0.f, 5.00001f), FVector(50.f, 70.f, 100.f));
-	HitBoxComponent->InitializeHitComp(HitCompInfo);
+	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
+	HitBoxComponent->SetDamage(30);
 	RightHand_WeaponMeshComponent->SetupAttachment(GetMesh(), FName(TEXT("LeftHandSocket")));
 }
 

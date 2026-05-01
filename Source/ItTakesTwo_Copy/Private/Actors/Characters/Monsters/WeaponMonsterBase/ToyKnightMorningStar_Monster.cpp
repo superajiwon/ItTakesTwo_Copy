@@ -22,6 +22,7 @@ AToyKnightMorningStar_Monster::AToyKnightMorningStar_Monster()
 	// HitBoxComponent->InitializeHitComp(HitCompInfo);
 	// [나지원이 테스트로 추가함 헤헤..] 	
 	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
+	HitBoxComponent->SetDamage(20);
 }
 
 void AToyKnightMorningStar_Monster::BeginPlay()

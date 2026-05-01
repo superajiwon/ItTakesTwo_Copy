@@ -109,15 +109,19 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 			
 			if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 			{
+				int32 Damage = 0;
 				if (Cast<ACodyCharacter>(VFXInfo.OwnerActor))
 				{
-					
+					// Damage = VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower();
+					Damage = FMath::RandRange(5, 18);
 				}
 				else
 				{
-					FHitRequest Request(GetOwner(), OtherActor, VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower(), SweepResult.ImpactPoint);
-					CombatSystem->ProcessHit(Request);
+					Damage = VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower();
 				}
+    
+				FHitRequest Request(VFXInfo.OwnerActor, OtherActor, Damage, SweepResult.ImpactPoint);
+				CombatSystem->ProcessHit(Request);
 			}
 		}
 	}
