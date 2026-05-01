@@ -119,7 +119,7 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 				{
 					Damage = VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower();
 				}
-    
+				
 				FHitRequest Request(VFXInfo.OwnerActor, OtherActor, Damage, SweepResult.ImpactPoint);
 				CombatSystem->ProcessHit(Request);
 			}
@@ -135,8 +135,5 @@ void AVFXProjectileObject::Tick(float DeltaTime)
 		return;
 	
 	Super::Tick(DeltaTime);
-	
-
-	
 }
 

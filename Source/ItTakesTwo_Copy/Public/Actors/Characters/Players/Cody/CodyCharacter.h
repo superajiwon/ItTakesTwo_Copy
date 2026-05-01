@@ -30,14 +30,20 @@ public:
 	
 	
 	// === Collision ===
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack_Niagara")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Niagara")
 	TObjectPtr<UNiagaraSystem> ProjectileNiagara;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack_Niagara")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Niagara")
 	TObjectPtr<UNiagaraSystem> OverlapNiagara;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack_Niagara")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Component")
 	USceneComponent* SpecialProjectilePoint;
-	
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
+	float ProjectileSpeed = 1000.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
+	float ProjectileLifeTime = 3.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
+	float ProjectileRadius = 60.0f;
+
+
 	// === Base Attack ===
 	virtual void SetWeaponCollision(bool bEnable) override;
 	
