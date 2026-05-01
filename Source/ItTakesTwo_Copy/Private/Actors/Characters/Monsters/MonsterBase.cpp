@@ -47,7 +47,7 @@ void AMonsterBase::Tick(float DeltaTime)
 		Destroy();
 	}
 	const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
-	const FString LogStr = FString::Printf(TEXT("%s\nHP : %f "), *ConStr, GetHPComponent()->GetCurHP());
+	const FString LogStr = FString::Printf(TEXT("%s\nHP : %.0f "), *ConStr, GetHPComponent()->GetCurHP());
 	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 
 }

@@ -11,6 +11,7 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "Components/HPComponent.h"
+#include "Net/UnrealNetwork.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
 
@@ -97,6 +98,13 @@ void APlayerBase::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	}
 }
 
+void APlayerBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(APlayerBase, bIsActionLocked);
+}
+
 void APlayerBase::PrintNetLog()
 {
 	Super::PrintNetLog();
@@ -160,6 +168,7 @@ void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 		GetCharacterMovement()->MaxWalkSpeed = DefaultMaxWalkSpeed;
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
+
 }
 
 // ===
@@ -171,6 +180,10 @@ void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 void APlayerBase::BaseAttack(const FInputActionValue& Value)
 {
 	if (!SkillComp || !ActionData) return;
+	
+	if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
+	
+	if (!SkillComp->CanExecuteSkill(EActionType::Basic)) return;
 	
 	FAttackModeData* CurData = GetCurrentAttackData();
 	if (!CurData) return;
@@ -214,7 +227,10 @@ void APlayerBase::SpecialAttack(const FInputActionValue& Value)
 {
 	if (!SkillComp) return;
 	
-	// 다른 공격 중이라면 갈아타기 (콤보 강제 리셋 및 상태 덮어쓰기)
+	if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
+
+	if (!SkillComp->CanExecuteSkill(EActionType::Special)) return;
+	
 	ResetCombo();
 	
 	bIsActionLocked = true;
@@ -223,10 +239,18 @@ void APlayerBase::SpecialAttack(const FInputActionValue& Value)
 	SkillComp->RequestExecuteSkill(EActionType::Special, 0, 0);
 }
 
-
 void APlayerBase::Dash(const FInputActionValue& Value)
 {
 	if (!SkillComp) return;
+	
+	if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
+
+	if (!SkillComp->CanExecuteSkill(EActionType::Dash)) return;
+	
+	ResetCombo();
+	
+	bIsActionLocked = true;
+	
 	SkillComp->RequestExecuteSkill(EActionType::Dash, 0, 0);
 }
 
@@ -244,8 +268,12 @@ void APlayerBase::Ultimate(const FInputActionValue& Value)
 	SkillComp->RequestExecuteSkill(EActionType::Ultimate, CurComboIndex, 0);
 }
 
-void APlayerBase::TakeDamageAction()
+void APlayerBase::Damage(float DamageAmount, AActor* Causer)
 {
+	Super::Damage(DamageAmount, Causer);
+	
+	// 피격 몽타주 실행 
+	if (UltimateComp->bIsUltimateActive) return; // 궁을 쓰고있을 때는 데미지를 받아도 애니메이션이 캔슬 되지 않게  
 	if (!SkillComp) return;
 	
 	if (ActionData->TakeDamageData.Montages.IsEmpty())
@@ -257,3 +285,4 @@ void APlayerBase::TakeDamageAction()
 	const int32 RandomIdx = FMath::RandRange(0, ActionData->TakeDamageData.Montages.Num() - 1);
 	SkillComp->RequestExecuteSkill(EActionType::TakeDamage, 0, RandomIdx);
 }
+

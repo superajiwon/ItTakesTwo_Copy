@@ -14,11 +14,6 @@ UUltimateComponent::UUltimateComponent()
 void UUltimateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (GetOwner() && GetOwner()->HasAuthority())
-	{
-		CurUltimateGauge = MaxUltimateGauge;
-	}
 }
 
 void UUltimateComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
@@ -49,6 +44,8 @@ void UUltimateComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 
 void UUltimateComponent::AddGauge(float GaugeAmount)
 {	
+	if (bIsUltimateActive) return;
+	
 	CurUltimateGauge += GaugeAmount;
 	
 	if (CurUltimateGauge >= MaxUltimateGauge)

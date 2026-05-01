@@ -3,6 +3,7 @@
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Actors/Characters/Players/PlayerActionData.h"
 #include "Components/UltimateComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 USkillComponent::USkillComponent()
 {
@@ -10,17 +11,30 @@ USkillComponent::USkillComponent()
 
 	// 리슨 서버에서 이 컴포넌트가 복제되도록 설정
 	SetIsReplicatedByDefault(true);
+	
+	CooldownTimes.Add(EActionType::Basic, 0.1f);
+	CooldownTimes.Add(EActionType::Special, 3.0f);
+	CooldownTimes.Add(EActionType::Dash, 2.0f);
 }
 
 void USkillComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	if (APlayerBase* Owner = Cast<APlayerBase>(GetOwner()))
+	{
+		if (UAnimInstance* AnimInstance = Owner->GetMesh()->GetAnimInstance())
+		{
+			AnimInstance->OnMontageEnded.AddDynamic(this, &USkillComponent::OnMontageEnded);
+		}
+	}
 }
 
 
 void USkillComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
 }
 
 // ===
@@ -33,14 +47,28 @@ void USkillComponent::RequestExecuteSkill(EActionType ActionType, int32 ComboSte
 	AActor* Owner = GetOwner();
 	if (!Owner) return;
 	
-	if (Owner->HasAuthority())
+	if (!CanExecuteSkill(ActionType)) return;
+	
+	if (ActionType != EActionType::Ultimate)
 	{
-		// 방장이니까 바로 호출
+		StartCooldown(ActionType);
+	}
+	
+	if (Owner->HasAuthority())
+	{	// 방장이니까 바로 호출
+		// if (ActionType != EActionType::Ultimate)
+		// {
+		// 	StartCooldown(ActionType);
+		// }
+		
 		Multicast_PlayerSkillEffect(ActionType, ComboStep, MontageIdx);
 	}
 	else
-	{
-		// 클라이언트니까 서버에 RPC 요청
+	{	// 클라이언트니까 서버에 RPC 요청
+		//// if (ActionType != EActionType::Ultimate)
+		//// {
+		//// 	StartCooldown(ActionType);
+		//// }
 		Server_ExecuteSkill(ActionType, ComboStep, MontageIdx);
 	}
 }
@@ -53,6 +81,9 @@ void USkillComponent::Server_ExecuteSkill_Implementation(EActionType ActionType,
 	APlayerBase* Owner = Cast<APlayerBase>(GetOwner());
 	if (!Owner) return;
 	
+	// 서버에서 이중 검증
+	if (!CanExecuteSkill(ActionType)) return;
+	
 	if (ActionType == EActionType::Ultimate)
 	{
 		if (Owner->GetUltimateComponent())
@@ -61,6 +92,15 @@ void USkillComponent::Server_ExecuteSkill_Implementation(EActionType ActionType,
 		}
 		
 		Owner->OnUltimateActivated();
+	}
+	else
+	{
+		// [중요] 노말 스킬 사용 시 서버에서도 궁극기 상태를 해제해야 함
+		if (Owner->GetUltimateComponent() && Owner->GetUltimateComponent()->bIsUltimateActive)
+		{
+			Owner->EndUltimate();
+		}
+		StartCooldown(ActionType);
 	}
 	
 	Multicast_PlayerSkillEffect(ActionType, ComboStep, MontageIdx);
@@ -113,5 +153,128 @@ void USkillComponent::Multicast_PlayerSkillEffect_Implementation(EActionType Act
 	}
 	
 	if (Montage)
-		Owner->PlayAnimMontage(Montage);
+	{
+		// 몽타주 재생이 실제로 성공했을 때만 상태 변경
+		if (Owner->PlayAnimMontage(Montage) > 0.f)
+		{
+			bIsSkillPlaying = true;
+			
+			// 서버 및 모든 클라이언트에서 잠금 상태 동기화
+			Owner->bIsActionLocked = true;
+			Owner->GetCharacterMovement()->bOrientRotationToMovement = false;
+		}
+	}
+}
+
+// === Cooldown ===
+bool USkillComponent::IsOnCooldown(EActionType ActionType) const
+{
+	if (const bool* bIsOnCD = CooldownChecks.Find(ActionType))
+	{
+		return *bIsOnCD;
+	}
+	
+	return false;
+}
+
+bool USkillComponent::CanExecuteSkill(EActionType ActionType) const
+{
+	if (ActionType == EActionType::Ultimate) return true;
+
+	// 현재 몽타주가 재생 중이면 새로운 스킬(평타 콤보 제외) 차단
+	if (bIsSkillPlaying)
+	{
+		// 평타는 콤보 시스템이 PlayerBase에서 관리하므로 허용하거나, 
+		// 혹은 단순히 bIsSkillPlaying이 true일 때 모든 '새로운' 요청을 막음
+		// 유저의 이전 요구사항(스킬 도중 다른 스킬 금지)을 반영
+		if (ActionType != EActionType::Basic) return false;
+	}
+
+	if (IsOnCooldown(ActionType)) return false;
+
+	return true;
+}
+
+void USkillComponent::StartCooldown(EActionType ActionType)
+{
+	float CooldownTime = 0;
+	if (const float* Time = CooldownTimes.Find(ActionType))
+	{
+		CooldownTime = *Time;
+	}
+	
+	if (CooldownTime <= 0.0f) return;
+	
+	CooldownChecks.Add(ActionType, true);
+	OnCooldownChange.Broadcast(ActionType, true, CooldownTime);
+	
+	if (UWorld* World = GetWorld())
+	{
+		FTimerHandle& TimerHandle = CooldownTimers.FindOrAdd(ActionType);
+		FTimerDelegate TimerDelegate;
+		TimerDelegate.BindUObject(this, &USkillComponent::EndCooldown, ActionType);
+		
+		World->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, CooldownTime * CooldownMultiplier, false);	
+	}
+	
+	if (GetOwner()->HasAuthority())
+	{
+		Client_StartCooldown(ActionType, CooldownTime);
+	}
+}
+
+void USkillComponent::Client_StartCooldown_Implementation(EActionType ActionType, float CooldownTime)
+{
+	if (GetOwner()->HasAuthority()) return;
+	
+	if (IsOnCooldown(ActionType)) return;
+	
+	CooldownChecks.Add(ActionType, false);
+	OnCooldownChange.Broadcast(ActionType, false, CooldownTime);
+	
+	if (UWorld* World = GetWorld())
+	{
+		FTimerHandle& TimerHandle = CooldownTimers.FindOrAdd(ActionType);
+		FTimerDelegate TimerDelegate;
+		TimerDelegate.BindUObject(this, &USkillComponent::Client_EndCooldown, ActionType);
+		World->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, CooldownTime, false);
+	}
+}
+
+void USkillComponent::EndCooldown(EActionType ActionType)
+{
+	CooldownChecks.Add(ActionType, false);
+	
+	float CooldownTime = 0;
+	if (const float* Time = CooldownTimes.Find(ActionType))
+	{
+		CooldownTime = *Time;
+	}
+	OnCooldownChange.Broadcast(ActionType, false, CooldownTime);
+	
+	// 서버라면 클라이언트들에게도 쿨타임 종료 알림
+	if (GetOwner()->HasAuthority())
+	{
+		Client_EndCooldown(ActionType);
+	}
+}
+
+void USkillComponent::Client_EndCooldown_Implementation(EActionType ActionType)
+{
+	if (GetOwner()->HasAuthority()) return;
+	
+	CooldownChecks.Add(ActionType, false);
+	
+	float CooldownTime = 0;
+	if (const float* Time = CooldownTimes.Find(ActionType))
+	{
+		CooldownTime = *Time;
+	}
+	OnCooldownChange.Broadcast(ActionType, false, CooldownTime);
+}
+
+void USkillComponent::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	if (!bInterrupted)
+		bIsSkillPlaying = false;
 }

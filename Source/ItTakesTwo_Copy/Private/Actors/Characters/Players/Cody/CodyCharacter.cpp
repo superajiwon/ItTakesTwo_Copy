@@ -1,6 +1,7 @@
 
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SkillComponent.h"
 #include "Components/StatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Shared/VFXObjectPoolSubsystem.h"
@@ -62,33 +63,6 @@ void ACodyCharacter::SpecialAttack(const FInputActionValue& Value)
 {
 	Super::SpecialAttack(Value);
 	
-	if (!ProjectileNiagara) return;
-	
-	UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
-	if (!PoolSubsystem) return;
-	
-	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
-		this,
-		ProjectileNiagara,
-		ProjectileSpeed,
-		SpecialProjectilePoint->GetComponentLocation(),
-		GetActorForwardVector(),
-		ProjectileLifeTime
-	);
-	
-	SpawnInfo.WithSphereCollision(
-		true,
-		FName(TEXT("PlayerWeapon")),
-		GetStatComponent()->GetAttackPower(),
-		ProjectileRadius
-	);
-	
-	SpawnInfo.WithOverlapExplosion(
-		OverlapNiagara,
-		0.f
-	);
-	
-	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 }
 
 void ACodyCharacter::CodyTeleport(float Distance)

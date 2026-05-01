@@ -33,7 +33,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	virtual void PrintNetLog() override;
+	
 private:
 	// === Components ===
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
@@ -45,7 +48,7 @@ private:
 public:
 	// === Action ===	
 	// 공격 시 이동 제한 플래그
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat|Movement")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category="Combat|Movement")
 	bool bIsActionLocked = false;
 	
 	// BeginPlay에서 저장할 기본 이동속도 (잠금 해제 시 복구용)
@@ -111,5 +114,5 @@ public:
 	virtual void Dash(const FInputActionValue& Value);
 	virtual void Ultimate(const FInputActionValue& Value);
 	
-	virtual void TakeDamageAction();
+	virtual void Damage(float DamageAmount, AActor* Causer) override;
 };

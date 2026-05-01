@@ -1,6 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Shared/Components/HitBoxComponent.h"
+
+#include "Actors/Characters/Players/PlayerBase.h"
+#include "Components/UltimateComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
 #include "Shared/Struct/HitRequest.h"
 #include "Shared/Subsystems/CombatSystem.h"
@@ -51,7 +54,6 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 {
 	if (!bCollisionOn) return; 
 	if (OtherActor == GetOwner()) return;
-	
 	if (!OtherActor->Tags.Contains(TargetTag)) return;
 	
 	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())

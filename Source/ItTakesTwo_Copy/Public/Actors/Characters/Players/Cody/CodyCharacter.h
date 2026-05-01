@@ -25,36 +25,21 @@ public:
 	TObjectPtr<USceneComponent> AttackColliderPoint;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UHitSphereComponent> BaseCollision;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Component")
+	TObjectPtr<USceneComponent> SpecialProjectilePoint;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UDotHitBoxComponent> UltimateCollision;
 	
-	
-	// === Collision ===
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Niagara")
-	TObjectPtr<UNiagaraSystem> ProjectileNiagara;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Niagara")
-	TObjectPtr<UNiagaraSystem> OverlapNiagara;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Component")
-	USceneComponent* SpecialProjectilePoint;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
-	float ProjectileSpeed = 1000.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
-	float ProjectileLifeTime = 3.0f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
-	float ProjectileRadius = 60.0f;
-
 
 	// === Base Attack ===
 	virtual void SetWeaponCollision(bool bEnable) override;
 	
 	
 	// === Special Attack === 
-	// todo
 	virtual void SpecialAttack(const FInputActionValue& Value) override;
 	
 	
 	// === Ultimate Attack === 
-	// todo
 	virtual void Ultimate(const FInputActionValue& Value) override;
 	virtual void EndUltimate() override;
 	
