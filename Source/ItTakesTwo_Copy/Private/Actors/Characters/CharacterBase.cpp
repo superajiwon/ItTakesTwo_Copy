@@ -23,6 +23,8 @@ void ACharacterBase::BeginPlay()
 void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	PrintNetLog();
 }
 
 void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -44,3 +46,8 @@ void ACharacterBase::Damage(float DamageAmount, AActor* Causer)
 	GetHPComponent()->ApplyDamage(DamageAmount, Causer);
 }
 
+void ACharacterBase::PrintNetLog()
+{
+	const FString LogStr = FString::Printf(TEXT("HP : %.0f"), GetHPComponent()->GetCurHP());
+	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
+}

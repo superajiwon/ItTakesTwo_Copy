@@ -71,20 +71,26 @@ protected:
 	bool bIsInInvincible = false;
 	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Invincible, Category = "HP|Invincible")
 	float InvincibleTime = 0.5f;
+
+	void EndInvincible();
 	UFUNCTION()
 	void OnRep_Invincible();
-	void EndInvincible();
-
 	
 	// 자동 회복
+	FTimerHandle RecoverDelayTimer;
+	FTimerHandle RecoverTickTimer;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	bool bIsRecovering = false;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
-	float MaxRecoverTime = 0.0f;
+	float RecoverDelayTime = 3.0f;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
-	float CurRecoverTime = 0.0f;
+	float RecoverSpeed = 1.0f;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
-	float RecoverAmount = 0.0f;
-	
+	float RecoverAmount = 5.0f;
+
+	void StartRecoverDelay();
+	void StartRecover();
+	void RecoverTick();
+	void StopRecover();
 
 };

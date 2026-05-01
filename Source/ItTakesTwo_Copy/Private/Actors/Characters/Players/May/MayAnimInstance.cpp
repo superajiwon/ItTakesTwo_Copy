@@ -61,6 +61,7 @@ void UMayAnimInstance::AnimNotify_UltimateOn()
 	
 	int32 RandDamage = FMath::RandRange(5, 18);
 	Owner->UltimateCollision->SetDamage(RandDamage);
+	Owner->UltimateCollision->SetHiddenInGame(false);
 	Owner->UltimateCollision->CollisionOn();
 }
 

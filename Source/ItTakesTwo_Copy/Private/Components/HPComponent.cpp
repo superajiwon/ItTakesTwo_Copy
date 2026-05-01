@@ -31,11 +31,6 @@ void UHPComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& O
 	DOREPLIFETIME(UHPComponent, MaxHp);
 	DOREPLIFETIME(UHPComponent, bIsDead);
 	DOREPLIFETIME(UHPComponent, bIsInInvincible);
-	DOREPLIFETIME(UHPComponent, InvincibleTime);
-	DOREPLIFETIME(UHPComponent, bIsRecovering);
-	DOREPLIFETIME(UHPComponent, MaxRecoverTime);
-	DOREPLIFETIME(UHPComponent, CurRecoverTime);
-	DOREPLIFETIME(UHPComponent, RecoverAmount);
 }
 
 void UHPComponent::ApplyDamage(int32 DamageAmount, AActor* Causer)
@@ -45,10 +40,13 @@ void UHPComponent::ApplyDamage(int32 DamageAmount, AActor* Causer)
 	if (bIsInInvincible) return;
 	
 	CurHp = FMath::Clamp(CurHp - DamageAmount, 0.0f, MaxHp);
-	UE_LOG(LogTemp, Log, TEXT("jiwon [HPComponent]  %s → %s | Damage: %d | 남은 HP: %.1f"), *Causer->GetName(), *GetNameSafe(GetOwner()), DamageAmount, CurHp);
 
 	// 호스트의 UI 갱신
 	OnHPChanged.Broadcast(CurHp, MaxHp);
+	
+	// 자동 회복
+	// StopRecover();
+	// StartRecoverDelay();
 	
 	if (CurHp <= 0.0f)
 	{
@@ -82,13 +80,44 @@ void UHPComponent::OnRep_CurHP()
 	OnHPChanged.Broadcast(CurHp, MaxHp);
 }
 
-void UHPComponent::OnRep_Invincible()
-{
-}
-
 void UHPComponent::EndInvincible()
 {
 	bIsInInvincible = false;
 	UE_LOG(LogTemp, Log, TEXT("jiwon [서버] 피격 가능!"));
+}
+
+void UHPComponent::OnRep_Invincible()
+{
+	// todo 무적 시 이펙트?
+}
+
+void UHPComponent::StartRecoverDelay()
+{
+	GetWorld()->GetTimerManager().SetTimer(RecoverDelayTimer, this, &UHPComponent::StartRecover, false);
+}
+
+void UHPComponent::StartRecover()
+{
+	if (CurHp >= MaxHp) return;
+	bIsRecovering = true;
+	GetWorld()->GetTimerManager().SetTimer(RecoverTickTimer, this, &UHPComponent::RecoverTick, true);
+}
+
+void UHPComponent::RecoverTick()
+{
+	if (CurHp >= MaxHp)
+	{
+		StopRecover();
+		return;
+	}
+	
+	ApplyHeal(RecoverAmount);
+}
+
+void UHPComponent::StopRecover()
+{
+	bIsRecovering = false;
+	GetWorld()->GetTimerManager().ClearTimer(RecoverDelayTimer);
+	GetWorld()->GetTimerManager().ClearTimer(RecoverTickTimer);
 }
 

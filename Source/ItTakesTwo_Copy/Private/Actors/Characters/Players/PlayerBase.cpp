@@ -99,10 +99,12 @@ void APlayerBase::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
 void APlayerBase::PrintNetLog()
 {
+	Super::PrintNetLog();
 	const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
-	const FString LogStr = FString::Printf(TEXT("%s\nHP : %f / 궁 : %f"), *ConStr, GetHPComponent()->GetCurHP(), UltimateComp->CurUltimateGauge);
-	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, LogStr, nullptr, FColor::White, 0, true, 1);
+	const FString LogStr = FString::Printf(TEXT("\n%s / 궁 : %.0f"), *ConStr, UltimateComp->CurUltimateGauge);
+	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 }
+
 
 // 현재 상태 (Normal / Ultimate)에 맞는 공격 데이터 반환
 // MayCharacter가 override하여 bIsUltimateForm 상태를 반영합니다.

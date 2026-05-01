@@ -118,7 +118,7 @@ void ACodyCharacter::EndUltimate()
 	
 	if (UltimateCollision)
 	{
-		UltimateCollision->SetHiddenInGame(false);
+		UltimateCollision->SetHiddenInGame(true);
 		UltimateCollision->CollisionOff();
 	}
 	
