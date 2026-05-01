@@ -55,6 +55,21 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void MoveTeleport(AMonsterAIController* MonsterController, FVector PlayerLocation){};
 	
+public:
+	// Montage
+	void MontagePlay();
+	
+	UFUNCTION()
+	void OnRep_MonsterState();
+	
+	UFUNCTION(BlueprintCallable, Category = "Montage")
+	virtual void AnimNotify_MontageEnd();
+	
+	UFUNCTION(BlueprintCallable, Category = "Montage")
+	virtual void AnimNotify_CollisionOn();
+	
+	UFUNCTION(BlueprintCallable, Category = "Montage")
+	virtual void AnimNotify_DeadMotionEnd();
 	
 public:
 	void SetMonsterState(EMonsterState NewState);
@@ -82,21 +97,18 @@ public:
 	{
 		return bOverlapedToTarget;
 	}
-public:
+	bool IsDead() const
+	{
+		return bDead;
+	}
 	bool GetMontagePlayingState() const;
-	
 	float GetDetectRadius() const;
 	float GetAttackRange() const;
-	
-	void MontagePlay();
-	
-	UFUNCTION()
-	void OnRep_MonsterState();
-	
-	UFUNCTION(BlueprintCallable, Category = "Montage")
-	virtual void AnimNotify_MontageEnd();
-	
+
 protected:
+	UPROPERTY()
+	bool bDead{false};
+	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bDetectPlayer{false};
 	
@@ -130,6 +142,8 @@ protected:
 
 	UPROPERTY()
 	UMonsterAnimInstance* AnimInstance;
+	
+	// Montage
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Montage")
 	TObjectPtr<UAnimMontage> AttackMontage;

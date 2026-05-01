@@ -39,6 +39,19 @@ void UMonsterAnimInstance::AnimNotify_MontageEnd()
 {
 	if (!CachedMonster)
 		return;
-	
 	CachedMonster->AnimNotify_MontageEnd();
+}
+
+void UMonsterAnimInstance::AnimNotify_CollisionOn()
+{
+	if (!CachedMonster)
+		return;
+	CachedMonster->AnimNotify_CollisionOn();
+}
+
+void UMonsterAnimInstance::AnimNotify_DeadMotionEnd()
+{
+	if (!CachedMonster)
+		return;
+	CachedMonster->AnimNotify_DeadMotionEnd();
 }

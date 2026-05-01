@@ -1,11 +1,13 @@
 ﻿
 #include "Actors/Characters/Monsters/WeaponMonsterBase/WeaponMonsterBase.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
+
 
 AWeaponMonsterBase::AWeaponMonsterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	RightHand_WeaponMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RightWeaponMeshComponent"));
 	RightHand_WeaponMeshComponent->SetupAttachment(GetMesh(), FName(TEXT("RightHandSocket")));
 }
@@ -13,7 +15,8 @@ AWeaponMonsterBase::AWeaponMonsterBase()
 void AWeaponMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationYaw = true;
 }
 
 void AWeaponMonsterBase::Tick(float DeltaTime)

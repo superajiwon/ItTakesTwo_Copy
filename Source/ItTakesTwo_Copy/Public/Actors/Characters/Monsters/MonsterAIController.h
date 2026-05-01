@@ -34,13 +34,13 @@ protected:
 	
 private:
 	
-	void UpdateMovement();
-
-	void MoveToTarget();
-	void MoveToTargetLocation();
-	void TeleportToTarget();
-	void Standing();
-	void MoveToForward();
+	void UpdateMovement(float DeltaTime);
+	void LookAtTargetSmooth(float DeltaTime);
+	void MoveToTarget(float DeltaTime);
+	void MoveToTargetLocation(float DeltaTime);
+	void TeleportToTarget(float DeltaTime);
+	void Standing(float DeltaTime);
+	void MoveToForward(float DeltaTime);
 	
 public:
 	void NotifyAttackAnimationFinished();

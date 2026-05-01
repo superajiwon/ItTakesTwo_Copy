@@ -26,9 +26,9 @@ AToyMage_Monster::AToyMage_Monster()
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
 	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FHitComp_Info HitCompInfo(FName("Monster"), FName("MonsterWeapon"), FVector(0.f, 0.f, 27.0f), FVector(20.f, 20.f, 130.f));
-	
 	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
 	HitBoxComponent->SetDamage(30);
+	HitBoxComponent->CollisionOff();
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> Niagara(
 		TEXT("/Game/VFX/Using/NS_MageProjectile.NS_MageProjectile"));
 	if (Niagara.Succeeded())
@@ -78,26 +78,36 @@ void AToyMage_Monster::MoveTeleport(AMonsterAIController* MonsterController, FVe
 void AToyMage_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	DrawDebugBox(
-		GetWorld(),
-		HitBoxComponent->GetComponentLocation(),
-		HitBoxComponent->GetScaledBoxExtent(),
-		HitBoxComponent->GetComponentQuat(),
-		FColor::Red,
-		false,
-		-1,
-		0,
-		2.f
-	);
+	// DrawDebugBox(
+	// 	GetWorld(),
+	// 	HitBoxComponent->GetComponentLocation(),
+	// 	HitBoxComponent->GetScaledBoxExtent(),
+	// 	HitBoxComponent->GetComponentQuat(),
+	// 	FColor::Red,
+	// 	false,
+	// 	-1,
+	// 	0,
+	// 	2.f
+	// );
 }
 
 void AToyMage_Monster::AnimNotify_MontageEnd()
 {
 	if (MonsterState == EMonsterState::Fire)
 		ProjectileFire();
+	else if (MonsterState == EMonsterState::Swing)
+		HitBoxComponent->CollisionOff();
+	
 	
 	Super::AnimNotify_MontageEnd();
 	
+}
+
+void AToyMage_Monster::AnimNotify_CollisionOn()
+{
+	if (MonsterState == EMonsterState::Swing)
+		HitBoxComponent->CollisionOn();
+	Super::AnimNotify_CollisionOn();
 }
 
 void AToyMage_Monster::ProjectileFire()

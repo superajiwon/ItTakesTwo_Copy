@@ -23,6 +23,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void AnimNotify_MontageEnd() override;
+	virtual void AnimNotify_CollisionOn() override;
 	
 	
 private:

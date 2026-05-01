@@ -23,6 +23,7 @@ AToyKnightMorningStar_Monster::AToyKnightMorningStar_Monster()
 	// [나지원이 테스트로 추가함 헤헤..] 	
 	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
 	HitBoxComponent->SetDamage(20);
+	HitBoxComponent->CollisionOff();
 }
 
 void AToyKnightMorningStar_Monster::BeginPlay()
@@ -32,20 +33,27 @@ void AToyKnightMorningStar_Monster::BeginPlay()
 
 }
 
+void AToyKnightMorningStar_Monster::AnimNotify_CollisionOn()
+{
+	if (MonsterState == EMonsterState::Swing)
+		HitBoxComponent->CollisionOn();
+	Super::AnimNotify_CollisionOn();
+}
+
 void AToyKnightMorningStar_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	DrawDebugBox(
-		GetWorld(),
-		HitBoxComponent->GetComponentLocation(),
-		HitBoxComponent->GetScaledBoxExtent(),
-		HitBoxComponent->GetComponentQuat(),
-		FColor::Red,
-		false,
-		-1,
-		0,
-		2.f
-	);
+	// DrawDebugBox(
+	// 	GetWorld(),
+	// 	HitBoxComponent->GetComponentLocation(),
+	// 	HitBoxComponent->GetScaledBoxExtent(),
+	// 	HitBoxComponent->GetComponentQuat(),
+	// 	FColor::Red,
+	// 	false,
+	// 	-1,
+	// 	0,
+	// 	2.f
+	// );
 }
 
 

@@ -55,6 +55,7 @@ void AMonsterAIController::Tick(float DeltaTime)
 	{
 		return;
 	}
+	
 
 	if (!CachedMonster)
 	{
@@ -64,7 +65,11 @@ void AMonsterAIController::Tick(float DeltaTime)
 			return;
 		}
 	}
-
+	if (CachedMonster->IsDead())
+	{
+		StopMovement();
+		return;
+	}
 	FString StateStr = UEnum::GetValueAsString(CachedMonster->GetMonsterState());
 	DrawDebugString(
 		GetWorld(),
@@ -92,7 +97,7 @@ void AMonsterAIController::Tick(float DeltaTime)
 		CurrentIdleTime += DeltaTime;
 	}
 
-	UpdateMovement();
+	UpdateMovement(DeltaTime);
 }
 
 TObjectPtr<ACharacterBase> AMonsterAIController::FindNearestPlayer() const
@@ -127,7 +132,7 @@ TObjectPtr<ACharacterBase> AMonsterAIController::FindNearestPlayer() const
 	return NearestPlayer;
 }
 
-void AMonsterAIController::UpdateMovement()
+void AMonsterAIController::UpdateMovement(float DeltaTime)
 {
 	if (!CachedMonster)
 		return;
@@ -139,22 +144,22 @@ void AMonsterAIController::UpdateMovement()
 	{
 	case EMonsterMoveType::BasicMove:
 		{
-			MoveToTarget();
+			MoveToTarget(DeltaTime);
 			break;
 		}
 	case EMonsterMoveType::Teleport:
 		{
-			TeleportToTarget();
+			TeleportToTarget(DeltaTime);
 			break;
 		}
 	case EMonsterMoveType::Standing:
 		{
-			Standing();
+			Standing(DeltaTime);
 			break;
 		}
 	case EMonsterMoveType::MoveForward:
 		{
-			MoveToForward();
+			MoveToForward(DeltaTime);
 			break;
 		}
 	case EMonsterMoveType::End:
@@ -162,7 +167,7 @@ void AMonsterAIController::UpdateMovement()
 	}
 }
 
-void AMonsterAIController::MoveToTarget()
+void AMonsterAIController::MoveToTarget(float DeltaTime)
 {
 	if (!CurrentTarget.IsValid())
 	{
@@ -183,16 +188,15 @@ void AMonsterAIController::MoveToTarget()
 	}
 	if (bRestTime)
 	{ 
+		StopMovement();
+		LookAtTargetSmooth(DeltaTime);
+		
 		if (CurrentIdleTime < MaxIdleTime)
-		{	
-			StopMovement();
 			return;
-		}
-		else
-		{
-			bRestTime = false;
-			CurrentIdleTime = 0.f;
-		}
+		
+		bRestTime = false;
+		CurrentIdleTime = 0.f;
+		
 	}
 	
 	const float DistanceToTarget = FVector::Dist(CachedMonster->GetActorLocation(), CurrentTarget->GetActorLocation());
@@ -220,12 +224,12 @@ void AMonsterAIController::MoveToTarget()
 	MoveToActor(CurrentTarget.Get());
 }
 
-void AMonsterAIController::MoveToTargetLocation()
+void AMonsterAIController::MoveToTargetLocation(float DeltaTime)
 {
 	MoveToLocation(TargetLocation);
 }
 
-void AMonsterAIController::TeleportToTarget()
+void AMonsterAIController::TeleportToTarget(float DeltaTime)
 {
 	if (!CachedMonster)
 	{
@@ -294,7 +298,7 @@ void AMonsterAIController::TeleportToTarget()
 	}
 }
 
-void AMonsterAIController::Standing()
+void AMonsterAIController::Standing(float DeltaTime)
 {
 	if (!CachedMonster)
 	{
@@ -309,7 +313,8 @@ void AMonsterAIController::Standing()
 			ReTargetTime= 0.f;
 			if (CachedMonster->GetMonsterState() != EMonsterState::Detect)
 				CachedMonster->SetMonsterState(EMonsterState::Detect);
-			SetFocalPoint(CurrentTarget->GetActorLocation());
+			LookAtTargetSmooth(DeltaTime);
+			// SetFocalPoint(CurrentTarget->GetActorLocation());
 			CachedMonster->SetDetectPlayer(true);
 			return;
 		}
@@ -323,8 +328,8 @@ void AMonsterAIController::Standing()
 		return;
 	}
 	
-	SetFocalPoint(CurrentTarget->GetActorLocation());
-	
+	//SetFocalPoint(CurrentTarget->GetActorLocation());
+	LookAtTargetSmooth(DeltaTime);
 	if (ReTargetTime > MaxReTargetTime)
 	{
 		CurrentTarget = FindNearestPlayer();
@@ -367,7 +372,7 @@ void AMonsterAIController::Standing()
 
 }
 
-void AMonsterAIController::MoveToForward()
+void AMonsterAIController::MoveToForward(float DeltaTime)
 {
 	if (!CachedMonster)
 	{
@@ -451,3 +456,26 @@ void AMonsterAIController::NotifyAttackAnimationFinished()
 
 
 
+void AMonsterAIController::LookAtTargetSmooth(float DeltaTime)
+{
+	if (!CachedMonster || !CurrentTarget.IsValid())
+		return;
+
+	FVector Dir = CurrentTarget->GetActorLocation() - CachedMonster->GetActorLocation();
+	Dir.Z = 0.f;
+
+	if (Dir.IsNearlyZero())
+		return;
+
+	const FRotator TargetRot = Dir.Rotation();
+	const FRotator CurrentRot = CachedMonster->GetActorRotation();
+
+	const FRotator NewRot = FMath::RInterpTo(
+		CurrentRot,
+		TargetRot,
+		DeltaTime,
+		5.f // 회전 속도. 낮을수록 느림
+	);
+
+	CachedMonster->SetActorRotation(NewRot);
+}

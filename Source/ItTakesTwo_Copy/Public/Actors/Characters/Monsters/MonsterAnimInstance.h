@@ -18,7 +18,10 @@ public:
 public:
 	UFUNCTION()
 	void AnimNotify_MontageEnd();
-	
+	UFUNCTION()
+	void AnimNotify_CollisionOn();
+	UFUNCTION()
+	void AnimNotify_DeadMotionEnd();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AnimationSetting")
 	EMonsterState CurrentState{EMonsterState::Idle};

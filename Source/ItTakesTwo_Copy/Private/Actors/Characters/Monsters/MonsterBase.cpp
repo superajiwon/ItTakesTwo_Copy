@@ -44,11 +44,13 @@ void AMonsterBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (GetHPComponent()->GetIsDead())
 	{
-		Destroy();
+		SetMonsterState(EMonsterState::Dead);
+		bDead = true;
+		AnimInstance->CurrentState = EMonsterState::Dead;
 	}
-	const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
-	const FString LogStr = FString::Printf(TEXT("%s\nHP : %f "), *ConStr, GetHPComponent()->GetCurHP());
-	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, LogStr, nullptr, FColor::White, 0, true, 1);
+	// const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
+	// const FString LogStr = FString::Printf(TEXT("%s\nHP : %f "), *ConStr, GetHPComponent()->GetCurHP());
+	// DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 
 }
 
@@ -137,10 +139,12 @@ void AMonsterBase::MontagePlay()
 	case EMonsterState::Detect:
 		{
 			MontageToPlay = DetectMontage;
+			break;
 		}
 	case EMonsterState::Dead:
 		{
 			MontageToPlay = DeadMontage;
+			break;
 		}
 		default:
 			break;
@@ -163,6 +167,10 @@ void AMonsterBase::OnRep_MonsterState()
 
 void AMonsterBase::AnimNotify_MontageEnd()
 {
+	if (MonsterState == EMonsterState::Dead)
+	{
+		return;
+	}
 	bPlayingMontage = false;
 	bOverlapedToTarget = false;
 	AMonsterAIController* MonsterController = Cast<AMonsterAIController>(GetController());
@@ -170,5 +178,22 @@ void AMonsterBase::AnimNotify_MontageEnd()
 		return;
 	
 	MonsterController->NotifyAttackAnimationFinished();
+}
+
+void AMonsterBase::AnimNotify_CollisionOn()
+{
+}
+
+void AMonsterBase::AnimNotify_DeadMotionEnd()
+{
+	
+	AnimInstance->Montage_Stop(0.f);
+	GetMesh()->SetVisibility(false, true);
+	SetActorEnableCollision(false);
+
+	if (HasAuthority())
+	{
+		Destroy();
+	}
 }
 

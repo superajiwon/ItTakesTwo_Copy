@@ -21,6 +21,7 @@ AToyShielder_Monster::AToyShielder_Monster()
 	FHitComp_Info HitCompInfo(FName("Monster"), FName("MonsterWeapon"), FVector(0.f, 0.f, 5.00001f), FVector(50.f, 70.f, 100.f));
 	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
 	HitBoxComponent->SetDamage(30);
+	HitBoxComponent->CollisionOff();
 	RightHand_WeaponMeshComponent->SetupAttachment(GetMesh(), FName(TEXT("LeftHandSocket")));
 }
 
@@ -29,20 +30,33 @@ void AToyShielder_Monster::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AToyShielder_Monster::AnimNotify_CollisionOn()
+{
+	if (MonsterState == EMonsterState::Swing)
+		HitBoxComponent->CollisionOn();
+	Super::AnimNotify_CollisionOn();
+}
+
+void AToyShielder_Monster::AnimNotify_DeadMotionEnd()
+{
+	Super::AnimNotify_DeadMotionEnd();
+	Destroy();
+}
+
 void AToyShielder_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	DrawDebugBox(
-		GetWorld(),
-		HitBoxComponent->GetComponentLocation(),
-		HitBoxComponent->GetScaledBoxExtent(),
-		HitBoxComponent->GetComponentQuat(),
-		FColor::Red,
-		false,
-		-1,
-		0,
-		2.f
-	);
+	// DrawDebugBox(
+	// 	GetWorld(),
+	// 	HitBoxComponent->GetComponentLocation(),
+	// 	HitBoxComponent->GetScaledBoxExtent(),
+	// 	HitBoxComponent->GetComponentQuat(),
+	// 	FColor::Red,
+	// 	false,
+	// 	-1,
+	// 	0,
+	// 	2.f
+	// );
 }
 
 

@@ -21,6 +21,7 @@ AToyKnightSword_Monster::AToyKnightSword_Monster()
 	FHitComp_Info HitCompInfo(FName("Monster"), FName("MonsterWeapon"), FVector(0.f, 0.f, 45.0f), FVector(20.f, 20.f, 40.f));
 	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
 	HitBoxComponent->SetDamage(40);
+	HitBoxComponent->CollisionOff();
 }
 
 void AToyKnightSword_Monster::BeginPlay()
@@ -29,20 +30,27 @@ void AToyKnightSword_Monster::BeginPlay()
 	
 }
 
+void AToyKnightSword_Monster::AnimNotify_CollisionOn()
+{
+	if (MonsterState == EMonsterState::Swing)
+		HitBoxComponent->CollisionOn();
+	Super::AnimNotify_CollisionOn();
+}
+
 void AToyKnightSword_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	DrawDebugBox(
-		GetWorld(),
-		HitBoxComponent->GetComponentLocation(),
-		HitBoxComponent->GetScaledBoxExtent(),
-		HitBoxComponent->GetComponentQuat(),
-		FColor::Red,
-		false,
-		-1,
-		0,
-		2.f
-	);
+	// DrawDebugBox(
+	// 	GetWorld(),
+	// 	HitBoxComponent->GetComponentLocation(),
+	// 	HitBoxComponent->GetScaledBoxExtent(),
+	// 	HitBoxComponent->GetComponentQuat(),
+	// 	FColor::Red,
+	// 	false,
+	// 	-1,
+	// 	0,
+	// 	2.f
+	// );
 }
 
 
