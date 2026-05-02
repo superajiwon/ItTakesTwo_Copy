@@ -31,7 +31,7 @@ private:
 
 	
 private:
-	TMap<int32, FVector> TargetLocationMap;// 순간이동 위치를 담은 배열
+	TMap<int32, FTransform> TargetLocationMap;// 순간이동 위치를 담은 배열
 	int32 CurrentLocationIndex{0};
 	
 public:

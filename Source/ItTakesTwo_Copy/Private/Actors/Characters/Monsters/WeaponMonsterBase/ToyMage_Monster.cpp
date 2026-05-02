@@ -9,6 +9,8 @@
 #include "Shared/Struct/FVFXSpawn_Info.h"
 #include "Shared/Struct/HitComp_Info.h"
 #include "NiagaraSystem.h"
+#include "Actors/Characters/Monsters/Teleport_TargetPoint.h"
+#include "Shared/Subsystems/TargetPointSubsystem.h"
 #include "UObject/ConstructorHelpers.h"
 
 
@@ -19,9 +21,9 @@ AToyMage_Monster::AToyMage_Monster()
 	DetectRadius = 1500.0f;
 	AttackRange = 150.f;
 	MaxIdleTime = 2.f;
-	TargetLocationMap.Add(0, FVector(1940.0f, 0.0f, 100.0f));
-	TargetLocationMap.Add(1, FVector(720.0f, -330.0f, 100.0f));
-	TargetLocationMap.Add(2, FVector(720.0f, 580.0f, 100.0f));
+	// TargetLocationMap.Add(0, FVector(1940.0f, 0.0f, 100.0f));
+	// TargetLocationMap.Add(1, FVector(720.0f, -330.0f, 100.0f));
+	// TargetLocationMap.Add(2, FVector(720.0f, 580.0f, 100.0f));
 	
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
 	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -48,30 +50,48 @@ void AToyMage_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	UTargetPointSubsystem* Subsystem = GetWorld()->GetSubsystem<UTargetPointSubsystem>();
+	if (Subsystem)
+	{
+		TArray<TObjectPtr<ATeleport_TargetPoint>> PointList = Subsystem->GetTeleportTransform();
+		
+		for (auto& Point : PointList)
+		{
+			TargetLocationMap.Add(Point->GetIndex(), Point->GetActorTransform());
+		}
+		if (FTransform* FoundTransform = TargetLocationMap.Find(CurrentLocationIndex))
+		{
+			SetActorTransform(*FoundTransform);
+			++CurrentLocationIndex;
+		}
+	}
 }
 
 void AToyMage_Monster::MoveTeleport(AMonsterAIController* MonsterController, FVector PlayerLocation)
 {
 	Super::MoveTeleport(MonsterController,PlayerLocation);
 
-	++CurrentLocationIndex;
-	if (CurrentLocationIndex > 2)
-	{
-		CurrentLocationIndex = 0;
-	}
+	if (!HasAuthority() || TargetLocationMap.Num() == 0)
+		return;
 
-	FVector Location = GetActorLocation();
-	if (TargetLocationMap.Contains(CurrentLocationIndex))
-	{
-		Location = TargetLocationMap[CurrentLocationIndex];
-	}
+	CurrentLocationIndex = (CurrentLocationIndex + 1) % TargetLocationMap.Num();
 
-	const FVector Dir = PlayerLocation - Location;
-	const bool bSuccess = TeleportTo(Location, Dir.Rotation());
+	const FTransform* FoundTransform = TargetLocationMap.Find(CurrentLocationIndex);
+	if (!FoundTransform)
+		return;
+
+	const FVector NewLocation = FoundTransform->GetLocation();
+
+	FVector Dir = PlayerLocation - NewLocation;
+	Dir.Z = 0.f;
+
+	const FRotator NewRotation = Dir.IsNearlyZero()	? GetActorRotation() : Dir.Rotation();
+
+	const bool bSuccess = TeleportTo(NewLocation, NewRotation, false, true);
 
 	if (bSuccess)
 	{
-		ForceNetUpdate(); // 중요한 변화니 빨리 갱신하라고 재촉하는 함수
+		ForceNetUpdate();
 	}
 }
 
