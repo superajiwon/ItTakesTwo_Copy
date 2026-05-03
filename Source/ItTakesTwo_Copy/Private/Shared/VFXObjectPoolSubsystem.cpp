@@ -23,21 +23,26 @@ void UVFXObjectPoolSubsystem::Initialize_Pool()
 	{
 		return;
 	}
-
-	for (int32 i = 0; i < MAX_VFXPOOLSIZE; ++i)
+	if (ProjectileList.Num() < MAX_VFXPOOLSIZE)
 	{
-		AVFXProjectileObject* Projectile = GetWorld()->SpawnActor<AVFXProjectileObject>(AVFXProjectileObject::StaticClass());
-		if (Projectile)
+		for (int32 i = 0; i < MAX_VFXPOOLSIZE; ++i)
 		{
-			ProjectileList.Add(Projectile);
+			AVFXProjectileObject* Projectile = GetWorld()->SpawnActor<AVFXProjectileObject>(AVFXProjectileObject::StaticClass());
+			if (Projectile)
+			{
+				ProjectileList.Add(Projectile);
+			}
 		}
 	}
-	for (int32 i = 0; i < MAX_VFXPOOLSIZE; ++i)
+	if (ExplosionList.Num() < MAX_VFXPOOLSIZE)
 	{
-		AVFXExplosionObject* Explosion = GetWorld()->SpawnActor<AVFXExplosionObject>(AVFXExplosionObject::StaticClass());
-		if (Explosion)
+		for (int32 i = 0; i < MAX_VFXPOOLSIZE; ++i)
 		{
-			ExplosionList.Add(Explosion);
+			AVFXExplosionObject* Explosion = GetWorld()->SpawnActor<AVFXExplosionObject>(AVFXExplosionObject::StaticClass());
+			if (Explosion)
+			{
+				ExplosionList.Add(Explosion);
+			}
 		}
 	}
 	
@@ -61,6 +66,7 @@ TObjectPtr<AVFXProjectileObject> UVFXObjectPoolSubsystem::UseVFX_Projectile(cons
 
 TObjectPtr<AVFXExplosionObject> UVFXObjectPoolSubsystem::UseVFX_Explosion(const FVFXSpawn_Info& VFXInfo)
 {
+	Initialize_Pool();
 	for (AVFXExplosionObject* Explosion : ExplosionList)
 	{
 		if (Explosion && !Explosion->IsUsing())
