@@ -11,6 +11,7 @@ class USkillComponent;
 class UUltimateComponent;
 class UInputMappingContext;
 class UInputAction;
+class UNiagaraSystem;
 struct FInputActionValue;
 
 UCLASS()
@@ -99,6 +100,35 @@ public:
 	UFUNCTION()
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 	
+	
+	//=== Death & Revive ===
+	UFUNCTION()
+	virtual void OnDeath();
+	
+	UFUNCTION()
+	virtual void OnRevive();
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Niagara")
+	UNiagaraSystem* DeathNiagara;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Niagara")
+	UNiagaraSystem* ReviveNiagara;
+	
+protected:
+	// todo Timer가 아니라 다른걸로 바꿔야함
+	FTimerHandle RespawnTimer;
+	
+	UFUNCTION()
+	void Respawn();
+	
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayDeathNiagara();
+	
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayReviveNiagara();
+
+	
+public:
 	// === Input ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
 	UInputMappingContext* IMC_PlayerMapping;

@@ -5,11 +5,17 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkillComponent.h"
 #include "Components/UltimateComponent.h"
+#include "Components/HPComponent.h"
+#include "EngineUtils.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NavigationSystem.h"
+
 
 class UEnhancedInputLocalPlayerSubsystem;
 
@@ -29,6 +35,8 @@ APlayerBase::APlayerBase()
 	// === Component ===
 	SkillComp = CreateDefaultSubobject<USkillComponent>(TEXT("SkillComp"));
 	UltimateComp = CreateDefaultSubobject<UUltimateComponent>(TEXT("UltimateComp"));
+	
+	GetHPComponent()->SetIsPlayer(true);
 	
 	// === Input ===
 	ConstructorHelpers::FObjectFinder<UInputMappingContext> TempIMC(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Inputs/IMC_PlayerMapping.IMC_PlayerMapping'"));
@@ -65,6 +73,9 @@ void APlayerBase::BeginPlay()
 	{
 		UltimateComp->OnUltimateFinish.AddDynamic(this, &APlayerBase::EndUltimate);
 	}
+	
+	GetHPComponent()->OnDeath.AddDynamic(this, &APlayerBase::OnDeath);
+	GetHPComponent()->OnRevive.AddDynamic(this, &APlayerBase::OnRevive);
 }
 
 void APlayerBase::Tick(float DeltaTime)
@@ -184,6 +195,86 @@ void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 		bIsActionLocked = false;
 		GetCharacterMovement()->MaxWalkSpeed = DefaultMaxWalkSpeed;
 		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
+}
+
+void APlayerBase::OnDeath()
+{
+	bIsActionLocked = true;
+	DisableInput(Cast<APlayerController>(GetController()));
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+	
+	if (HasAuthority())
+	{
+		Multicast_PlayDeathNiagara();
+		// todo 이 부분 음.. HPComponent에서 E를 연타하면 부활 속도 빨라지는 것 구현해야함 
+		GetWorld()->GetTimerManager().SetTimer(RespawnTimer, this, &APlayerBase::Respawn, 3.0f, false);
+	}
+}
+
+void APlayerBase::OnRevive()
+{
+	bIsActionLocked = false;
+	EnableInput(Cast<APlayerController>(GetController()));
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
+	
+	if (HasAuthority())
+	{
+		Multicast_PlayReviveNiagara();
+	}
+}
+
+void APlayerBase::Respawn()
+{
+	if (!HasAuthority()) return;
+	
+	APlayerBase* OtherPlayer = nullptr;
+	// todo 이부분 이거 이렇게 꼭 가져와야하나 ..? 흠
+	for (TActorIterator<APlayerBase> It(GetWorld()); It; ++It)
+	{
+		if (*It != this)
+		{
+			OtherPlayer = *It;
+			break;
+		}
+	}
+	
+	if (OtherPlayer && !OtherPlayer->GetHPComponent()->GetIsDead())
+	{
+		// todo 여기는 맵에 배치 되어있는 네비메쉬.. 생각해야함
+		UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+		if (NavSys)
+		{
+			FNavLocation RandLocation;
+			if (NavSys->GetRandomReachablePointInRadius(OtherPlayer->GetActorLocation(), 500.0f, RandLocation))
+			{
+				TeleportTo(RandLocation.Location + FVector(0, 0, 100.0f), OtherPlayer->GetActorRotation());
+				GetHPComponent()->Revive();
+			}
+		}
+	}
+	else
+	{
+		// todo 둘 다 죽은 경우 
+		UE_LOG(LogTemp, Warning, TEXT("둘다 쥬금. 체크 포인트 필요"));
+	}
+}
+
+void APlayerBase::Multicast_PlayDeathNiagara_Implementation()
+{	
+	if (DeathNiagara)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), DeathNiagara, GetActorLocation(), GetActorRotation());
+	}
+}
+
+void APlayerBase::Multicast_PlayReviveNiagara_Implementation()
+{
+	if (ReviveNiagara)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ReviveNiagara, GetActorLocation(), GetActorRotation());
 	}
 }
 

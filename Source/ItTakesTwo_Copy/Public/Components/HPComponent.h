@@ -6,6 +6,8 @@
 #include "HPComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHPChangedSignature, float, CurHealth, float, MaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeathSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnReviveSignature);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ITTAKESTWO_COPY_API UHPComponent : public UActorComponent
@@ -27,17 +29,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category="HP")
 	void ApplyHeal(float HealAmount);
 
-private:
-	// HP가 복제 될 때 클라이언트에서 호출 될 함수 (UI 갱신용)
-	UFUNCTION()
-	void OnRep_CurHP();
-	
 public:
 	// UI에서 바인딩 할 이벤트
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnHPChangedSignature OnHPChanged;
 	
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnDeathSignature OnDeath;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnReviveSignature OnRevive;
+	
 public:
+	UFUNCTION(BlueprintCallable, Category="HP")
+	void Revive();
+	
 	UFUNCTION(BlueprintCallable, Category="HP")
 	float GetCurHP() const { return CurHp; }
 	UFUNCTION(BlueprintCallable, Category="HP")
@@ -45,6 +51,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="HP")
 	bool GetIsDead() const { return bIsDead; }
+	
+	UFUNCTION(BlueprintCallable, Category="HP")
+	void SetIsPlayer(bool IsPlayer) { bIsPlayer = IsPlayer; }
 	
 	UFUNCTION(BlueprintCallable, Category="HP")
 	void SetInvincibleTime(float Time) { InvincibleTime = Time; };
@@ -55,30 +64,37 @@ public:
 	
 //! 변수
 protected:   
-	// HP
+	// === HP ===
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
 	float MaxHp = 100.0f;
-	// ReplicatedUsing을 통해 값이 복제 될 때 OnRep_CurHP 함수 실행
 	UPROPERTY(EditAnywhere, ReplicatedUsing=OnRep_CurHp, Category = "HP")
 	float CurHp = 0.0f;
+	UFUNCTION() // HP가 복제 될 때 클라이언트에서 호출 될 함수 (UI 갱신용)
+	void OnRep_CurHP();
 	
-	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
+	// === Dead === 
+	UPROPERTY(EditAnywhere, ReplicatedUsing=OnRep_IsDead, Category = "HP|Dead")
 	bool bIsDead = false;
+	UFUNCTION()
+	void OnRep_IsDead();
 	
-	// 무적
+	
+	// === Invincible === 
 	FTimerHandle InvincibleTimer;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Invincible")
 	bool bIsInInvincible = false;
 	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Invincible, Category = "HP|Invincible")
-	float InvincibleTime = 0.5f;
-
-	void EndInvincible();
+	float InvincibleTime = 0.35f;
 	UFUNCTION()
 	void OnRep_Invincible();
+	void EndInvincible();
 	
-	// 자동 회복
+	
+	// === Recover ===
 	FTimerHandle RecoverDelayTimer;
 	FTimerHandle RecoverTickTimer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HP|Recovering")
+	bool bIsPlayer = false;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	bool bIsRecovering = false;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")

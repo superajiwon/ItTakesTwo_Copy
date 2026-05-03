@@ -45,18 +45,25 @@ void UHPComponent::ApplyDamage(int32 DamageAmount, AActor* Causer)
 	OnHPChanged.Broadcast(CurHp, MaxHp);
 	
 	// 자동 회복
-	StopRecover();
-	StartRecoverDelay();
+	if (bIsPlayer)
+	{
+		StopRecover();
+		StartRecoverDelay();
+	}
 	
 	if (CurHp <= 0.0f)
 	{
 		bIsDead = true;
-		// todo 사망했을 때 
+		
+		OnDeath.Broadcast();
 	}
 	else
 	{
-		bIsInInvincible = true;
-		GetWorld()->GetTimerManager().SetTimer(InvincibleTimer, this, &UHPComponent::EndInvincible, InvincibleTime, false);
+		bIsInInvincible = true;		
+		if (UWorld* World = GetWorld())
+		{
+			World->GetTimerManager().SetTimer(InvincibleTimer, this, &UHPComponent::EndInvincible, InvincibleTime, false);
+		}	
 	}
 }
 
@@ -80,10 +87,35 @@ void UHPComponent::OnRep_CurHP()
 	OnHPChanged.Broadcast(CurHp, MaxHp);
 }
 
+void UHPComponent::Revive()
+{
+	if (!GetOwner()->HasAuthority()) return;
+	
+	CurHp = MaxHp; 
+	bIsDead = false;
+	bIsInInvincible = true;
+	GetWorld()->GetTimerManager().SetTimer(InvincibleTimer, this, &UHPComponent::EndInvincible, 5.0f, false);
+	
+	OnHPChanged.Broadcast(CurHp, MaxHp);
+	OnRevive.Broadcast();
+}
+
 void UHPComponent::EndInvincible()
 {
 	bIsInInvincible = false;
 	UE_LOG(LogTemp, Log, TEXT("jiwon [서버] 피격 가능!"));
+}
+
+void UHPComponent::OnRep_IsDead()
+{
+	if (bIsDead)
+	{
+		OnDeath.Broadcast();
+	}
+	else
+	{
+		OnRevive.Broadcast();
+	}
 }
 
 void UHPComponent::OnRep_Invincible()
@@ -93,7 +125,10 @@ void UHPComponent::OnRep_Invincible()
 
 void UHPComponent::StartRecoverDelay()
 {
-	GetWorld()->GetTimerManager().SetTimer(RecoverDelayTimer, this, &UHPComponent::StartRecover, RecoverDelayTime, false);
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().SetTimer(RecoverDelayTimer, this, &UHPComponent::StartRecover, RecoverDelayTime, false);
+	}
 }
 
 void UHPComponent::StartRecover()
@@ -101,7 +136,10 @@ void UHPComponent::StartRecover()
 	if (CurHp >= MaxHp) return;
 	
 	bIsRecovering = true;
-	GetWorld()->GetTimerManager().SetTimer(RecoverTickTimer, this, &UHPComponent::RecoverTick, RecoverSpeed, true);
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().SetTimer(RecoverTickTimer, this, &UHPComponent::RecoverTick, RecoverSpeed, true);
+	}
 }
 
 void UHPComponent::RecoverTick()
@@ -119,7 +157,10 @@ void UHPComponent::StopRecover()
 {
 	bIsRecovering = false;
 	
-	GetWorld()->GetTimerManager().ClearTimer(RecoverDelayTimer);
-	GetWorld()->GetTimerManager().ClearTimer(RecoverTickTimer);
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().ClearTimer(RecoverDelayTimer);
+		World->GetTimerManager().ClearTimer(RecoverTickTimer);
+	}
 }
 

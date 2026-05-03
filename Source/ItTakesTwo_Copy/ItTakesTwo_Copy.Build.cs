@@ -22,8 +22,8 @@ public class ItTakesTwo_Copy : ModuleRules
 			"AIModule",
 			"Niagara",
 			"GeometryCollectionEngine",
-			"Chaos"
-			
+			"Chaos",
+			"NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
