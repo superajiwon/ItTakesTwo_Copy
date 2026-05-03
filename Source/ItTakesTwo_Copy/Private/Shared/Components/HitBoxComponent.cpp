@@ -36,6 +36,8 @@ void UHitBoxComponent::InitializeHitComp(FHitComp_Info HitInfo, FName TargetName
 
 void UHitBoxComponent::CollisionOn()
 {
+	if (bCollisionOn) return; 
+	
 	bCollisionOn = true;
 	SetGenerateOverlapEvents(true);
 	SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -44,6 +46,8 @@ void UHitBoxComponent::CollisionOn()
 
 void UHitBoxComponent::CollisionOff()
 {
+	if (!bCollisionOn) return; 
+	
 	bCollisionOn = false;
 	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetGenerateOverlapEvents(false);
@@ -55,6 +59,11 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	if (!bCollisionOn) return; 
 	if (OtherActor == GetOwner()) return;
 	if (!OtherActor->Tags.Contains(TargetTag)) return;
+	
+	if (AlreadyHitActors.Contains(OtherActor)) return;
+	AlreadyHitActors.Add(OtherActor);
+	
+	UE_LOG(LogTemp, Log, TEXT("%s 와 충돌!"), *OtherActor->GetName());
 	
 	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 	{

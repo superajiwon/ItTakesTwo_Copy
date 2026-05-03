@@ -21,16 +21,15 @@ public:
 	virtual void AnimNotify_UltimateOn() override;
 	
 	
-	// === Collision ===
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Niagara")
+	// === Projectile ===
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile|Niagara")
 	TObjectPtr<UNiagaraSystem> ProjectileNiagara;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Niagara")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile|Niagara")
 	TObjectPtr<UNiagaraSystem> OverlapNiagara;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile")
 	float ProjectileSpeed = 1000.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile")
 	float ProjectileLifeTime = 3.0f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile")
 	float ProjectileRadius = 60.0f;
-
 };

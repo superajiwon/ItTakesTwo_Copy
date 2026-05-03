@@ -10,8 +10,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
-#include "Components/HPComponent.h"
-#include "Net/UnrealNetwork.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
 
@@ -102,7 +100,6 @@ void APlayerBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
-	DOREPLIFETIME(APlayerBase, bIsActionLocked);
 }
 
 void APlayerBase::PrintNetLog()
@@ -122,32 +119,53 @@ FAttackModeData* APlayerBase::GetCurrentAttackData()
 	return &ActionData->NormalAttackData;
 }
 
+void APlayerBase::CancelUltimateOnAction(EActionType ActionType)
+{
+	if (UltimateComp && UltimateComp->bIsUltimateActive)
+	{
+		UltimateComp->EndUltimate();
+	}
+}
+
 void APlayerBase::Move(const FInputActionValue& Value)
 {
 	if (!Controller) return;
-	// if (bIsActionLocked) return;
 
-	// 이동 잠금 상태에서도 회전이 필요한 경우(Ex. 코디 궁)를 위해
-	// return대신 MaxWalkSpeed를 0으로 세팅하여 AddMovementInput은 허용 (회전 방향 전달)
-	if (bIsActionLocked)
-	{
-		GetCharacterMovement()->MaxWalkSpeed = 0.0f;
-	}
-	else
-	{
-		GetCharacterMovement()->MaxWalkSpeed = DefaultMaxWalkSpeed;
-	}
-	
 	FVector2D V = Value.Get<FVector2D>(); 
-	
 	const FRotator Rotation = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	
+	if (bIsActionLocked)
+	{
+		if (UltimateComp && UltimateComp->bIsUltimateActive)
+		{
+			FVector InputDir = ForwardDirection * V.X + RightDirection * V.Y;
+			if (!InputDir.IsNearlyZero())
+			{
+				FRotator TargetRotation = InputDir.Rotation();
+				FRotator SmoothRot = FMath::RInterpTo(GetActorRotation(), TargetRotation, GetWorld()->GetDeltaSeconds(), 12.0f);
+				SetActorRotation(SmoothRot);
+				
+				if (GetLocalRole() == ROLE_AutonomousProxy)
+				{
+					Server_UpdateRotation(SmoothRot);
+				}
+			}
+		}
+		
+		return;
+	}
+	
 	AddMovementInput(ForwardDirection, V.X);
 	AddMovementInput(RightDirection, V.Y);
+}
+
+void APlayerBase::Server_UpdateRotation_Implementation(FRotator NewRotation)
+{
+	SetActorRotation(NewRotation);
 }
 
 void APlayerBase::ResetCombo()
@@ -160,7 +178,6 @@ void APlayerBase::ResetCombo()
 void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	// bInterrupted가 false라는 것은, 다른 스킬에 의해 끊기지 않고 정상 종료되었음을 의미
-	// 즉, 이 타이밍에만 이동 제한을 풀고 콤보를 리셋해야 안전합니다.
 	if (!bInterrupted)
 	{
 		ResetCombo();
@@ -168,7 +185,6 @@ void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 		GetCharacterMovement()->MaxWalkSpeed = DefaultMaxWalkSpeed;
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
-
 }
 
 // ===
@@ -181,7 +197,8 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 {
 	if (!SkillComp || !ActionData) return;
 	
-	if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
+	// if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
+	CancelUltimateOnAction(EActionType::Basic);
 	
 	if (!SkillComp->CanExecuteSkill(EActionType::Basic)) return;
 	
@@ -227,8 +244,9 @@ void APlayerBase::SpecialAttack(const FInputActionValue& Value)
 {
 	if (!SkillComp) return;
 	
-	if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
-
+	// if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
+	CancelUltimateOnAction(EActionType::Special);
+	
 	if (!SkillComp->CanExecuteSkill(EActionType::Special)) return;
 	
 	ResetCombo();
@@ -243,7 +261,8 @@ void APlayerBase::Dash(const FInputActionValue& Value)
 {
 	if (!SkillComp) return;
 	
-	if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
+	// if (UltimateComp->bIsUltimateActive) UltimateComp->EndUltimate();
+	CancelUltimateOnAction(EActionType::Dash);
 
 	if (!SkillComp->CanExecuteSkill(EActionType::Dash)) return;
 	

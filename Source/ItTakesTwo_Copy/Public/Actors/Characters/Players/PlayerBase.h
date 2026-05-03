@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Actors/Characters/CharacterBase.h"
 #include "Actors/Characters/Players/PlayerActionData.h"
+#include "Shared/ITTTypes.h"
 #include "PlayerBase.generated.h"
 
 class USkillComponent;
@@ -48,11 +49,15 @@ private:
 public:
 	// === Action ===	
 	// 공격 시 이동 제한 플래그
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated, Category="Combat|Movement")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Combat|Movement")
 	bool bIsActionLocked = false;
 	
 	// BeginPlay에서 저장할 기본 이동속도 (잠금 해제 시 복구용)
 	float DefaultMaxWalkSpeed = 500.0f;
+	
+	// 액션 잠금 중(ex. 궁극기) 강제 회전 동기화용 RPC
+	UFUNCTION(Server, Unreliable)
+	void Server_UpdateRotation(FRotator NewRotation);
 	
 	// 액션 데이터 (DataAsset)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat|Data")
@@ -63,16 +68,20 @@ public:
 	// May: bIsUltimateForm 상태에 따라 Normal / Ultimate 반환
 	virtual FAttackModeData* GetCurrentAttackData();
 	
+	// Base Collider 제어
+	UFUNCTION(BlueprintCallable, Category = "Combat|Data")
+	virtual void SetWeaponCollision(bool bEnable) {}
+	
 	// 궁극기 활성화 콜백 (MayCharacter)
 	virtual void OnUltimateActivated() {}
+	
+	// 궁극기 캔슬 처리를 위한 가상 함수
+	virtual void CancelUltimateOnAction(EActionType ActionType);
 	
 	// 궁극기 종료
 	UFUNCTION()
 	virtual void EndUltimate() {}
-	
-	// Base Collider 제어
-	UFUNCTION(BlueprintCallable, Category = "Combat|Data")
-	virtual void SetWeaponCollision(bool bEnable) {}
+
 	
 	// === Combo ===
 	// 현재 콤보 단계 (로컬 상태 — 소유 클라이언트/방장에서만 증가)

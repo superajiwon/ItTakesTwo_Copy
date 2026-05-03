@@ -46,12 +46,21 @@ public:
 	{
 		return TargetTag;
 	}
-
+	
+	void ClearHitRecords()
+	{
+		AlreadyHitActors.Empty();
+	}
+	
 private:
 	bool bCollisionOn{false};
 
 	FName TargetTag{NAME_None};
 	
+	/** 단일 공격 내에서 이미 타격한 대상 추적 (중복 타격 방지) */
+	UPROPERTY()
+	TSet<AActor*> AlreadyHitActors;
+
 	/** 이 히트박스로 가할 데미지 수치 (InitializeHitComp 또는 외부에서 세팅) */
 	int Damage{0};
 

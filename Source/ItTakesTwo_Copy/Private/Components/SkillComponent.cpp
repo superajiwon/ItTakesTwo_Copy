@@ -4,6 +4,9 @@
 #include "Actors/Characters/Players/PlayerActionData.h"
 #include "Components/UltimateComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Net/UnrealNetwork.h"
+#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Components/HitSphereComponent.h"
 
 USkillComponent::USkillComponent()
 {
@@ -35,6 +38,7 @@ void USkillComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
+	DOREPLIFETIME(USkillComponent, CooldownMultiplier);
 }
 
 // ===
@@ -56,19 +60,10 @@ void USkillComponent::RequestExecuteSkill(EActionType ActionType, int32 ComboSte
 	
 	if (Owner->HasAuthority())
 	{	// 방장이니까 바로 호출
-		// if (ActionType != EActionType::Ultimate)
-		// {
-		// 	StartCooldown(ActionType);
-		// }
-		
 		Multicast_PlayerSkillEffect(ActionType, ComboStep, MontageIdx);
 	}
 	else
 	{	// 클라이언트니까 서버에 RPC 요청
-		//// if (ActionType != EActionType::Ultimate)
-		//// {
-		//// 	StartCooldown(ActionType);
-		//// }
 		Server_ExecuteSkill(ActionType, ComboStep, MontageIdx);
 	}
 }
@@ -96,10 +91,14 @@ void USkillComponent::Server_ExecuteSkill_Implementation(EActionType ActionType,
 	else
 	{
 		// [중요] 노말 스킬 사용 시 서버에서도 궁극기 상태를 해제해야 함
-		if (Owner->GetUltimateComponent() && Owner->GetUltimateComponent()->bIsUltimateActive)
-		{
-			Owner->EndUltimate();
-		}
+		// if (Owner->GetUltimateComponent() && Owner->GetUltimateComponent()->bIsUltimateActive)
+		// {
+		// 	Owner->GetUltimateComponent()->EndUltimate();
+		// }
+		
+		// [중요] 노말 스킬 사용 시 서버에서도 궁극기 상태를 해제해야 함 (캐릭터별 오버라이드 함수 활용)
+		Owner->CancelUltimateOnAction(ActionType);
+		
 		StartCooldown(ActionType);
 	}
 	
@@ -113,6 +112,22 @@ void USkillComponent::Multicast_PlayerSkillEffect_Implementation(EActionType Act
 {
 	APlayerBase* Owner = Cast<APlayerBase>(GetOwner());
 	if (!Owner || !Owner->ActionData) return;
+	
+	//! [수정] 무기 타격 기록을 몽타주가 재생되는 정확히 이 시점에 딱 1번만 초기화합니다.
+	//! 이렇게 하면 애니메이션 노티파이가 네트워크 보간으로 인해 수십 번 흔들려도 타격 기록은 공격 1회당 1번만 초기화됩니다.
+	TArray<UHitBoxComponent*> HitBoxes;
+	Owner->GetComponents<UHitBoxComponent>(HitBoxes);
+	for (UHitBoxComponent* HitBox : HitBoxes)
+	{
+		HitBox->ClearHitRecords();
+	}
+	
+	TArray<UHitSphereComponent*> HitSpheres;
+	Owner->GetComponents<UHitSphereComponent>(HitSpheres);
+	for (UHitSphereComponent* HitSphere : HitSpheres)
+	{
+		HitSphere->ClearHitRecords();
+	}
 	
 	UPlayerActionData* Data = Owner->ActionData;
 	
