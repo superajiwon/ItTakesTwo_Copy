@@ -10,15 +10,11 @@ UUltimateComponent::UUltimateComponent()
 	SetIsReplicatedByDefault(true);
 }
 
-
 void UUltimateComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (GetOwner() && GetOwner()->HasAuthority())
-	{
-		CurUltimateGauge = MaxUltimateGauge;
-	}
+	CurUltimateGauge = 0.0f;
 }
 
 void UUltimateComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
@@ -47,8 +43,11 @@ void UUltimateComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	DOREPLIFETIME(UUltimateComponent, bIsUltimateActive);
 }
 
+
 void UUltimateComponent::AddGauge(float GaugeAmount)
 {	
+	if (bIsUltimateActive) return;
+	
 	CurUltimateGauge += GaugeAmount;
 	
 	if (CurUltimateGauge >= MaxUltimateGauge)
@@ -71,9 +70,18 @@ void UUltimateComponent::ActivateUltimate()
 void UUltimateComponent::EndUltimate()
 {
 	if (!GetOwner()->HasAuthority()) return;
+	if (!bIsUltimateActive) return;
 	
 	bIsUltimateActive = false;
 
 	// 캐릭터쪽에 전달
 	OnUltimateFinish.Broadcast();
+}
+
+void UUltimateComponent::OnRep_IsUltimateActive()
+{
+	if (!bIsUltimateActive)
+	{
+		OnUltimateFinish.Broadcast();
+	}
 }

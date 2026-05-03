@@ -34,6 +34,8 @@ void UHitSphereComponent::InitializeHitComp(FHitComp_Info HitInfo, FName TargetN
 
 void UHitSphereComponent::CollisionOn()
 {
+	if (bCollisionOn) return; 
+	
 	bCollisionOn = true;
 	SetGenerateOverlapEvents(true);
 	SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -41,27 +43,23 @@ void UHitSphereComponent::CollisionOn()
 }
 
 void UHitSphereComponent::CollisionOff()
-{
+{	
+	if (!bCollisionOn) return; 
+	
 	bCollisionOn = false;
 	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetGenerateOverlapEvents(false);
 }
 
-
 void UHitSphereComponent::OnHitSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!bCollisionOn)
-		return; 
-	
-	if (OtherActor == GetOwner())
-		return;
-	
-	// 충돌 액터 찾으면
-	// 인터페이스 호출해서 데미지 주거나 어떤 공통된 로직이 있으면 좋을듯함
-	
-	// 충돌하면 충돌한 대상 무적상태 돌입
+	if (!bCollisionOn) return; 
+	if (OtherActor == GetOwner()) return;
 	if (!OtherActor->Tags.Contains(TargetTag)) return;
+	
+	if (AlreadyHitActors.Contains(OtherActor)) return;
+	AlreadyHitActors.Add(OtherActor);
 	
 	UE_LOG(LogTemp, Log, TEXT("%s 와 충돌!"), *OtherActor->GetName());
 	

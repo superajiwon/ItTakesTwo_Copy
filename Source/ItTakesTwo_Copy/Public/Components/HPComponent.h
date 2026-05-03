@@ -84,9 +84,9 @@ protected:
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	float RecoverDelayTime = 3.0f;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
-	float RecoverSpeed = 1.0f;
+	float RecoverSpeed = 0.3f;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
-	float RecoverAmount = 5.0f;
+	float RecoverAmount = 1.0f;
 
 	void StartRecoverDelay();
 	void StartRecover();

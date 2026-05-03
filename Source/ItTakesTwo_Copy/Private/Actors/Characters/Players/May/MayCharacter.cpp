@@ -9,6 +9,7 @@
 #include "Shared/Struct/HitComp_Info.h"
 #include "Net/UnrealNetwork.h"
 
+
 AMayCharacter::AMayCharacter()
 {
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> TempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Models/Characters/May_Castle/SkeletalMeshes/May_Castle.May_Castle'"));
@@ -102,15 +103,31 @@ void AMayCharacter::EndUltimate()
 	Super::EndUltimate();
 	
 	// 서버에서 관리되는 상태 롤백
-	if (HasAuthority())
-	{
-		bIsUltimateForm = false;
-	}
+	// if (HasAuthority())
+	// {
+	// 	bIsUltimateForm = false;
+	// }
+	
+	// 서버에서 관리되는 상태 롤백 (로컬 예측을 위해 Authority 체크 제거)
+	bIsUltimateForm = false;
 	
 	if (UltimateCollision)
 	{
 		UltimateCollision->SetHiddenInGame(true);
 		UltimateCollision->CollisionOff();
+	}
+}
+
+void AMayCharacter::CancelUltimateOnAction(EActionType ActionType)
+{
+	if (ActionType == EActionType::Dash)
+	{
+		// if (GetUltimateComponent()->bIsUltimateActive)
+		// {
+		// 	GetUltimateComponent()->EndUltimate();
+		// }
+		
+		Super::CancelUltimateOnAction(ActionType);
 	}
 }
 

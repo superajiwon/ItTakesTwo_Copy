@@ -30,10 +30,10 @@ public:
 	
 //! 변수
 private:   
-	UPROPERTY(EditAnywhere, Replicated, Category = "Stat")
+	UPROPERTY(EditAnywhere, Replicated, Category="Stat")
 	float MoveSpeed = 500.0f;
 	
-	UPROPERTY(EditAnywhere, Replicated, Category = "Stat")
+	UPROPERTY(EditAnywhere, Replicated, Category="Stat")
 	float AttackPower = 10.0f;
 	
 };

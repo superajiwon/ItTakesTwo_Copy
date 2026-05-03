@@ -1,9 +1,13 @@
 
 #include "Actors/Characters/Players/Cody/CodyAnimInstance.h"
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
+#include "Components/StatComponent.h"
+#include "Shared/VFXObjectPoolSubsystem.h"
 #include "Shared/Components/DotHitBoxComponent.h"
-#include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Struct/FVFXSpawn_Info.h"
 
+
+class UVFXObjectPoolSubsystem;
 
 void UCodyAnimInstance::AnimNotify_DashOn()
 {
@@ -25,6 +29,37 @@ void UCodyAnimInstance::AnimNotify_SpecialOn()
 {
 	Super::AnimNotify_SpecialOn();
 	
+	// 코디 얼음 발사체
+	if (!ProjectileNiagara) return;
+	
+	auto* Owner = Cast<ACodyCharacter>(GetOwningActor());
+	if (!Owner) return;
+	
+	UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
+	if (!PoolSubsystem) return;
+	
+	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
+		Owner,
+		ProjectileNiagara,
+		ProjectileSpeed,
+		Owner->SpecialProjectilePoint->GetComponentLocation(),
+		Owner->GetActorForwardVector(),
+		ProjectileLifeTime
+	);
+	
+	SpawnInfo.WithSphereCollision(
+		true,
+		FName(TEXT("PlayerWeapon")),
+		Owner->GetStatComponent()->GetAttackPower(),
+		ProjectileRadius
+	);
+	
+	SpawnInfo.WithOverlapExplosion(
+		OverlapNiagara,
+		0.f
+	);
+	
+	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 }
 
 void UCodyAnimInstance::AnimNotify_UltimateOn()

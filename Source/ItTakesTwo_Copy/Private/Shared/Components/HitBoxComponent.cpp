@@ -1,6 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Shared/Components/HitBoxComponent.h"
+
+#include "Actors/Characters/Players/PlayerBase.h"
+#include "Components/UltimateComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
 #include "Shared/Struct/HitRequest.h"
 #include "Shared/Subsystems/CombatSystem.h"
@@ -33,6 +36,8 @@ void UHitBoxComponent::InitializeHitComp(FHitComp_Info HitInfo, FName TargetName
 
 void UHitBoxComponent::CollisionOn()
 {
+	if (bCollisionOn) return; 
+	
 	bCollisionOn = true;
 	SetGenerateOverlapEvents(true);
 	SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -41,6 +46,8 @@ void UHitBoxComponent::CollisionOn()
 
 void UHitBoxComponent::CollisionOff()
 {
+	if (!bCollisionOn) return; 
+	
 	bCollisionOn = false;
 	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetGenerateOverlapEvents(false);
@@ -51,8 +58,12 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 {
 	if (!bCollisionOn) return; 
 	if (OtherActor == GetOwner()) return;
-	
 	if (!OtherActor->Tags.Contains(TargetTag)) return;
+	
+	if (AlreadyHitActors.Contains(OtherActor)) return;
+	AlreadyHitActors.Add(OtherActor);
+	
+	UE_LOG(LogTemp, Log, TEXT("%s 와 충돌!"), *OtherActor->GetName());
 	
 	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 	{

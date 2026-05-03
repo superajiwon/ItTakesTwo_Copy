@@ -41,7 +41,6 @@ public:
 	
 	
 	// === Special Attack === 
-	// todo
 	virtual void SpecialAttack(const FInputActionValue& Value) override;
 	
 	
@@ -57,10 +56,10 @@ public:
 	// bIsUltimateForm을 서버에서 토글 → Replicated로 클라이언트 동기화
 	virtual void OnUltimateActivated() override;
 	
-	// todo
 	virtual void Ultimate(const FInputActionValue& Value) override;
 	virtual void EndUltimate() override;
 
+	virtual void CancelUltimateOnAction(EActionType ActionType) override;
 	
 	// === Dash ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat|State")

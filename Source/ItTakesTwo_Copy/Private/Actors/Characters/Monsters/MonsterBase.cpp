@@ -26,7 +26,6 @@ AMonsterBase::AMonsterBase()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 	
-	// [나지원이 테스트로 추가함 헤헤..]
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("MonsterBody"));
 	this->Tags.AddUnique(TEXT("Monster"));
 	SetTargetName(TEXT("Player"));
@@ -48,10 +47,10 @@ void AMonsterBase::Tick(float DeltaTime)
 		bDead = true;
 		AnimInstance->CurrentState = EMonsterState::Dead;
 	}
+
 	// const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
 	// const FString LogStr = FString::Printf(TEXT("%s\nHP : %f "), *ConStr, GetHPComponent()->GetCurHP());
 	// DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 100.0f, LogStr, nullptr, FColor::White, 0, true, 1);
-
 }
 
 void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

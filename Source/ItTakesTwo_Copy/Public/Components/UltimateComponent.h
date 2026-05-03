@@ -34,8 +34,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ultimate")
 	float DecreasePerSec = 10.0f; // 소모 속도
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category="Ultimate")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing=OnRep_IsUltimateActive, Category="Ultimate")
 	bool bIsUltimateActive = false;
+	
+	UFUNCTION()
+	void OnRep_IsUltimateActive();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ultimate")
 	bool bCanUltimate = false;

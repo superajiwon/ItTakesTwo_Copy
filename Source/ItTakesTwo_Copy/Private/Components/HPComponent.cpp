@@ -45,8 +45,8 @@ void UHPComponent::ApplyDamage(int32 DamageAmount, AActor* Causer)
 	OnHPChanged.Broadcast(CurHp, MaxHp);
 	
 	// 자동 회복
-	// StopRecover();
-	// StartRecoverDelay();
+	StopRecover();
+	StartRecoverDelay();
 	
 	if (CurHp <= 0.0f)
 	{
@@ -93,14 +93,15 @@ void UHPComponent::OnRep_Invincible()
 
 void UHPComponent::StartRecoverDelay()
 {
-	GetWorld()->GetTimerManager().SetTimer(RecoverDelayTimer, this, &UHPComponent::StartRecover, false);
+	GetWorld()->GetTimerManager().SetTimer(RecoverDelayTimer, this, &UHPComponent::StartRecover, RecoverDelayTime, false);
 }
 
 void UHPComponent::StartRecover()
 {
 	if (CurHp >= MaxHp) return;
+	
 	bIsRecovering = true;
-	GetWorld()->GetTimerManager().SetTimer(RecoverTickTimer, this, &UHPComponent::RecoverTick, true);
+	GetWorld()->GetTimerManager().SetTimer(RecoverTickTimer, this, &UHPComponent::RecoverTick, RecoverSpeed, true);
 }
 
 void UHPComponent::RecoverTick()
@@ -117,6 +118,7 @@ void UHPComponent::RecoverTick()
 void UHPComponent::StopRecover()
 {
 	bIsRecovering = false;
+	
 	GetWorld()->GetTimerManager().ClearTimer(RecoverDelayTimer);
 	GetWorld()->GetTimerManager().ClearTimer(RecoverTickTimer);
 }
