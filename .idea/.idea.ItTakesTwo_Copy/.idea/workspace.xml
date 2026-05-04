@@ -68,6 +68,7 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObjectBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Attackable.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Attacker.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_BottonDoor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Button.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Crush.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Door.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -91,6 +92,7 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObjectBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObject_Attackable.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObject_Attacker.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObject_BottonDoor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObject_Button.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Map/MapObject_Door.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/SkillComponent.h" root0="FORCE_HIGHLIGHTING" />
@@ -119,7 +121,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Debug",
+    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -276,6 +278,7 @@
       <workItem from="1777643336602" duration="2986000" />
       <workItem from="1777709598438" duration="1399000" />
       <workItem from="1777711470201" duration="10652000" />
+      <workItem from="1777873028200" duration="10561000" />
     </task>
     <servers />
   </component>

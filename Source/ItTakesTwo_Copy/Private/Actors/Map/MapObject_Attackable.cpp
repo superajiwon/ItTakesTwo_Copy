@@ -33,7 +33,7 @@ void AMapObject_Attackable::BeginPlay()
 	
 }
 
-void AMapObject_Attackable::Tick(float DeltaTime)
+void AMapObject_Attackable::	Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	

@@ -38,6 +38,13 @@ public:
 	void DestroyObject();
 	void PlayDestroyEffect(const FVector& HitLocation,	const FVector& HitDirection);
 	
+public:
+	bool IsDestroyed() const
+	{
+		return bDestroyed;
+	}
+	
+	
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBoxComponent> HitCollision;

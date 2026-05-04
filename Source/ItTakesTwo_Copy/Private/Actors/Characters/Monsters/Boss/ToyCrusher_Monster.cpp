@@ -7,6 +7,7 @@
 #include "Actors/Map/MapObjectBase.h"
 #include "Actors/Map/MapObject_Attackable.h"
 #include "Actors/Map/MapObject_Button.h"
+#include "Actors/Map/MapObject_Door.h"
 #include "Shared/VFXObjectPoolSubsystem.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Struct/FVFXSpawn_Info.h"
@@ -73,8 +74,9 @@ void AToyCrusher_Monster::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedCo
 		OtherActor->Destroy();
 	const bool bIsPlayer = Cast<APlayerBase>(OtherActor) != nullptr;
 	const bool bIsAttackableMapObject = Cast<AMapObject_Attackable>(OtherActor) != nullptr;
+	const bool bIsAttackableDoor = Cast<AMapObject_Door>(OtherActor) != nullptr;
 
-	if (!bIsPlayer && !bIsAttackableMapObject)
+	if (!bIsPlayer && !bIsAttackableMapObject && !bIsAttackableDoor)
 		return;
 
 	UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>();

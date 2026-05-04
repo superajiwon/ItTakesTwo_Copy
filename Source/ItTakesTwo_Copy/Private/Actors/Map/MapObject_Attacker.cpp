@@ -26,17 +26,6 @@ void AMapObject_Attacker::BeginPlay()
 		SplineComponent = SplineActor->FindComponentByClass<USplineComponent>();
 	}
 
-	if (!SplineComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("[MapObject_Attacker] No SplineComponent: %s"), *GetName());
-		SetActorTickEnabled(false);
-		return;
-	}
-
-	CurrentDistance = SplineComponent->GetDistanceAlongSplineAtSplineInputKey(
-		SplineComponent->FindInputKeyClosestToWorldLocation(GetActorLocation())
-	);
-
 	if (HasAuthority() && HitBoxComponent)
 	{
 		FHitComp_Info HitInfo(
@@ -50,6 +39,16 @@ void AMapObject_Attacker::BeginPlay()
 		HitBoxComponent->SetDamage(static_cast<int32>(Damage));
 		HitBoxComponent->CollisionOn();
 	}
+	
+	if (!SplineComponent)
+	{
+		SetActorTickEnabled(false);
+		return;
+	}
+
+	CurrentDistance = SplineComponent->GetDistanceAlongSplineAtSplineInputKey(SplineComponent->FindInputKeyClosestToWorldLocation(GetActorLocation()));
+
+	
 }
 
 void AMapObject_Attacker::Tick(float DeltaTime)
