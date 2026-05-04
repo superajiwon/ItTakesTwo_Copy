@@ -10,11 +10,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
-#include "Shared/Components/HitBoxComponent.h"
 
-
-class UHitSphereComponent;
-class UHitBoxComponent;
 
 AMonsterBase::AMonsterBase()
 {
