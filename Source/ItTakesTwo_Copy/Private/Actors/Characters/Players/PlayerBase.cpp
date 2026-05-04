@@ -1,7 +1,7 @@
 
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Actors/Characters/Players/ITTPlayerController.h"
-
+#include "Actors/Characters/Managers/CameraManagerActor.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkillComponent.h"
 #include "Components/UltimateComponent.h"
@@ -76,6 +76,13 @@ void APlayerBase::BeginPlay()
 	
 	GetHPComponent()->OnDeath.AddDynamic(this, &APlayerBase::OnDeath);
 	GetHPComponent()->OnRevive.AddDynamic(this, &APlayerBase::OnRevive);
+	
+	// 카메라에서 찾지 못했을 경우 직접 넣어줌
+	AActor* FoundCamera = UGameplayStatics::GetActorOfClass(GetWorld(), ACameraManagerActor::StaticClass());
+	if (ACameraManagerActor* CamManager = Cast<ACameraManagerActor>(FoundCamera))
+	{
+		CamManager->AddTarget(this);
+	}
 }
 
 void APlayerBase::Tick(float DeltaTime)
