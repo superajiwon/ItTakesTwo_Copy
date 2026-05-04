@@ -201,6 +201,8 @@ void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 void APlayerBase::OnDeath()
 {
 	bIsActionLocked = true;
+	ResetCombo();
+	if (SkillComp) SkillComp->ResetSkillState();
 	DisableInput(Cast<APlayerController>(GetController()));
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
@@ -215,7 +217,9 @@ void APlayerBase::OnDeath()
 
 void APlayerBase::OnRevive()
 {
-	bIsActionLocked = false;
+	bIsActionLocked = false;	
+	ResetCombo();
+	if (SkillComp) SkillComp->ResetSkillState();
 	EnableInput(Cast<APlayerController>(GetController()));
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);

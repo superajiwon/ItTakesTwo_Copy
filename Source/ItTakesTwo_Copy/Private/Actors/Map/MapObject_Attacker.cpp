@@ -15,7 +15,7 @@ AMapObject_Attacker::AMapObject_Attacker()
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(TEXT("HitBoxComponent"));
 	HitBoxComponent->SetupAttachment(RootComponent);
 	HitBoxComponent->SetDamage(Damage);
-	
+	HitBoxComponent->bAutoResetEndOverlap = true;
 }
 
 void AMapObject_Attacker::BeginPlay()

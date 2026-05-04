@@ -20,6 +20,9 @@ void UHitBoxComponent::BeginPlay()
 	Super::BeginPlay();
 	OnComponentBeginOverlap.RemoveDynamic(this, &UHitBoxComponent::OnHitBoxBeginOverlap);
 	OnComponentBeginOverlap.AddDynamic(this, &UHitBoxComponent::OnHitBoxBeginOverlap);
+	
+	OnComponentEndOverlap.RemoveDynamic(this, &UHitBoxComponent::OnHitBoxEndOverlap);
+	OnComponentEndOverlap.AddDynamic(this, &UHitBoxComponent::OnHitBoxEndOverlap);
 }
 
 void UHitBoxComponent::InitializeHitComp(FHitComp_Info HitInfo, FName TargetName)
@@ -69,6 +72,14 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	{
 		FHitRequest Request(GetOwner(), OtherActor, Damage, SweepResult.ImpactPoint);
 		CombatSystem->ProcessHit(Request);
+	}
+}
+
+void UHitBoxComponent::OnHitBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (bAutoResetEndOverlap)
+	{
+		ClearHitRecords();
 	}
 }
 

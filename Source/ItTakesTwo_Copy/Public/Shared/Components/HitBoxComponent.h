@@ -31,6 +31,14 @@ public:
 		const FHitResult& SweepResult
 	);
 	
+	UFUNCTION()	
+	void OnHitBoxEndOverlap(
+		UPrimitiveComponent* OverlappedComponent, 
+		AActor* OtherActor, 
+		UPrimitiveComponent* OtherComp, 
+		int32 OtherBodyIndex
+	);
+	
 public:
 	void InitializeHitComp(FHitComp_Info HitInfo, FName TargetName = NAME_None); // Extents, Location, TagName, ProfileName
 	void CollisionOn();
@@ -51,6 +59,9 @@ public:
 	{
 		AlreadyHitActors.Empty();
 	}
+	
+	UPROPERTY(EditAnywhere, Category="HitBox")
+	bool bAutoResetEndOverlap{false};
 	
 private:
 	bool bCollisionOn{false};

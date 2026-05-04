@@ -70,3 +70,11 @@ void UHitSphereComponent::OnHitSphereBeginOverlap(UPrimitiveComponent* Overlappe
 	}
 }
 
+void UHitSphereComponent::OnHitBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (bAutoResetEndOverlap)
+	{
+		ClearHitRecords();
+	}
+}
+

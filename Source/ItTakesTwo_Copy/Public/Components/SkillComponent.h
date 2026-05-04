@@ -61,6 +61,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Skill")
 	bool IsSkillPlaying() const { return bIsSkillPlaying; }
 	
+	UFUNCTION(BlueprintCallable, Category="Skill")
+	void ResetSkillState() { bIsSkillPlaying = false; }
+		
 protected:
 	UFUNCTION(Client, Reliable)
 	void Client_StartCooldown(EActionType ActionType, float CooldownTime);
