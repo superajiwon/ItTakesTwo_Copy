@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Characters/Players/PlayerBase.h"
+#include "Components/HPComponent.h"
 
 ACameraManagerActor::ACameraManagerActor()
 {
@@ -27,6 +28,14 @@ void ACameraManagerActor::BeginPlay()
 	Super::BeginPlay();
 	
 	SpringArm->SetRelativeRotation(DefaultCameraRotation);
+	
+	// 플레이어들을 한 번만 찾아서 등록
+	TArray<AActor*> FoundPlayers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerBase::StaticClass(), FoundPlayers);
+	for (AActor* Player : FoundPlayers)
+	{
+		AddTarget(Player);
+	}
 }
 
 void ACameraManagerActor::Tick(float DeltaTime)
@@ -63,15 +72,23 @@ void ACameraManagerActor::UpdateCameraPosition(float DeltaTime)
 {
 	// 방장(호스트)이나 클라이언트가 AddTarget을 개별적으로 호출하면서 생기는 싱크/네트워크 꼬임을 완벽하게 방지.
 	// 기존에 추가된 미니보스 등의 타겟을 날리지 않기 위해 AddUnique만 수행.
-	TArray<AActor*> FoundPlayers;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerBase::StaticClass(), FoundPlayers);
-	for (AActor* Player : FoundPlayers)
-	{
-		TrackTargets.AddUnique(Player);
-	}
+	// TArray<AActor*> FoundPlayers;
+	// UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerBase::StaticClass(), FoundPlayers);
+	// for (AActor* Player : FoundPlayers)
+	// {
+	// 	APlayerBase* PlayerBase = Cast<APlayerBase>(Player);
+	// 	if (PlayerBase && !PlayerBase->GetHPComponent()->GetIsDead())
+	// 	{
+	// 		TrackTargets.AddUnique(Player);	
+	// 	}
+	// 	else
+	// 	{
+	// 		TrackTargets.Remove(Player);
+	// 	}
+	// }
+	//! 성능 최적화를 위해 BeginPlay에서 한번만 실행
 	
 	if (TrackTargets.Num() == 0) return;
-	
 	
 	// 타겟들의 위치를 모두 합산할 변수
 	FVector Centroid = FVector::ZeroVector;
@@ -87,7 +104,16 @@ void ACameraManagerActor::UpdateCameraPosition(float DeltaTime)
 	{
 		// 유효한 액터인지 검사 (중간에 파괴된 액터가 있을 수 있으므로 방어 코드)
 		if (Target && IsValid(Target))
-		{
+		{			
+			// 플레이어나 캐릭터인 경우, 죽은 상태라면 카메라 계산에서 제외 (포커싱 방지)
+			if (ACharacterBase* Character = Cast<ACharacterBase>(Target))
+			{
+				if (Character->GetHPComponent() && Character->GetHPComponent()->GetIsDead())
+				{
+					continue; 
+				}
+			}
+			
 			FVector Loc = Target->GetActorLocation();
 			
 			// 평균점을 구하기 위해 모든 위치를 더해줍니다.
