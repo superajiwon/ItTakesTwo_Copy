@@ -43,14 +43,14 @@ AToyCrusher_Monster::AToyCrusher_Monster()
 		&AToyCrusher_Monster::OnHitBoxBeginOverlap
 	);
 
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> Asset(
-		TEXT("/Game/VFX/Using/NS_CrusherImpact.NS_CrusherImpact")
-	);
-
-	if (Asset.Succeeded())
-	{
-		ImpactNiagara = Asset.Object;
-	}
+	// static ConstructorHelpers::FObjectFinder<UNiagaraSystem> Asset(
+	// 	TEXT("/Game/VFX/Using/NS_CrusherImpact.NS_CrusherImpact")
+	// );
+	//
+	// if (Asset.Succeeded())
+	// {
+	// 	ImpactNiagara = Asset.Object;
+	// }
 }
 
 void AToyCrusher_Monster::BeginPlay()
