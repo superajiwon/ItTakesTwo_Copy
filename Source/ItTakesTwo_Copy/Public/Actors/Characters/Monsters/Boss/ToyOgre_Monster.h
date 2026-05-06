@@ -7,7 +7,7 @@
 #include "ToyOgre_Monster.generated.h"
 
 
-UENUM(BlueprintType)
+UENUM(BlueprintType)	
 enum class EToyOgreState : uint8
 {
 	Idle,

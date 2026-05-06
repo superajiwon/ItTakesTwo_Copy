@@ -24,10 +24,11 @@ AToyOgre_Monster::AToyOgre_Monster()
 	HitBoxComponent = CreateDefaultSubobject<UHitBoxComponent>(FName("HitBoxComponent"));
 	HitBoxComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
 	FHitComp_Info HitCompInfo(
-		FName("Player"), 
+		FName("Monster"), 
 		FName("MonsterWeapon"), 
 		FVector(110.0f, 0.f, 150.0f), 
 		FVector(220.f, 150.0f, 150.f));
+	
 	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
 	HitBoxComponent->SetDamage(30);
 	HitBoxComponent->CollisionOff();
@@ -49,7 +50,10 @@ void AToyOgre_Monster::BeginPlay()
 void AToyOgre_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+	FString StateStr = UEnum::GetValueAsString(ToyOgreState);
+	const FString LogStr = FString::Printf(TEXT("State : %s"), *StateStr);
+	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
+
 	
 	if (HasAuthority())
 	{
@@ -66,6 +70,7 @@ void AToyOgre_Monster::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 void AToyOgre_Monster::OnRep_ToyOgreState()
 {
+
 }
 
 void AToyOgre_Monster::SetToyOgreState(EToyOgreState NewState)

@@ -5,10 +5,12 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
+#include "Shared/Components/HitBoxComponent.h"
 
 void UToyOgre_ChargeState::Enter()
 {
 	OwnerOgre->SetToyOgreState(EToyOgreState::Charge);
+	OwnerOgre->HitBoxComponent->CollisionOn();
 }
 
 void UToyOgre_ChargeState::Tick(float DeltaTime)
@@ -19,7 +21,7 @@ void UToyOgre_ChargeState::Tick(float DeltaTime)
 
 	FHitResult Hit;
 	OwnerOgre->AddActorWorldOffset(MoveDelta, true, &Hit);
-
+	
 	if (Hit.bBlockingHit)
 	{
 		OwnerOgre->GetStateMachine()->ChangeState(OwnerOgre->WallHitStateClass);

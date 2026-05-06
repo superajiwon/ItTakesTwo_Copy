@@ -5,11 +5,13 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
+#include "Shared/Components/HitBoxComponent.h"
 
 void UToyOgre_WallHitState::Enter()
 {
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->WallHitMontage);
 	OwnerOgre->SetToyOgreState(EToyOgreState::WallHit);
+	
 }
 
 void UToyOgre_WallHitState::Tick(float DeltaTime)
@@ -19,7 +21,7 @@ void UToyOgre_WallHitState::Tick(float DeltaTime)
 
 void UToyOgre_WallHitState::Exit()
 {
-
+	OwnerOgre->HitBoxComponent->CollisionOff();
 }
 
 

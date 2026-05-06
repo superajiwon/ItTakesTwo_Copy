@@ -17,6 +17,6 @@ public:
 	
 	
 private:
-	float RushSpeed{300.f};
+	float RushSpeed{1200.f};
 	
 };
