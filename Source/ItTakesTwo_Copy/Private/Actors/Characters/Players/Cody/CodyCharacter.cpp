@@ -67,11 +67,25 @@ void ACodyCharacter::SpecialAttack(const FInputActionValue& Value)
 
 void ACodyCharacter::CodyTeleport(float Distance)
 {
-	FVector DistLocation = GetActorLocation() + GetActorForwardVector() * Distance;
-
-	// todo Ray로 넘어갈 수 있는 오브젝트인지 확인 하고 마지막 bool값으로 넘기기
-	// bNoCheck = true : 철창이나 좁은 틈새를 무시하고 통과하기 위해 '체크 안 함' 설정!
-	TeleportTo(DistLocation, GetActorRotation(), false, true); 
+	FVector StartLocation = GetActorLocation();
+	FVector DistLocation = StartLocation + (GetActorForwardVector() * Distance);
+	
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	
+	bool bCanTeleport = false; 
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, GetActorLocation(), DistLocation, ECC_Visibility, Params);
+	if (bHit && Hit.GetActor())
+	{
+		bCanTeleport = Hit.GetActor()->ActorHasTag(FName("CanTeleport"));
+	}
+	
+	SetActorLocation(DistLocation, !bCanTeleport); // bSweep
+	
+	// bNoCheck = true : 철창이나 좁은 틈새를 무시하고 통과하기 위해 '체크 안 함' 설정! 
+	// TeleportTo는 막혀있어도 그걸 뚫고 지나가기 때문에 사용하면 안된다 
+	// TeleportTo(DistLocation, GetActorRotation(), false, bCanTeleport); 
 }
 
 void ACodyCharacter::Server_CodyTeleport_Implementation()
