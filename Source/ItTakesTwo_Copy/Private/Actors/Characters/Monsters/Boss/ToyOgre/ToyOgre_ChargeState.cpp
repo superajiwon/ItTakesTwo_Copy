@@ -10,6 +10,7 @@
 void UToyOgre_ChargeState::Enter()
 {
 	OwnerOgre->SetToyOgreState(EToyOgreState::Charge);
+	//OwnerOgre->HitBoxComponent->ClearHitRecords();
 	OwnerOgre->HitBoxComponent->CollisionOn();
 }
 
@@ -27,8 +28,6 @@ void UToyOgre_ChargeState::Tick(float DeltaTime)
 		OwnerOgre->GetStateMachine()->ChangeState(OwnerOgre->WallHitStateClass);
 		return;
 	}
-
-	
 }
 
 void UToyOgre_ChargeState::Exit()

@@ -3,7 +3,9 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 
+#include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_HandCollider.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
+#include "Components/SphereComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
 #include "Net/UnrealNetwork.h"
@@ -32,16 +34,20 @@ AToyOgre_Monster::AToyOgre_Monster()
 	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
 	HitBoxComponent->SetDamage(30);
 	HitBoxComponent->CollisionOff();
-	
+	HitBoxComponent->bAutoResetEndOverlap = true;
 	// 상태 머신 추가
 	StateMachine = CreateDefaultSubobject<UToyOgre_StateMachineComponent>(TEXT("StateMachine"));
+	
 }
+
 
 void AToyOgre_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 	if (HasAuthority())
 	{
+		SpawnHandColliders();
+		
 		StateMachine->Init(this);
 		StateMachine->ChangeState(SelectTargetStateClass);
 	}
@@ -54,7 +60,6 @@ void AToyOgre_Monster::Tick(float DeltaTime)
 	const FString LogStr = FString::Printf(TEXT("State : %s"), *StateStr);
 	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 
-	
 	if (HasAuthority())
 	{
 		StateMachine->TickState(DeltaTime);
@@ -136,4 +141,219 @@ bool AToyOgre_Monster::RotateToCurrentTarget(float DeltaTime, float RotateSpeed)
 
 	SetActorRotation(NewRot);
 	return true;
+}
+
+void AToyOgre_Monster::OnHandBroken(bool IsLeftHand)
+{
+	if (!HasAuthority())
+		return;
+
+	if (AreBothHandsBroken())
+	{
+		DeactivateHandColliders();
+
+		if (IsLeftHand)
+		{
+			GetStateMachine()->ChangeState(LeftHandHurtDeathStateClass);
+		}
+		else
+		{
+			GetStateMachine()->ChangeState(RightHandHurtDeathStateClass);
+		}
+		return;
+	}
+
+	if (IsLeftHand)
+	{
+		LeftHandHurt();
+
+		GetWorldTimerManager().SetTimer(
+			LeftHandRegenTimer,
+			FTimerDelegate::CreateUObject(this, &AToyOgre_Monster::RegenHand, true),
+			HandRegenDelay,
+			false
+		);
+	}
+	else
+	{
+		RightHandHurt();
+
+		GetWorldTimerManager().SetTimer(
+			RightHandRegenTimer,
+			FTimerDelegate::CreateUObject(this, &AToyOgre_Monster::RegenHand, false),
+			HandRegenDelay,
+			false
+		);
+	}
+}
+
+void AToyOgre_Monster::RightHandHurt() const
+{
+	switch (ToyOgreState)
+	{
+		case EToyOgreState::Hole_GrabBothHands:
+		{
+			GetStateMachine()->ChangeState(RightHandHurtStateClass);
+			break;
+		}
+		case EToyOgreState::Hole_GrabOnlyLeftHand:
+		{
+			GetStateMachine()->ChangeState(RightHandHurtDeathStateClass);
+			break;
+		}
+		default:
+			break;
+	}
+	
+}
+
+void AToyOgre_Monster::LeftHandHurt()
+{
+	switch (ToyOgreState)
+	{
+		case EToyOgreState::Hole_GrabBothHands:
+		{
+			GetStateMachine()->ChangeState(LeftHandHurtStateClass);
+			break;
+		}
+		case EToyOgreState::Hole_GrabOnlyRightHand:
+		{
+			GetStateMachine()->ChangeState(LeftHandHurtDeathStateClass);
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void AToyOgre_Monster::SpawnHandColliders()
+{
+	if (!HandColliderClass || !GetMesh() || !GetWorld())
+		return;
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	LeftHandCollider = GetWorld()->SpawnActor<AToyOgre_HandCollider>(
+		HandColliderClass,
+		GetMesh()->GetSocketTransform(FName("LeftHandSocket")),
+		Params
+	);
+
+	if (LeftHandCollider)
+	{
+		LeftHandCollider->AttachToComponent(
+			GetMesh(),
+			FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+			FName("LeftHandSocket")
+		);
+
+		LeftHandCollider->InitHand(this, true);
+	}
+
+	RightHandCollider = GetWorld()->SpawnActor<AToyOgre_HandCollider>(
+		HandColliderClass,
+		GetMesh()->GetSocketTransform(FName("RightHandSocket")),
+		Params
+	);
+
+	if (RightHandCollider)
+	{
+		RightHandCollider->AttachToComponent(
+			GetMesh(),
+			FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+			FName("RightHandSocket")
+		);
+
+		RightHandCollider->InitHand(this, false);
+	}
+	DeactivateHandColliders();
+}
+
+void AToyOgre_Monster::ActivateLeftHandCollider()
+{
+	if (LeftHandCollider)
+	{
+		LeftHandCollider->ActivateHand();
+	}
+}
+
+void AToyOgre_Monster::DeactivateLeftHandCollider()
+{
+	if (LeftHandCollider)
+	{
+		LeftHandCollider->DeactivateHand();
+	}
+}
+
+void AToyOgre_Monster::ActivateRightHandCollider()
+{
+	if (RightHandCollider)
+	{
+		RightHandCollider->ActivateHand();
+	}
+}
+
+void AToyOgre_Monster::DeactivateRightHandCollider()
+{
+	if (RightHandCollider)
+	{
+		RightHandCollider->DeactivateHand();
+	}
+}
+
+void AToyOgre_Monster::ActivateHandColliders()
+{
+	if (LeftHandCollider)
+	{
+		LeftHandCollider->ActivateHand();
+	}
+	if (RightHandCollider)
+	{
+		RightHandCollider->ActivateHand();
+	}
+}
+
+void AToyOgre_Monster::DeactivateHandColliders()
+{
+	if (LeftHandCollider)
+	{
+		LeftHandCollider->DeactivateHand();
+	}
+	if (RightHandCollider)
+	{
+		RightHandCollider->DeactivateHand();
+	}
+}
+
+void AToyOgre_Monster::RegenHand(bool IsLeftHand)
+{
+	if (!HasAuthority() || ToyOgreState == EToyOgreState::Dead)
+		return;
+
+	if (IsLeftHand)
+	{
+		if (LeftHandCollider)
+		{
+			LeftHandCollider->RegenHand();
+		}
+
+		GetStateMachine()->ChangeState(LeftHandRecoverStateClass);
+	}
+	else
+	{
+		if (RightHandCollider)
+		{
+			RightHandCollider->RegenHand();
+		}
+
+		GetStateMachine()->ChangeState(RightHandRecoverStateClass);
+	}
+}
+
+bool AToyOgre_Monster::AreBothHandsBroken() const
+{
+	return LeftHandCollider &&	RightHandCollider &&
+		LeftHandCollider->IsBroken() &&	RightHandCollider->IsBroken();
 }

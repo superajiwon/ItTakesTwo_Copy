@@ -7,6 +7,7 @@
 #include "ToyOgre_Monster.generated.h"
 
 
+
 UENUM(BlueprintType)	
 enum class EToyOgreState : uint8
 {
@@ -18,13 +19,22 @@ enum class EToyOgreState : uint8
 	Charge,
 	WallHit,
 	Recover,
+	Hole_Enter,
+	Hole_GrabBothHands,
+	Hole_RightHand_Hurt,
+	Hole_GrabOnlyLeftHand,
+	Hole_RightHand_Recover,
+	Hole_RightHand_Hurt_Death, 
+	Hole_LeftHand_Hurt,
+	Hole_GrabOnlyRightHand,
+	Hole_LeftHand_Recover,
+	Hole_LeftHand_Hurt_Death,
 	Dead
 };
 
-
+class AToyOgre_HandCollider;
 class UToyOgre_StateBase;
 class UToyOgre_StateMachineComponent;
-
 UCLASS()
 class ITTAKESTWO_COPY_API AToyOgre_Monster : public ABossBase
 {
@@ -38,16 +48,31 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	// 동작
+
 public:
 	bool RotateToCurrentTarget(float DeltaTime, float RotateSpeed);
+	void OnHandBroken(bool IsLeftHand);
+
+private:
+	void RightHandHurt() const;
+	void LeftHandHurt();
+
+	void SpawnHandColliders();
 	
-	
-	// 상태 (애님 블프용)
 public:
-	UPROPERTY(ReplicatedUsing=OnRep_ToyOgreState, BlueprintReadOnly, Category="ToyOgre|Animation")
-	EToyOgreState ToyOgreState = EToyOgreState::Idle;
+	void ActivateLeftHandCollider();
+	void DeactivateLeftHandCollider();
+
+	void ActivateRightHandCollider();
+	void DeactivateRightHandCollider();
 	
+	void ActivateHandColliders();
+	void DeactivateHandColliders();
+	void RegenHand(bool IsLeftHand);
+	bool AreBothHandsBroken() const;
+
+
+public:
 	UFUNCTION()
 	void OnRep_ToyOgreState();
 	void SetToyOgreState(EToyOgreState NewState);
@@ -60,6 +85,50 @@ public:
 	UFUNCTION(BlueprintCallable, Category="ToyOgre|AnimNotify")
 	void AnimNotify_ToyOgre(FName EventName);
 
+
+	
+public:
+	UToyOgre_StateMachineComponent* GetStateMachine() const
+	{
+		return StateMachine;
+	}
+	TWeakObjectPtr<AActor> GetCurrentTarget() const
+	{
+		return CurrentTarget;
+	}
+	
+public:
+	void SetCurrentTarget(AActor* NewTarget)
+	{
+		CurrentTarget = NewTarget;
+	}
+
+
+		
+	// 상태 (애님 블프용)
+public:
+	UPROPERTY(ReplicatedUsing=OnRep_ToyOgreState, BlueprintReadOnly, Category="ToyOgre|Animation")
+	EToyOgreState ToyOgreState = EToyOgreState::Idle;
+	
+	UPROPERTY()
+	bool bEnterHole{false};
+	
+	// HandCollision
+public:
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|Hand")
+	TSubclassOf<AToyOgre_HandCollider> HandColliderClass;
+
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|Hand")
+	float HandRegenDelay = 3.f;
+
+	UPROPERTY()
+	TObjectPtr<AToyOgre_HandCollider> LeftHandCollider;
+
+	UPROPERTY()
+	TObjectPtr<AToyOgre_HandCollider> RightHandCollider;
+
+	FTimerHandle LeftHandRegenTimer;
+	FTimerHandle RightHandRegenTimer;
 
 	// 몽타지
 public:
@@ -74,7 +143,30 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Montage")
 	TObjectPtr<UAnimMontage> RecoverMontage;
-
+	
+	
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Montage")
+	TObjectPtr<UAnimMontage> HoleEnterMontage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Montage")
+	TObjectPtr<UAnimMontage> LeftHandHurtMontage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Montage")
+	TObjectPtr<UAnimMontage> RightHandHurtMontage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Montage")
+	TObjectPtr<UAnimMontage> LeftHandRecoverMontage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Montage")
+	TObjectPtr<UAnimMontage> RightHandRecoverMontage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Montage")
+	TObjectPtr<UAnimMontage> LeftHandDeathMontage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Montage")
+	TObjectPtr<UAnimMontage> RightHandDeathMontage;
+	
 	// 상태머신
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="ToyOgre")
@@ -111,21 +203,46 @@ public:
 	// 회복하기
 	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
 	TSubclassOf<UToyOgre_StateBase> RecoverStateClass;
-
-
-public:
-	UToyOgre_StateMachineComponent* GetStateMachine() const
-	{
-		return StateMachine;
-	}
-	TWeakObjectPtr<AActor> GetCurrentTarget() const
-	{
-		return CurrentTarget;
-	}
 	
-public:
-	void SetCurrentTarget(AActor* NewTarget)
-	{
-		CurrentTarget = NewTarget;
-	}
+	// 빠지기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> HoleEnterStateClass;
+
+	// 양쪽손 다 잡기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> GrabBothHandsStateClass;
+
+	// 왼손만 잡기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> GrabOnlyLeftHandStateClass;
+
+	// 오른손만 잡기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> GrabOnlyRightHandStateClass;
+
+	// 왼손 회복하기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> LeftHandRecoverStateClass;
+
+	// 오른손 회복하기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> RightHandRecoverStateClass;
+
+	// 왼손 다치고 죽기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> LeftHandHurtDeathStateClass;
+
+	// 오른손 다치고 죽기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> RightHandHurtDeathStateClass;
+
+	// 왼손 다치기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> LeftHandHurtStateClass;
+
+	// 오른손 다치기
+	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
+	TSubclassOf<UToyOgre_StateBase> RightHandHurtStateClass;
+
+	
 };

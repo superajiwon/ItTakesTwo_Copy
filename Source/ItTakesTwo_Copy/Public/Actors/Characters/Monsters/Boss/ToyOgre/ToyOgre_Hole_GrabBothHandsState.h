@@ -4,19 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "ToyOgre_StateBase.h"
-#include "ToyOgre_ChargeState.generated.h"
+#include "ToyOgre_Hole_GrabBothHandsState.generated.h"
+
 
 UCLASS()
-class ITTAKESTWO_COPY_API UToyOgre_ChargeState : public UToyOgre_StateBase
+class ITTAKESTWO_COPY_API UToyOgre_Hole_GrabBothHandsState : public UToyOgre_StateBase
 {
 	GENERATED_BODY()
+	
 public:
 	virtual void Enter() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void Exit() override;
-	
-	
-private:
-	float RushSpeed{1500.f};
-	
+
 };
