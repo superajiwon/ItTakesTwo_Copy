@@ -17,15 +17,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Attacker.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Map/MapObject_Attacker.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Components/HitBoxComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Components/HitBoxComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Components/HitSphereComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Components/HitSphereComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/MenuController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/MenuController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/SkillComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Components/SkillComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Components/HitBoxComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Components/HitBoxComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Components/HitSphereComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Components/HitSphereComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_CodyUltimate.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_CodyUltimate.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/Lv_ServerTestMain.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Lv_ServerTestMain.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ItTakesTwo_Copy.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/ItTakesTwo_Copy.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyAnimInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyUltimateBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyUltimateBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyUltimateBox.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyUltimateBox.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +148,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Gwonseon&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;NZW&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -308,6 +308,11 @@
       <workItem from="1778048165041" duration="5310000" />
       <workItem from="1778055066650" duration="12893000" />
       <workItem from="1778122834933" duration="26829000" />
+      <workItem from="1778218311105" duration="196000" />
+      <workItem from="1778219487935" duration="11547000" />
+      <workItem from="1778237307343" duration="945000" />
+      <workItem from="1778238343339" duration="2887000" />
+      <workItem from="1778249848805" duration="5924000" />
     </task>
     <servers />
   </component>

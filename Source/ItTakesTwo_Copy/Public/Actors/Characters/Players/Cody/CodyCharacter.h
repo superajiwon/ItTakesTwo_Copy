@@ -8,8 +8,9 @@
 
 class UHitBoxComponent;
 class UHitSphereComponent;
-class UDotHitBoxComponent;
+class ACodyUltimateBox;
 class UNiagaraSystem;
+class UChildActorComponent;
 
 UCLASS()
 class ITTAKESTWO_COPY_API ACodyCharacter : public APlayerBase
@@ -19,6 +20,11 @@ class ITTAKESTWO_COPY_API ACodyCharacter : public APlayerBase
 public:
 	ACodyCharacter();
 		
+	
+protected:
+	virtual void BeginPlay() override;	
+	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 public:
 	// === Collision ===
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
@@ -27,9 +33,11 @@ public:
 	TObjectPtr<UHitSphereComponent> BaseCollision;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Component")
 	TObjectPtr<USceneComponent> SpecialProjectilePoint;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UDotHitBoxComponent> UltimateCollision;
 	
+	UPROPERTY(ReplicatedUsing=OnRep_UltimateCollision, VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<ACodyUltimateBox> UltimateCollision;
+	UFUNCTION()
+	void OnRep_UltimateCollision();
 
 	// === Base Attack ===
 	virtual void SetWeaponCollision(bool bEnable) override;
