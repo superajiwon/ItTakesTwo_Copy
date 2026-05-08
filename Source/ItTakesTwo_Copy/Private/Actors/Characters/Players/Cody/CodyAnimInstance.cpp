@@ -1,6 +1,7 @@
 
 #include "Actors/Characters/Players/Cody/CodyAnimInstance.h"
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
+#include "Actors/Characters/Players/Cody/CodyUltimateBox.h"
 #include "Components/StatComponent.h"
 #include "Shared/VFXObjectPoolSubsystem.h"
 #include "Shared/Components/DotHitBoxComponent.h"
@@ -71,7 +72,6 @@ void UCodyAnimInstance::AnimNotify_UltimateOn()
 	
 	int32 RandDamage = FMath::RandRange(5, 18);
 	Owner->UltimateCollision->SetDamage(RandDamage);
-	Owner->UltimateCollision->SetHiddenInGame(false);
 	Owner->UltimateCollision->CollisionOn();
 }
 

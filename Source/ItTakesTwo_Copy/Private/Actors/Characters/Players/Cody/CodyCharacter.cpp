@@ -1,5 +1,7 @@
 
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
+
+#include "Actors/Characters/Players/Cody/CodyUltimateBox.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkillComponent.h"
 #include "Components/StatComponent.h"
@@ -32,11 +34,26 @@ ACodyCharacter::ACodyCharacter()
 	SpecialProjectilePoint->SetupAttachment(AttackColliderPoint);
 	SpecialProjectilePoint->SetRelativeLocation(FVector(70.0f,0.0f,125.0f));
 	
-	UltimateCollision = CreateDefaultSubobject<UDotHitBoxComponent>(TEXT("UltimateCollision"));
-	UltimateCollision->AttachToComponent(AttackColliderPoint, FAttachmentTransformRules::KeepRelativeTransform);
-	FHitComp_Info SwordHitCompInfo(FName("Player_CodyUltimate"), FName("PlayerWeapon"), FVector(550.0f,0.0f,88.0f), FVector(500.0f, 50.0f, 50.0f));
-	UltimateCollision->InitializeHitComp(SwordHitCompInfo, GetTargetName());
-	UltimateCollision->CollisionOff();
+	// UltimateCollision = CreateDefaultSubobject<UDotHitBoxComponent>(TEXT("UltimateCollision"));
+	// UltimateCollision->AttachToComponent(AttackColliderPoint, FAttachmentTransformRules::KeepRelativeTransform);
+	// FHitComp_Info SwordHitCompInfo(FName("Player_CodyUltimate"), FName("PlayerWeapon"), FVector(550.0f,0.0f,88.0f), FVector(500.0f, 50.0f, 50.0f));
+	// UltimateCollision->InitializeHitComp(SwordHitCompInfo, GetTargetName());
+	// UltimateCollision->CollisionOff();
+}
+
+void ACodyCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	// 월드에 UltimateBox 액터를 스폰합니다.
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this; 
+	UltimateCollision = GetWorld()->SpawnActor<ACodyUltimateBox>(ACodyUltimateBox::StaticClass(), GetActorLocation(), GetActorRotation(), SpawnParams);
+
+	if (UltimateCollision)
+	{
+		UltimateCollision->AttachToComponent(SpecialProjectilePoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	}
 }
 
 void ACodyCharacter::SetWeaponCollision(bool bEnable)
@@ -106,7 +123,7 @@ void ACodyCharacter::EndUltimate()
 	
 	if (UltimateCollision)
 	{
-		UltimateCollision->SetHiddenInGame(true);
+		// UltimateCollision->SetHiddenInGame(true);
 		UltimateCollision->CollisionOff();
 	}
 	

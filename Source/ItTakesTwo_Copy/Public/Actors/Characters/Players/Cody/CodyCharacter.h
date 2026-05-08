@@ -8,7 +8,7 @@
 
 class UHitBoxComponent;
 class UHitSphereComponent;
-class UDotHitBoxComponent;
+class ACodyUltimateBox;
 class UNiagaraSystem;
 
 UCLASS()
@@ -19,6 +19,11 @@ class ITTAKESTWO_COPY_API ACodyCharacter : public APlayerBase
 public:
 	ACodyCharacter();
 		
+	
+protected:
+	virtual void BeginPlay() override;	
+	
+	
 public:
 	// === Collision ===
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
@@ -28,7 +33,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Component")
 	TObjectPtr<USceneComponent> SpecialProjectilePoint;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UDotHitBoxComponent> UltimateCollision;
+	TObjectPtr<ACodyUltimateBox> UltimateCollision;
 	
 
 	// === Base Attack ===
