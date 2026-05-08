@@ -127,7 +127,6 @@ protected:
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_PlayReviveNiagara();
 
-	
 public:
 	// === Input ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
