@@ -3,13 +3,11 @@
 
 #include "Actors/Characters/Players/Cody/CodyUltimateBox.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/SkillComponent.h"
-#include "Components/StatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Shared/VFXObjectPoolSubsystem.h"
-#include "Shared/Components/DotHitBoxComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
+#include "Net/UnrealNetwork.h"
 
 ACodyCharacter::ACodyCharacter()
 {
@@ -45,13 +43,32 @@ void ACodyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	// 월드에 UltimateBox 액터를 스폰합니다.
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = this; 
-	UltimateCollision = GetWorld()->SpawnActor<ACodyUltimateBox>(ACodyUltimateBox::StaticClass(), GetActorLocation(), GetActorRotation(), SpawnParams);
+	// 월드에 UltimateBox 액터를 스폰 (서버에서만 스폰해야 중복 생성을 막을 수 있습니다)
+	if (HasAuthority())
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this; 
+		UltimateCollision = GetWorld()->SpawnActor<ACodyUltimateBox>(ACodyUltimateBox::StaticClass(), GetActorLocation(), GetActorRotation(), SpawnParams);
+		
+		if (UltimateCollision)
+		{
+			UltimateCollision->AttachToComponent(SpecialProjectilePoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		}
+	}
+}
 
+void ACodyCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(ACodyCharacter, UltimateCollision);
+}
+
+void ACodyCharacter::OnRep_UltimateCollision()
+{
 	if (UltimateCollision)
 	{
+		// 클라이언트에서도 완벽하게 부착되도록 강제합니다
 		UltimateCollision->AttachToComponent(SpecialProjectilePoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	}
 }

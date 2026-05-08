@@ -28,6 +28,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="InGame")
 	void SetDistance(float Dist) { Distance = Dist; }
+	UFUNCTION(BlueprintCallable, Category="InGame")
+	void SetBeamLengthParam(FName Param) { BeamLengthParam = Param; }
 	
 	UFUNCTION(BlueprintCallable, Category="InGame")
 	void SetDamage(int32 Damage);

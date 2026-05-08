@@ -20,7 +20,7 @@ void UCodyAnimInstance::AnimNotify_DashOn()
 	// 애니메이션 타이밍에 맞춰서 정확하게 코디를 순간이동시킵니다.
 	Owner->CodyTeleport(Owner->TeleportLength);
 
-	if (Owner->GetLocalRole() < ROLE_Authority)
+	if (Owner->GetLocalRole() == ROLE_AutonomousProxy)
 	{
 		Owner->Server_CodyTeleport();
 	}
@@ -70,8 +70,11 @@ void UCodyAnimInstance::AnimNotify_UltimateOn()
 	auto* Owner = Cast<ACodyCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
-	int32 RandDamage = FMath::RandRange(5, 18);
-	Owner->UltimateCollision->SetDamage(RandDamage);
-	Owner->UltimateCollision->CollisionOn();
+	if (Owner->UltimateCollision)
+	{
+		int32 RandDamage = FMath::RandRange(5, 18);
+		Owner->UltimateCollision->SetDamage(RandDamage);
+		Owner->UltimateCollision->CollisionOn();
+	}
 }
 
