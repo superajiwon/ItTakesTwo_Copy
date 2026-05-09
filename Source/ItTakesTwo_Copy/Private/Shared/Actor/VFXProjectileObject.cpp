@@ -100,29 +100,41 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 		UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
 		if (PoolSubsystem)
 		{
-			const FVFXSpawn_Info ExplosionInfo = FVFXSpawn_Info::CreateExplosionOnce(
-				VFXInfo.OwnerActor,
-				VFXInfo.OverlapExplosionNiagara,
-				GetActorLocation()
-			);
+			FVFXSpawn_Info ExplosionInfo
+				= FVFXSpawn_Info::CreateExplosionLifeTime(VFXInfo.OwnerActor,
+					VFXInfo.OverlapExplosionNiagara,	GetActorLocation(), VFXInfo.OverlapExplosionLifeTime);
+
+			if (VFXInfo.OverlapExplosionCollisionInfo.bAttack)
+			{
+				ExplosionInfo.CollisionInfo = VFXInfo.OverlapExplosionCollisionInfo;
+			}
+			else if (VFXInfo.bExplosionUsesProjectileCollisionInfo)
+			{
+				ExplosionInfo.CollisionInfo = VFXInfo.CollisionInfo;
+			}
+
+
 			PoolSubsystem->UseVFX_Explosion(ExplosionInfo);
 			
-			if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
+			if (VFXInfo.bProjectileDamageOnOverlap)
 			{
-				int32 Damage = 0;
-				if (Cast<ACodyCharacter>(VFXInfo.OwnerActor))
+				if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 				{
-					// Damage = VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower();
-					Damage = FMath::RandRange(5, 18);
-				}
-				else
-				{
-					Damage = VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower();
-				}
+					int32 Damage = 0;
+					if (Cast<ACodyCharacter>(VFXInfo.OwnerActor))
+					{
+						Damage = FMath::RandRange(5, 18);
+					}
+					else
+					{
+						Damage = VFXInfo.CollisionInfo.Damage > 0.f ? FMath::RoundToInt(VFXInfo.CollisionInfo.Damage) : VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower();
+					}
 				
-				FHitRequest Request(VFXInfo.OwnerActor, OtherActor, Damage, SweepResult.ImpactPoint);
-				CombatSystem->ProcessHit(Request);
+					FHitRequest Request(VFXInfo.OwnerActor,OtherActor,	Damage, SweepResult.ImpactPoint);
+					CombatSystem->ProcessHit(Request);
+				}
 			}
+
 		}
 	}
 

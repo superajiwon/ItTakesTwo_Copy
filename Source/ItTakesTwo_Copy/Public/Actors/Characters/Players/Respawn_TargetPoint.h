@@ -25,9 +25,16 @@ public:
 		return PointIndex;
 	}	
 	
+	bool IsCodyRespawnPoint() const
+	{
+		return IsCody;
+	}
+	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="RespawnPoint")
 	int32 PointIndex{};
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="RespawnPoint")
+	bool IsCody;
 	
 };

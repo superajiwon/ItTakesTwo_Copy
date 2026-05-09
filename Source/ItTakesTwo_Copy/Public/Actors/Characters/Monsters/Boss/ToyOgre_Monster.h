@@ -32,6 +32,7 @@ enum class EToyOgreState : uint8
 	Dead
 };
 
+class UNiagaraSystem;
 class AToyOgre_HandCollider;
 class UToyOgre_StateBase;
 class UToyOgre_StateMachineComponent;
@@ -51,12 +52,13 @@ protected:
 
 public:
 	bool RotateToCurrentTarget(float DeltaTime, float RotateSpeed);
+	void SpawnMeteor();
 	void OnHandBroken(bool IsLeftHand);
-
+	
+	
 private:
 	void RightHandHurt() const;
 	void LeftHandHurt();
-
 	void SpawnHandColliders();
 	
 public:
@@ -103,8 +105,37 @@ public:
 		CurrentTarget = NewTarget;
 	}
 
-
+	// 메테오
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attack|Meteor")
+	TObjectPtr<UNiagaraSystem> MeteorNiagara;
 		
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Meteor")
+	TObjectPtr<UNiagaraSystem> MeteorImpactNiagara;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Meteor")
+	int32 MeteorCount{4};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Meteor")
+	float MeteorSpawnRadius {1500.f};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Meteor")
+	float MeteorSpawnHeight{1800.f};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Meteor")
+	float MeteorSpeed{2500.f};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Meteor")
+	float MeteorLifeTime{10.f};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Meteor")
+	float MeteorDamage{15.f};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="ToyOgre|Meteor")
+	float MeteorCollisionRadius{180.f};
+	
+	
+	
 	// 상태 (애님 블프용)
 public:
 	UPROPERTY(ReplicatedUsing=OnRep_ToyOgreState, BlueprintReadOnly, Category="ToyOgre|Animation")
@@ -119,7 +150,7 @@ public:
 	TSubclassOf<AToyOgre_HandCollider> HandColliderClass;
 
 	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|Hand")
-	float HandRegenDelay = 3.f;
+	float HandRegenDelay{3.f};
 
 	UPROPERTY()
 	TObjectPtr<AToyOgre_HandCollider> LeftHandCollider;

@@ -9,7 +9,7 @@
 #include "Components/StatComponent.h"
 #include "Shared/Struct/HitRequest.h"
 #include "Shared/Subsystems/CombatSystem.h"
-
+#include "DrawDebugHelpers.h"
 
 AVFXExplosionObject::AVFXExplosionObject()
 {
@@ -39,43 +39,88 @@ void AVFXExplosionObject::Tick(float DeltaTime)
 		return;
 	}
 
+	if (VFXInfo.CollisionInfo.bAttack)
+	{
+		switch (VFXInfo.CollisionInfo.CollisionShape)
+		{
+		case EVFXCollisionShape::Sphere:
+			if (CollisionSphereComponent &&
+				CollisionSphereComponent->GetCollisionEnabled() != ECollisionEnabled::NoCollision)
+			{
+				DrawDebugSphere(
+					GetWorld(),
+					CollisionSphereComponent->GetComponentLocation(),
+					CollisionSphereComponent->GetScaledSphereRadius(),
+					24,
+					FColor::Red,
+					false,
+					0.f,
+					0,
+					3.f
+				);
+			}
+			break;
+
+		case EVFXCollisionShape::Box:
+			if (CollisionBoxComponent &&
+				CollisionBoxComponent->GetCollisionEnabled() != ECollisionEnabled::NoCollision)
+			{
+				DrawDebugBox(
+					GetWorld(),
+					CollisionBoxComponent->GetComponentLocation(),
+					CollisionBoxComponent->GetScaledBoxExtent(),
+					CollisionBoxComponent->GetComponentQuat(),
+					FColor::Red,
+					false,
+					0.f,
+					0,
+					3.f
+				);
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	Super::Tick(DeltaTime);
 }
 
 void AVFXExplosionObject::OnExplosionBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!bUsing)
-	{
+	if (!HasAuthority() || !bUsing)
 		return;
-	}
 
-	if (!OtherActor || OtherActor == this)
-	{
+	if (!OtherActor || OtherActor == this || OtherActor == VFXInfo.OwnerActor)
 		return;
-	}
 
-	if (OtherActor == VFXInfo.OwnerActor)
-	{
+	if (!VFXInfo.OwnerActor)
 		return;
-	}
 
-	
+	const FName TargetName = VFXInfo.OwnerActor->GetTargetName();
+	if (TargetName != NAME_None && !OtherActor->ActorHasTag(TargetName))
+		return;
+
+	if (!VFXInfo.CollisionInfo.bAttack)
+		return;
+
+	const int32 Damage = VFXInfo.CollisionInfo.Damage > 0.f
+		? FMath::RoundToInt(VFXInfo.CollisionInfo.Damage)
+		: VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower();
+
 	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 	{
-		if (Cast<ACodyCharacter>(VFXInfo.OwnerActor))
-		{
-		}
-		else
-		{
-			FHitRequest Request(GetOwner(), OtherActor, 
-				VFXInfo.OwnerActor->GetStatComponent()->GetAttackPower(), 
-				SweepResult.ImpactPoint);
-			CombatSystem->ProcessHit(Request);
-		}
+		FHitRequest Request(
+			VFXInfo.OwnerActor,
+			OtherActor,
+			Damage,
+			SweepResult.ImpactPoint
+		);
+
+		CombatSystem->ProcessHit(Request);
 	}
-	
-	
 }
 
 

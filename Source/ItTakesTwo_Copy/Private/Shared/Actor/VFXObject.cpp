@@ -296,7 +296,13 @@ void AVFXObject::OnRep_VFXRepState()
 	SpawnInfo.LifeTime = VFXRepState.LifeTime;
 	SpawnInfo.LifeDistance = VFXRepState.LifeDistance;
 	SpawnInfo.TargetActor = VFXRepState.TargetActor;
-
+	SpawnInfo.bProjectileDamageOnOverlap = VFXRepState.bProjectileDamageOnOverlap;
+	SpawnInfo.bExplosionUsesProjectileCollisionInfo = VFXRepState.bExplosionUsesProjectileCollisionInfo;
+	SpawnInfo.CollisionInfo = VFXRepState.CollisionInfo;
+	SpawnInfo.bSpawnOverlapExplosion = VFXRepState.bSpawnOverlapExplosion;
+	SpawnInfo.OverlapExplosionNiagara = VFXRepState.OverlapExplosionNiagara;
+	SpawnInfo.OverlapExplosionLifeTime = VFXRepState.OverlapExplosionLifeTime;
+	SpawnInfo.OverlapExplosionCollisionInfo = VFXRepState.OverlapExplosionCollisionInfo;
 	ApplyVisualState(SpawnInfo);
 }
 
@@ -317,6 +323,15 @@ void AVFXObject::SetVFXRepStateFromSpawnInfo(const FVFXSpawn_Info& SpawnInfo)
 	VFXRepState.LifeTime = SpawnInfo.LifeTime;
 	VFXRepState.LifeDistance = SpawnInfo.LifeDistance;
 	VFXRepState.TargetActor = SpawnInfo.TargetActor;
+	VFXRepState.bProjectileDamageOnOverlap = SpawnInfo.bProjectileDamageOnOverlap;
+	VFXRepState.bExplosionUsesProjectileCollisionInfo = SpawnInfo.bExplosionUsesProjectileCollisionInfo;
+	VFXRepState.CollisionInfo = SpawnInfo.CollisionInfo;
+	VFXRepState.bSpawnOverlapExplosion = SpawnInfo.bSpawnOverlapExplosion;
+	VFXRepState.OverlapExplosionNiagara = SpawnInfo.OverlapExplosionNiagara;
+	VFXRepState.OverlapExplosionLifeTime = SpawnInfo.OverlapExplosionLifeTime;
+	VFXRepState.OverlapExplosionCollisionInfo = SpawnInfo.OverlapExplosionCollisionInfo;
+
+	
 	++VFXRepState.ActivationId;
 }
 

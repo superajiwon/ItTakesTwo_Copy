@@ -5,10 +5,12 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_HandCollider.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
-#include "Components/SphereComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
 #include "Net/UnrealNetwork.h"
+#include "Shared/VFXObjectPoolSubsystem.h"
+#include "Shared/Struct/FVFXSpawn_Info.h"
+#include "NiagaraSystem.h"
 
 AToyOgre_Monster::AToyOgre_Monster()
 {
@@ -141,6 +143,50 @@ bool AToyOgre_Monster::RotateToCurrentTarget(float DeltaTime, float RotateSpeed)
 
 	SetActorRotation(NewRot);
 	return true;
+}
+
+void AToyOgre_Monster::SpawnMeteor()
+{
+	if (!HasAuthority() || !GetWorld() || !MeteorNiagara)
+		return;
+
+	UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
+	if (!PoolSubsystem)
+		return;
+
+	const FVector Center = FVector::ZeroVector;
+
+	for (int32 i = 0; i < MeteorCount; ++i)
+	{
+		const float Angle = FMath::RandRange(0.f, 2.f * PI);
+		const float Distance = FMath::Sqrt(FMath::FRand()) * MeteorSpawnRadius;
+
+		const FVector GroundLocation = Center + FVector(
+			FMath::Cos(Angle) * Distance,
+			FMath::Sin(Angle) * Distance,
+			0.f
+		);
+
+		const FVector StartLocation = GroundLocation + FVector(0.f, 0.f, MeteorSpawnHeight);
+		const FVector Direction = FVector::DownVector;
+
+		FVFXSpawn_Info SpawnInfo =
+	FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
+		this,
+		MeteorNiagara,
+		MeteorSpeed,
+		StartLocation,
+		FVector::DownVector,
+		MeteorLifeTime
+	);
+
+		SpawnInfo.WithSphereCollision(true,	FName(TEXT("Meteor")),0.f,50.f);
+		SpawnInfo.WithOverlapExplosion(MeteorImpactNiagara, 3.f);
+		SpawnInfo.WithOverlapExplosionSphereCollision(FName(TEXT("MonsterWeapon")), MeteorDamage, MeteorCollisionRadius);
+		SpawnInfo.AsProjectileTriggerExplosionOnly();
+		PoolSubsystem->UseVFX_Projectile(SpawnInfo);
+
+	}
 }
 
 void AToyOgre_Monster::OnHandBroken(bool IsLeftHand)
