@@ -11,7 +11,7 @@ void UToyOgre_WallHitState::Enter()
 {
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->WallHitMontage);
 	OwnerOgre->SetToyOgreState(EToyOgreState::WallHit);
-	
+
 }
 
 void UToyOgre_WallHitState::Tick(float DeltaTime)
@@ -30,10 +30,12 @@ void UToyOgre_WallHitState::HandleAnimNotify(FName NotifyName)
 	if (NotifyName == TEXT("WallHitEnd"))
 	{
 		OwnerOgre->GetStateMachine()->ChangeState(OwnerOgre->RecoverStateClass);
+		OwnerOgre->SpawnMeteor();
 	}
 }
 
 void UToyOgre_WallHitState::OnWallHitEnd()
 {
 	OwnerOgre->GetStateMachine()->ChangeState(OwnerOgre->RecoverStateClass);
+	OwnerOgre->SpawnMeteor();
 }

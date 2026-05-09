@@ -4,8 +4,9 @@
 #include "MapObjectBase.h"
 #include "MapObject_Totem.generated.h"
 
+class ALevelSequenceActor;
 class UBoxComponent;
-
+class ANiagaraActor;
 UCLASS()
 class ITTAKESTWO_COPY_API AMapObject_Totem : public AMapObjectBase
 {
@@ -34,6 +35,8 @@ private:
 	void OnRep_Activated();
 
 	void ActivateTotem();
+	void PlayChainSequence();
+	
 	
 public:
 	bool IsActivated() const
@@ -44,6 +47,23 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Totem|MapObject")
 	TObjectPtr<UBoxComponent> BoxCollision;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Niagara|VFX")
+	TObjectPtr<ANiagaraActor> PlacedNiagaraActor1;
+	
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Niagara|VFX")
+	TObjectPtr<ANiagaraActor> PlacedNiagaraActor2;
+	
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Niagara|VFX")
+	TObjectPtr<ANiagaraActor> PlacedNiagaraActor3;
+	
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Niagara|VFX")
+	TObjectPtr<ANiagaraActor> PlacedNiagaraActor4;
+	
+protected:
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Totem|Sequence")
+	TObjectPtr<ALevelSequenceActor> ChainSequenceActor;
+
 
 protected:
 	UPROPERTY(ReplicatedUsing=OnRep_Activated, BlueprintReadOnly, Category="Totem|MapObject")

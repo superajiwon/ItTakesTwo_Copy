@@ -16,7 +16,7 @@ public:
 	virtual void Enter() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void Exit() override;
-	void HandleAnimNotify(FName NotifyName);
+	virtual void HandleAnimNotify(FName NotifyName) override;
 
 public:
 	void OnWallHitEnd();

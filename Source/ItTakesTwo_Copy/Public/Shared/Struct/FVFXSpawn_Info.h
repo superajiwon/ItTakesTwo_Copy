@@ -153,6 +153,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float OverlapExplosionLifeTime = 0.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bProjectileDamageOnOverlap = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bExplosionUsesProjectileCollisionInfo = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVFXCollision_Info OverlapExplosionCollisionInfo;
+
+	
+	
 public:
 	FVFXSpawn_Info() = default;
 	// Target Location으로 발사
@@ -321,12 +332,42 @@ public:
 		return *this;
 	}
 
+	FVFXSpawn_Info& AsProjectileTriggerExplosionOnly()
+	{
+		bProjectileDamageOnOverlap = false;
+		bExplosionUsesProjectileCollisionInfo = true;
+		return *this;
+	}
+	
 	FVFXSpawn_Info& WithoutCollision()
 	{
 		CollisionInfo = FVFXCollision_Info::NoCollision();
 		return *this;
 	}
 
+	FVFXSpawn_Info& WithOverlapExplosionCollision(const FVFXCollision_Info& InCollisionInfo)
+	{
+		OverlapExplosionCollisionInfo = InCollisionInfo;
+		return *this;
+	}
+
+	FVFXSpawn_Info& WithOverlapExplosionSphereCollision(
+		FName CollisionName,
+		float DamageValue,
+		float Radius
+	)
+	{
+		OverlapExplosionCollisionInfo = FVFXCollision_Info::Sphere(
+			true,
+			CollisionName,
+			DamageValue,
+			Radius
+		);
+
+		return *this;
+	}
+
+	
 private:
 	static FVFXSpawn_Info MakeBaseProjectile(
 		TObjectPtr<ACharacterBase> Owner,

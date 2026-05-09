@@ -5,6 +5,7 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
+#include "Shared/Components/HitBoxComponent.h"
 
 void UToyOgre_HoleEnterState::Enter()
 {
@@ -13,6 +14,11 @@ void UToyOgre_HoleEnterState::Enter()
 	OwnerOgre->GetMesh()->SetWorldLocation(FVector(-500.0f,500.0f,0.0f));
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->HoleEnterMontage);
 	OwnerOgre->bEnterHole = true;
+	if (OwnerOgre->HitBoxComponent)
+	{
+		OwnerOgre->HitBoxComponent->CollisionOff();
+		OwnerOgre->HitBoxComponent->ClearHitRecords();
+	}
 }
 
 
