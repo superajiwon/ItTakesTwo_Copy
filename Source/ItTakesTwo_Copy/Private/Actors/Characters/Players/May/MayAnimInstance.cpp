@@ -19,7 +19,9 @@ void UMayAnimInstance::AnimNotify_DashOn()
 		FVector DashDir = Owner->GetActorForwardVector();
 		Owner->MayDash(DashDir, Owner->DashStrength, Owner->DashDuration);
 	
-		if (Owner->GetLocalRole() < ROLE_Authority)
+		// if (Owner->GetLocalRole() == ROLE_Authority)
+		// {
+		if (Owner->GetLocalRole() == ROLE_AutonomousProxy)
 		{
 			Owner->Server_MayDash();
 		}
@@ -38,6 +40,8 @@ void UMayAnimInstance::AnimNotify_SpecialOn()
 	int32 RandDamage = FMath::RandRange(5, 18);
 	Owner->SpecialCollision->SetDamage(RandDamage);
 	Owner->SpecialCollision->CollisionOn();
+	
+	Owner->PlaySpecialVFX();
 }
 
 void UMayAnimInstance::AnimNotify_SpecialOff()

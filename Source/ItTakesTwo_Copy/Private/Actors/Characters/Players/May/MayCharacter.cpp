@@ -1,8 +1,11 @@
 
 #include "Actors/Characters/Players/May/MayCharacter.h"
 #include "Actors/Characters/Players/PlayerActionData.h"
+#include "Components/SplineComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/RootMotionSource.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Shared/Components/DotHitSphereComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
@@ -41,6 +44,27 @@ AMayCharacter::AMayCharacter()
 	FHitComp_Info UltimateHitCompInfo(FName("Player_MayUltimate"), FName("PlayerWeapon"), FVector(0.0f,0.0f,0.0f), 300.f);
 	UltimateCollision->InitializeHitComp(UltimateHitCompInfo, GetTargetName());
 	UltimateCollision->CollisionOff();
+	
+	AlwaysNiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("AlwaysNiagaraComp"));
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SwordNiagaraAsset(TEXT("/Script/Niagara.NiagaraSystem'/Game/VFX/Using/NS_MayAlways.NS_MayAlways'"));
+	if (SwordNiagaraAsset.Succeeded()) AlwaysNiagaraComp->SetAsset(SwordNiagaraAsset.Object);
+	AlwaysNiagaraComp->SetupAttachment(RootComponent); 
+	AlwaysNiagaraComp->SetAutoActivate(true);
+	
+	UltimateNiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("UltimateNiagaraComp"));
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> UltimateNiagaraAsset(TEXT("/Script/Niagara.NiagaraSystem'/Game/VFX/Using/NS_May_Ultimate.NS_May_Ultimate'"));
+	if (UltimateNiagaraAsset.Succeeded()) UltimateNiagaraComp->SetAsset(UltimateNiagaraAsset.Object);
+	UltimateNiagaraComp->SetupAttachment(UltimateCollision);
+	UltimateNiagaraComp->SetAutoActivate(false);
+	
+	DashSplineComp = CreateDefaultSubobject<USplineComponent>(TEXT("DashSplineComp"));
+	DashSplineComp->SetupAttachment(GetRootComponent());
+	
+	DashNiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("DashNiagaraComp"));
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> DashNiagaraAsset(TEXT("/Script/Niagara.NiagaraSystem'/Game/VFX/Using/NS_Spline_Fire.NS_Spline_Fire'"));
+	if (DashNiagaraAsset.Succeeded()) DashNiagaraComp->SetAsset(DashNiagaraAsset.Object);
+	DashNiagaraComp->SetupAttachment(DashSplineComp);
+	DashNiagaraComp->SetAutoActivate(false);
 }
 
 void AMayCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -76,6 +100,19 @@ void AMayCharacter::SpecialAttack(const FInputActionValue& Value)
 	Super::SpecialAttack(Value);
 }
 
+void AMayCharacter::PlaySpecialVFX()
+{
+	if (!SpecialAttackVFX) return;
+	
+	// 캐릭터 발 아래(내려찍는 공격) 위치에 VFX 스폰
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+		GetWorld(),
+		SpecialAttackVFX,
+		GetActorLocation(),
+		GetActorRotation()
+	);
+}
+
 FAttackModeData* AMayCharacter::GetCurrentAttackData()
 {
 	if (!ActionData) return nullptr;
@@ -102,12 +139,6 @@ void AMayCharacter::EndUltimate()
 {
 	Super::EndUltimate();
 	
-	// 서버에서 관리되는 상태 롤백
-	// if (HasAuthority())
-	// {
-	// 	bIsUltimateForm = false;
-	// }
-	
 	// 서버에서 관리되는 상태 롤백 (로컬 예측을 위해 Authority 체크 제거)
 	bIsUltimateForm = false;
 	
@@ -116,23 +147,34 @@ void AMayCharacter::EndUltimate()
 		UltimateCollision->SetHiddenInGame(true);
 		UltimateCollision->CollisionOff();
 	}
+	
+	// 궁극기 종료 시 나이아가라 즉시 비활성화
+	if (UltimateNiagaraComp)
+	{
+		UltimateNiagaraComp->DeactivateImmediate();
+	}
 }
 
 void AMayCharacter::CancelUltimateOnAction(EActionType ActionType)
 {
-	if (ActionType == EActionType::Dash)
+	// 캔슬 되지 않도록 
+}
+
+// SkillComponent::Multicast_PlayerSkillEffect 의 Ultimate 케이스에서 호출됨
+// → 서버 + 모든 클라이언트에서 실행되므로 별도 Multicast 불필요
+void AMayCharacter::PlayUltimateVFX()
+{
+	if (UltimateNiagaraComp)
 	{
-		// if (GetUltimateComponent()->bIsUltimateActive)
-		// {
-		// 	GetUltimateComponent()->EndUltimate();
-		// }
-		
-		Super::CancelUltimateOnAction(ActionType);
+		UltimateNiagaraComp->Activate(true);
 	}
 }
 
 void AMayCharacter::MayDash(FVector DashDir, float Strength, float Duration)
 {
+	// Spline VFX용 시작 위치 (RootMotion 적용 전 현재 위치)
+	const FVector DashStart = GetActorLocation();
+	
 	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
 	{
 		TSharedPtr<FRootMotionSource_ConstantForce> ConstantForce = MakeShared<FRootMotionSource_ConstantForce>();
@@ -147,9 +189,33 @@ void AMayCharacter::MayDash(FVector DashDir, float Strength, float Duration)
 		
 		MoveComp->ApplyRootMotionSource(ConstantForce);
 	}
+	
+	// Spline VFX 타이머: 서버에서만 설정 (Multicast 호출권은 서버만 가짐)
+	// 서버 플레이어(HasAuthority + LocallyControlled)도 이 경로로 처리됨
+	if (HasAuthority())
+	{
+		GetWorldTimerManager().SetTimer(DashVFXTimer, [this, DashStart]()
+		{
+			Multicast_PlayDashSplineVFX(DashStart, GetActorLocation());
+		}, Duration, false);
+	}
 }
 
 void AMayCharacter::Server_MayDash_Implementation()
 {
 	MayDash(GetActorForwardVector(), DashStrength, DashDuration);
+}
+
+void AMayCharacter::Multicast_PlayDashSplineVFX_Implementation(FVector StartPos, FVector EndPos)
+{
+	if (!DashSplineComp || !DashNiagaraComp) return;
+
+	// 2-포인트 Spline 구성 (시작 → 끝)
+	DashSplineComp->ClearSplinePoints();
+	DashSplineComp->AddSplineWorldPoint(StartPos);
+	DashSplineComp->AddSplineWorldPoint(EndPos);
+	DashSplineComp->UpdateSpline();
+
+	// Niagara 에셋이 SplineLocation DataInterface를 바인딩하면 DashSplineComp를 참조함
+	DashNiagaraComp->Activate(true);
 }
