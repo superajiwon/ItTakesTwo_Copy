@@ -76,11 +76,11 @@ void USkillComponent::Server_ExecuteSkill_Implementation(EActionType ActionType,
 	APlayerBase* Owner = Cast<APlayerBase>(GetOwner());
 	if (!Owner) return;
 	
-	// 서버에서 이중 검증
-	if (!CanExecuteSkill(ActionType)) return;
-	
 	if (ActionType == EActionType::Ultimate)
 	{
+		// 서버에서 이중 검증
+		if (!CanExecuteSkill(ActionType)) return;
+		
 		if (Owner->GetUltimateComponent())
 		{
 			Owner->GetUltimateComponent()->ActivateUltimate();
@@ -90,14 +90,13 @@ void USkillComponent::Server_ExecuteSkill_Implementation(EActionType ActionType,
 	}
 	else
 	{
-		// [중요] 노말 스킬 사용 시 서버에서도 궁극기 상태를 해제해야 함
-		// if (Owner->GetUltimateComponent() && Owner->GetUltimateComponent()->bIsUltimateActive)
-		// {
-		// 	Owner->GetUltimateComponent()->EndUltimate();
-		// }
-		
-		// [중요] 노말 스킬 사용 시 서버에서도 궁극기 상태를 해제해야 함 (캐릭터별 오버라이드 함수 활용)
+		// [중요] 캐릭터별 궁극기 캔슬 처리를 CanExecuteSkill 검증보다 먼저 수행
+		// CancelUltimateOnAction 내부에서 bIsSkillPlaying이 리셋될 수 있으므로
+		// 반드시 먼저 호출해야 이후 CanExecuteSkill이 정확한 판단을 내릴 수 있음
 		Owner->CancelUltimateOnAction(ActionType);
+		
+		// 서버에서 이중 검증 (CancelUltimateOnAction 이후 실행)
+		if (!CanExecuteSkill(ActionType)) return;
 		
 		StartCooldown(ActionType);
 	}
@@ -177,6 +176,16 @@ void USkillComponent::Multicast_PlayerSkillEffect_Implementation(EActionType Act
 			// 서버 및 모든 클라이언트에서 잠금 상태 동기화
 			Owner->bIsActionLocked = true;
 			Owner->GetCharacterMovement()->bOrientRotationToMovement = false;
+			
+			
+			if (ActionType == EActionType::Basic)
+			{	// BaseAttack VFX: 캐릭터에게 위임 (캐릭터마다 다른 VFX 처리 가능)
+				Owner->PlayBaseAttackVFX();
+			}	
+			else if (ActionType == EActionType::Ultimate)
+			{   // Ultimate VFX: 궁극기 시작 시 루프 나이아가라 활성화
+				Owner->PlayUltimateVFX();
+			}
 		}
 	}
 }

@@ -10,6 +10,7 @@ class UHitBoxComponent;
 class UHitSphereComponent;
 class ACodyUltimateBox;
 class UNiagaraSystem;
+class UNiagaraComponent;
 class UChildActorComponent;
 
 UCLASS()
@@ -25,6 +26,7 @@ protected:
 	virtual void BeginPlay() override;	
 	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
 public:
 	// === Collision ===
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
@@ -41,7 +43,7 @@ public:
 
 	// === Base Attack ===
 	virtual void SetWeaponCollision(bool bEnable) override;
-	
+	virtual void PlayBaseAttackVFX() override { Multicast_PlayBaseAttackVFX(); }
 	
 	// === Special Attack === 
 	virtual void SpecialAttack(const FInputActionValue& Value) override;
@@ -50,6 +52,8 @@ public:
 	// === Ultimate Attack === 
 	virtual void Ultimate(const FInputActionValue& Value) override;
 	virtual void EndUltimate() override;
+	
+	virtual void CancelUltimateOnAction(EActionType ActionType) override;
 	
 	
 	// === Dash ===
@@ -60,4 +64,26 @@ public:
 	
 	UFUNCTION(Server, Reliable)
 	void Server_CodyTeleport();
+	
+	
+	// === Niagara VFX ===
+	// 손에 항상 켜져있는 Infinite 나이아가라 컴포넌트
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Niagara|Component")
+	TObjectPtr<UNiagaraComponent> HandNiagaraComp;
+
+	// BaseAttack 시 재생할 나이아가라 에셋
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Niagara")
+	TObjectPtr<UNiagaraSystem> BaseAttackVFX;
+
+	// Teleport 도착 지점에 재생할 나이아가라 에셋
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Niagara")
+	TObjectPtr<UNiagaraSystem> TeleportVFX;
+
+	// 모든 클라이언트에서 BaseAttack VFX 재생
+	UFUNCTION(NetMulticast, Unreliable)
+	void Multicast_PlayBaseAttackVFX();
+
+	// 모든 클라이언트에서 Teleport 도착 VFX 재생
+	UFUNCTION(NetMulticast, Unreliable)
+	void Multicast_PlayTeleportVFX(FVector Location);
 };

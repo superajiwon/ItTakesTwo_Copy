@@ -7,6 +7,8 @@
 #include "Shared/VFXObjectPoolSubsystem.h"
 #include "Shared/Components/HitSphereComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Net/UnrealNetwork.h"
 
 ACodyCharacter::ACodyCharacter()
@@ -32,11 +34,12 @@ ACodyCharacter::ACodyCharacter()
 	SpecialProjectilePoint->SetupAttachment(AttackColliderPoint);
 	SpecialProjectilePoint->SetRelativeLocation(FVector(70.0f,0.0f,125.0f));
 	
-	// UltimateCollision = CreateDefaultSubobject<UDotHitBoxComponent>(TEXT("UltimateCollision"));
-	// UltimateCollision->AttachToComponent(AttackColliderPoint, FAttachmentTransformRules::KeepRelativeTransform);
-	// FHitComp_Info SwordHitCompInfo(FName("Player_CodyUltimate"), FName("PlayerWeapon"), FVector(550.0f,0.0f,88.0f), FVector(500.0f, 50.0f, 50.0f));
-	// UltimateCollision->InitializeHitComp(SwordHitCompInfo, GetTargetName());
-	// UltimateCollision->CollisionOff();
+	// === 손 Infinite 나이아가라 컴포넌트 ===
+	HandNiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("HandNiagaraComp"));
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> HandNiagaraAsset(TEXT("/Script/Niagara.NiagaraSystem'/Game/VFX/Using/NS_Cody_Always.NS_Cody_Always'"));
+	if (HandNiagaraAsset.Succeeded()) HandNiagaraComp->SetAsset(HandNiagaraAsset.Object);
+	HandNiagaraComp->SetupAttachment(GetMesh(), FName("RightNiagaraSocket"));
+	HandNiagaraComp->SetAutoActivate(true); // 항상 켜져있음
 }
 
 void ACodyCharacter::BeginPlay()
@@ -116,6 +119,9 @@ void ACodyCharacter::CodyTeleport(float Distance)
 	}
 	
 	SetActorLocation(DistLocation, !bCanTeleport); // bSweep
+
+	// 이동 완료 후 도착 지점에 VFX 재생 (서버에서 호출 → Multicast로 전파)
+	Multicast_PlayTeleportVFX(GetActorLocation());
 	
 	// bNoCheck = true : 철창이나 좁은 틈새를 무시하고 통과하기 위해 '체크 안 함' 설정! 
 	// TeleportTo는 막혀있어도 그걸 뚫고 지나가기 때문에 사용하면 안된다 
@@ -147,4 +153,28 @@ void ACodyCharacter::EndUltimate()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
+void ACodyCharacter::CancelUltimateOnAction(EActionType ActionType)
+{
+	 if (ActionType == EActionType::Dash)
+	 {
+		 Super::CancelUltimateOnAction(ActionType);
+	 }
+}
+
+void ACodyCharacter::Multicast_PlayBaseAttackVFX_Implementation()
+{
+	if (!BaseAttackVFX) return;
+
+	// 손 소켓 위치에 스폰 (HandNiagaraComp의 위치와 동일)
+	const FVector SpawnLocation = BaseCollision->GetComponentLocation();
+	const FRotator SpawnRotation = BaseCollision->GetComponentRotation();
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), BaseAttackVFX, SpawnLocation, SpawnRotation);
+}
+
+void ACodyCharacter::Multicast_PlayTeleportVFX_Implementation(FVector Location)
+{
+	if (!TeleportVFX) return;
+
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TeleportVFX, Location, GetActorRotation());
+}
 

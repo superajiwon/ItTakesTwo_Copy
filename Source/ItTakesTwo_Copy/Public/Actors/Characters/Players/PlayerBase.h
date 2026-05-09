@@ -82,7 +82,12 @@ public:
 	// 궁극기 종료
 	UFUNCTION()
 	virtual void EndUltimate() {}
-
+	
+	// BaseAttack VFX 재생 (캐릭터마다 다른 VFX, Multicast 범위 내에서 호출됨)
+	virtual void PlayBaseAttackVFX() {}
+	
+	// Ultimate 시작 시 VFX 재생 (Multicast 범위 내에서 호출됨)
+	virtual void PlayUltimateVFX() {}
 	
 	// === Combo ===
 	// 현재 콤보 단계 (로컬 상태 — 소유 클라이언트/방장에서만 증가)
@@ -127,6 +132,7 @@ protected:
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_PlayReviveNiagara();
 
+	
 public:
 	// === Input ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")

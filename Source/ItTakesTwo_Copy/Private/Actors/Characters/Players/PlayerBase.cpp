@@ -140,8 +140,17 @@ FAttackModeData* APlayerBase::GetCurrentAttackData()
 void APlayerBase::CancelUltimateOnAction(EActionType ActionType)
 {
 	if (UltimateComp && UltimateComp->bIsUltimateActive)
-	{
+	{		
+		// bIsSkillPlaying 먼저 리셋 → 이후 CanExecuteSkill이 새 스킬을 허용할 수 있게 됨
+		if (SkillComp) SkillComp->ResetSkillState();
+		
 		UltimateComp->EndUltimate();
+		
+		// 재생 중인 궁극기 몽타주를 중단
+		if (ActionData && ActionData->UltimateMontage)
+		{
+			StopAnimMontage(ActionData->UltimateMontage);
+		}
 	}
 }
 
