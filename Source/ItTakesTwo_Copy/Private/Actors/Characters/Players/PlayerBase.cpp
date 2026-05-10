@@ -298,6 +298,14 @@ void APlayerBase::Multicast_PlayReviveNiagara_Implementation()
 	}
 }
 
+void APlayerBase::Multicast_PlayHitVFX_Implementation(FVector ImpactPoint)
+{
+	if (HitNiagara)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitNiagara, ImpactPoint, FRotator::ZeroRotator);
+	}
+}
+
 // ===
 //  기본 공격 (LMB)
 //  랜덤 인덱스를 로컬에서 미리 결정 → SkillComp에 전달 

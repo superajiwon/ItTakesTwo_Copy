@@ -34,7 +34,7 @@ ACodyCharacter::ACodyCharacter()
 	SpecialProjectilePoint->SetupAttachment(AttackColliderPoint);
 	SpecialProjectilePoint->SetRelativeLocation(FVector(70.0f,0.0f,125.0f));
 	
-	// === 손 Infinite 나이아가라 컴포넌트 ===
+	// === Infinite 나이아가라 컴포넌트 ===
 	HandNiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("HandNiagaraComp"));
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> HandNiagaraAsset(TEXT("/Script/Niagara.NiagaraSystem'/Game/VFX/Using/NS_Cody_Always.NS_Cody_Always'"));
 	if (HandNiagaraAsset.Succeeded()) HandNiagaraComp->SetAsset(HandNiagaraAsset.Object);

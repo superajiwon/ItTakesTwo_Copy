@@ -2,6 +2,7 @@
 
 #include "Shared/Components/HitBoxComponent.h"
 
+#include "NiagaraFunctionLibrary.h"
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Components/UltimateComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
@@ -72,6 +73,15 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	{
 		FHitRequest Request(GetOwner(), OtherActor, Damage, SweepResult.ImpactPoint);
 		CombatSystem->ProcessHit(Request);
+		
+		// 서버에서만 Multicast 호출 → 모든 클라이언트에 HitVFX 전파
+		if (GetOwner()->HasAuthority())
+		{
+			if (APlayerBase* Player = Cast<APlayerBase>(GetOwner()))
+			{
+				Player->Multicast_PlayHitVFX(SweepResult.ImpactPoint);
+			}
+		}
 	}
 }
 

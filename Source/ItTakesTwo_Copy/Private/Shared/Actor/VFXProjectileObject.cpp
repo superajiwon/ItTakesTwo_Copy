@@ -100,10 +100,21 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 		UVFXObjectPoolSubsystem* PoolSubsystem = GetWorld()->GetSubsystem<UVFXObjectPoolSubsystem>();
 		if (PoolSubsystem)
 		{
-			FVFXSpawn_Info ExplosionInfo
-				= FVFXSpawn_Info::CreateExplosionLifeTime(VFXInfo.OwnerActor,
-					VFXInfo.OverlapExplosionNiagara,	GetActorLocation(), VFXInfo.OverlapExplosionLifeTime);
-
+			FVFXSpawn_Info ExplosionInfo;
+				// = FVFXSpawn_Info::CreateExplosionLifeTime(VFXInfo.OwnerActor,
+				// 	VFXInfo.OverlapExplosionNiagara,	GetActorLocation(), VFXInfo.OverlapExplosionLifeTime);
+			if (VFXInfo.OverlapExplosionLifeTime > 0.f)
+			{
+				ExplosionInfo = FVFXSpawn_Info::CreateExplosionLifeTime(VFXInfo.OwnerActor,
+					VFXInfo.OverlapExplosionNiagara, GetActorLocation(), VFXInfo.OverlapExplosionLifeTime);
+			}
+			else
+			{
+				ExplosionInfo = FVFXSpawn_Info::CreateExplosionOnce(VFXInfo.OwnerActor,
+					VFXInfo.OverlapExplosionNiagara, GetActorLocation());
+			}
+			
+			
 			if (VFXInfo.OverlapExplosionCollisionInfo.bAttack)
 			{
 				ExplosionInfo.CollisionInfo = VFXInfo.OverlapExplosionCollisionInfo;

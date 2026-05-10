@@ -6,8 +6,10 @@
 #include "Components/BoxComponent.h"
 #include "HitBoxComponent.generated.h"
 
-struct FHitComp_Info;
 class UCombatSystem;
+class UNiagaraSystem;
+
+struct FHitComp_Info;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ITTAKESTWO_COPY_API UHitBoxComponent : public UBoxComponent
@@ -71,11 +73,12 @@ private:
 	/** 단일 공격 내에서 이미 타격한 대상 추적 (중복 타격 방지) */
 	UPROPERTY()
 	TSet<AActor*> AlreadyHitActors;
-
+	
 	/** 이 히트박스로 가할 데미지 수치 (InitializeHitComp 또는 외부에서 세팅) */
 	int Damage{0};
 
 public:
 	void SetDamage(int InDamage) { Damage = InDamage; }
 	int GetDamage() const { return Damage; }
+	
 };
