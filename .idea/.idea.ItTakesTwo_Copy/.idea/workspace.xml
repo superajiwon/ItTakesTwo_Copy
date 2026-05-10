@@ -17,15 +17,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_CodyUltimate.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_CodyUltimate.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/Lv_ServerTestMain.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Lv_ServerTestMain.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ItTakesTwo_Copy.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/ItTakesTwo_Copy.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyAnimInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyUltimateBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyUltimateBox.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyUltimateBox.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyUltimateBox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/Blueprints/WBP_InGameHP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/Blueprints/WBP_InGameHP.uasset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -313,6 +305,7 @@
       <workItem from="1778237307343" duration="945000" />
       <workItem from="1778238343339" duration="2887000" />
       <workItem from="1778249848805" duration="5924000" />
+      <workItem from="1778421502043" duration="1429000" />
     </task>
     <servers />
   </component>
