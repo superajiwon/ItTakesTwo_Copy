@@ -18,6 +18,10 @@ public:
 	
 	virtual bool DoesSupportWorldType(const EWorldType::Type WorldType) const override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+	
+	void PreRenderVFXPool();
+	
+	
 public:
 	TObjectPtr<AVFXProjectileObject> UseVFX_Projectile(const FVFXSpawn_Info& VFXInfo);
 	TObjectPtr<AVFXExplosionObject> UseVFX_Explosion(const FVFXSpawn_Info& VFXInfo);

@@ -7,7 +7,7 @@
 #include "Shared/Actor/VFXExplosionObject.h"
 #include "Shared/Actor/VFXProjectileObject.h"
 
-#define MAX_VFXPOOLSIZE 20
+#define MAX_VFXPOOLSIZE 30
 
 void UVFXObjectPoolSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -115,4 +115,9 @@ bool UVFXObjectPoolSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	// if (FoundActors.Num() > 0)
 	// 	return false;
 	return true;
+}
+
+void UVFXObjectPoolSubsystem::PreRenderVFXPool()
+{
+	Initialize_Pool();
 }
