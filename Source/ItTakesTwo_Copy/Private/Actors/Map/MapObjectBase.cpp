@@ -15,6 +15,7 @@ AMapObjectBase::AMapObjectBase()
 	
 	SceneComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	RootComponent = SceneComp;
+	Tags.AddUnique(TEXT("SectionCull"));
 	
 	
 	// MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
@@ -26,7 +27,6 @@ AMapObjectBase::AMapObjectBase()
 void AMapObjectBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	
 }
 

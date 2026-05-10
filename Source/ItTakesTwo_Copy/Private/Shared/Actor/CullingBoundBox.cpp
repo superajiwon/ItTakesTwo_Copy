@@ -4,8 +4,9 @@
 #include "Shared/Actor/CullingBoundBox.h"
 
 #include "EngineUtils.h"
+#include "Actors/Characters/Players/PlayerBase.h"
 #include "Components/BoxComponent.h"
-
+#include "Components/LightComponent.h"
 
 ACullingBoundBox::ACullingBoundBox()
 {
@@ -45,16 +46,32 @@ void ACullingBoundBox::FindOverlapActor()
 		AActor* Actor = *It;
 		if (!Actor || Actor == this)
 			continue;
+		if (Actor->IsA<APlayerBase>())
+			continue;
+
 		if (HasIgnoreTags(Actor))
 			continue;
 		
-		FVector Origin;
-		FVector Extent;
-		Actor->GetActorBounds(false, Origin, Extent);
+		if (!Actor->ActorHasTag(TEXT("SectionCull")))
+			continue;
+		
+		bool bIsInsideSection = false;
 
-		const FBox ActorBounds(Origin - Extent, Origin + Extent);
+		if (Actor->FindComponentByClass<ULightComponent>())
+		{
+			bIsInsideSection = SectionBounds.IsInside(Actor->GetActorLocation());
+		}
+		else
+		{
+			FVector Origin;
+			FVector Extent;
+			Actor->GetActorBounds(false, Origin, Extent);
 
-		if (SectionBounds.Intersect(ActorBounds))
+			const FBox ActorBounds(Origin - Extent, Origin + Extent);
+			bIsInsideSection = SectionBounds.Intersect(ActorBounds);
+		}
+
+		if (bIsInsideSection)
 		{
 			SectionActors.Add(Actor);
 		}
@@ -87,15 +104,34 @@ void ACullingBoundBox::SetActiveActor(AActor* Actor, bool bActive)
 		return;
 
 	Actor->SetActorHiddenInGame(!bActive);
-	Actor->SetActorEnableCollision(bActive);
-	Actor->SetActorTickEnabled(bActive);
-	
-	TArray<UActorComponent*> Components = Actor->GetComponents().Array();
-	for (UActorComponent* Component : Components)
+
+	TArray<ULightComponent*> LightComponents;
+	Actor->GetComponents<ULightComponent>(LightComponents);
+
+	for (ULightComponent* LightComp : LightComponents)
 	{
-		if (Component)
+		if (!LightComp)
+			continue;
+
+		LightComp->SetVisibility(bActive, true);
+	}
+
+	if (Actor->ActorHasTag(TEXT("SectionCullCollision")))
+	{
+		Actor->SetActorEnableCollision(bActive);
+	}
+
+	if (Actor->ActorHasTag(TEXT("SectionCullTick")))
+	{
+		Actor->SetActorTickEnabled(bActive);
+
+		TArray<UActorComponent*> Components = Actor->GetComponents().Array();
+		for (UActorComponent* Component : Components)
 		{
-			Component->SetComponentTickEnabled(bActive);
+			if (Component)
+			{
+				Component->SetComponentTickEnabled(bActive);
+			}
 		}
 	}
 }

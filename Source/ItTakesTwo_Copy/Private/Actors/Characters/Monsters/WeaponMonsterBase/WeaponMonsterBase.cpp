@@ -7,7 +7,9 @@
 AWeaponMonsterBase::AWeaponMonsterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	Tags.AddUnique(TEXT("SectionCull"));
+	Tags.AddUnique(TEXT("SectionCullCollision"));
+	Tags.AddUnique(TEXT("SectionCullTick"));
 	RightHand_WeaponMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RightWeaponMeshComponent"));
 	RightHand_WeaponMeshComponent->SetupAttachment(GetMesh(), FName(TEXT("RightHandSocket")));
 }
@@ -15,6 +17,7 @@ AWeaponMonsterBase::AWeaponMonsterBase()
 void AWeaponMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	bUseControllerRotationYaw = true;
 }

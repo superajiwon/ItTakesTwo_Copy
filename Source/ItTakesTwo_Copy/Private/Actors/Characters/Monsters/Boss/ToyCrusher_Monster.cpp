@@ -24,7 +24,9 @@ AToyCrusher_Monster::AToyCrusher_Monster()
 	
 
 	MoveSpeed = 300.f;
-
+	Tags.AddUnique(TEXT("SectionCull"));
+	Tags.AddUnique(TEXT("SectionCullCollision"));
+	Tags.AddUnique(TEXT("SectionCullTick"));
 	AIControllerClass = nullptr;
 	AutoPossessAI = EAutoPossessAI::Disabled;
 	MonsterMoveType = EMonsterMoveType::End;
