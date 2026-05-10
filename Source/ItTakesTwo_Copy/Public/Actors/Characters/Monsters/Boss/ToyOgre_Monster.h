@@ -6,7 +6,20 @@
 #include "BossBase.h"
 #include "ToyOgre_Monster.generated.h"
 
+USTRUCT(BlueprintType)
+struct FToyOgre_MeshTransformInfo
+{
+	GENERATED_BODY()
 
+	UPROPERTY()
+	FVector_NetQuantize100 RelativeLocation{FVector::ZeroVector};
+
+	UPROPERTY()
+	FRotator RelativeRotation{FRotator::ZeroRotator};
+
+	UPROPERTY()
+	bool bUseOverride{false};
+};
 
 UENUM(BlueprintType)	
 enum class EToyOgreState : uint8
@@ -55,7 +68,29 @@ public:
 	void SpawnMeteor();
 	void OnHandBroken(bool IsLeftHand);
 	
+	// Hole Enter 상태에 위치 조정을 위한 함수
+public:
+	void SetMeshWorldLocationForHole(const FVector& MeshWorldLocation);
+	void ResetMeshTransform();
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_ApplyMeshTransform(const FToyOgre_MeshTransformInfo& MeshTransform);
+private:
+	UFUNCTION()
+	void OnRep_MeshTransform();
+	void ApplyMeshTransform();
+
+private:
+	UPROPERTY()
+	FVector DefaultMeshRelativeLocation{FVector::ZeroVector};
+
+	UPROPERTY()
+	FRotator DefaultMeshRelativeRotation{FRotator::ZeroRotator};
+
+	UPROPERTY(ReplicatedUsing=OnRep_MeshTransform)
+	FToyOgre_MeshTransformInfo RepMeshTransform;
 	
+	
+	// Hand Collider 함수
 private:
 	void RightHandHurt() const;
 	void LeftHandHurt();
@@ -73,12 +108,13 @@ public:
 	void RegenHand(bool IsLeftHand);
 	bool AreBothHandsBroken() const;
 
-
+	// 상태 함수
 public:
 	UFUNCTION()
 	void OnRep_ToyOgreState();
 	void SetToyOgreState(EToyOgreState NewState);
 	
+	// 애니메이션
 public:
 	void PlayToyOgreMontage(UAnimMontage* Montage);
 	UFUNCTION(NetMulticast, Reliable)
@@ -86,8 +122,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="ToyOgre|AnimNotify")
 	void AnimNotify_ToyOgre(FName EventName);
-
-
 	
 public:
 	UToyOgre_StateMachineComponent* GetStateMachine() const
