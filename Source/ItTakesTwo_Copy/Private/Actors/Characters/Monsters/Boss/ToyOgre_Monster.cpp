@@ -46,10 +46,14 @@ AToyOgre_Monster::AToyOgre_Monster()
 void AToyOgre_Monster::BeginPlay()
 {
 	Super::BeginPlay();
+	if (GetMesh())
+	{
+		DefaultMeshRelativeLocation = GetMesh()->GetRelativeLocation();
+		DefaultMeshRelativeRotation = GetMesh()->GetRelativeRotation();
+	}
 	if (HasAuthority())
 	{
 		SpawnHandColliders();
-		
 		StateMachine->Init(this);
 		StateMachine->ChangeState(SelectTargetStateClass);
 	}
@@ -73,6 +77,7 @@ void AToyOgre_Monster::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME(AToyOgre_Monster, ToyOgreState);
+	DOREPLIFETIME(AToyOgre_Monster, RepMeshTransform);
 }
 
 void AToyOgre_Monster::OnRep_ToyOgreState()
@@ -229,6 +234,64 @@ void AToyOgre_Monster::OnHandBroken(bool IsLeftHand)
 			FTimerDelegate::CreateUObject(this, &AToyOgre_Monster::RegenHand, false),
 			HandRegenDelay,
 			false
+		);
+	}
+}
+
+void AToyOgre_Monster::SetMeshWorldLocationForHole(const FVector& MeshWorldLocation)
+{
+	if (!HasAuthority() || !GetMesh())
+		return;
+
+	RepMeshTransform.RelativeLocation =
+		GetActorTransform().InverseTransformPosition(MeshWorldLocation);
+
+	RepMeshTransform.RelativeRotation = GetMesh()->GetRelativeRotation();
+	RepMeshTransform.bUseOverride = true;
+
+	ApplyMeshTransform();
+	Multicast_ApplyMeshTransform(RepMeshTransform);
+}
+
+void AToyOgre_Monster::ResetMeshTransform()
+{
+	if (!HasAuthority())
+		return;
+
+	RepMeshTransform.bUseOverride = false;
+
+	ApplyMeshTransform();
+	Multicast_ApplyMeshTransform(RepMeshTransform);
+}
+
+void AToyOgre_Monster::Multicast_ApplyMeshTransform_Implementation(const FToyOgre_MeshTransformInfo& MeshTransform)
+{
+	RepMeshTransform = MeshTransform;
+	ApplyMeshTransform();
+}
+
+void AToyOgre_Monster::OnRep_MeshTransform()
+{
+	ApplyMeshTransform();
+}
+
+void AToyOgre_Monster::ApplyMeshTransform()
+{
+	if (!GetMesh())
+		return;
+
+	if (RepMeshTransform.bUseOverride)
+	{
+		GetMesh()->SetRelativeLocationAndRotation(
+			RepMeshTransform.RelativeLocation,
+			RepMeshTransform.RelativeRotation
+		);
+	}
+	else
+	{
+		GetMesh()->SetRelativeLocationAndRotation(
+			DefaultMeshRelativeLocation,
+			DefaultMeshRelativeRotation
 		);
 	}
 }
