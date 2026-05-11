@@ -12,6 +12,10 @@
 #include "Shared/Struct/FVFXSpawn_Info.h"
 #include "NiagaraSystem.h"
 
+//! 카메라에 보스 추가
+#include "Kismet/GameplayStatics.h"
+#include "Actors/Characters/Managers/CameraManagerActor.h"
+
 AToyOgre_Monster::AToyOgre_Monster()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -56,6 +60,14 @@ void AToyOgre_Monster::BeginPlay()
 		SpawnHandColliders();
 		StateMachine->Init(this);
 		StateMachine->ChangeState(SelectTargetStateClass);
+	}
+	
+	//! 카메라에 보스 추가
+	// 맵에 존재하는 카메라 매니저를 찾음
+	AActor* CameraActor = UGameplayStatics::GetActorOfClass(GetWorld(), ACameraManagerActor::StaticClass());
+	if (ACameraManagerActor* CameraManager = Cast<ACameraManagerActor>(CameraActor))
+	{
+		CameraManager->AddTarget(this); // 카메라 추적 대상에 보스 추가
 	}
 }
 
@@ -205,6 +217,24 @@ void AToyOgre_Monster::OnHandBroken(bool IsLeftHand)
 	if (AreBothHandsBroken())
 	{
 		StartHandDeath(IsLeftHand);
+		DeactivateHandColliders();
+
+		if (IsLeftHand)
+		{
+			GetStateMachine()->ChangeState(LeftHandHurtDeathStateClass);
+		}
+		else
+		{
+			GetStateMachine()->ChangeState(RightHandHurtDeathStateClass);
+		}
+		
+		//! 카메라 
+		AActor* CameraActor = UGameplayStatics::GetActorOfClass(GetWorld(), ACameraManagerActor::StaticClass());
+		if (ACameraManagerActor* CameraManager = Cast<ACameraManagerActor>(CameraActor))
+		{
+			CameraManager->RemoveTarget(this); // 카메라 추적 대상에서 보스 제외
+		}
+		
 		return;
 	}
 

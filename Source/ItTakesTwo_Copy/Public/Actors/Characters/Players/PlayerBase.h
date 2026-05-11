@@ -119,7 +119,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Niagara")
 	UNiagaraSystem* ReviveNiagara;
 	
-protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Niagara")
+	UNiagaraSystem* HitNiagara;
+	
+public:
 	// todo Timer가 아니라 다른걸로 바꿔야함
 	FTimerHandle RespawnTimer;
 	
@@ -132,6 +135,8 @@ protected:
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_PlayReviveNiagara();
 
+	UFUNCTION(NetMulticast, Unreliable)
+	void Multicast_PlayHitVFX(FVector ImpactPoint);
 	
 public:
 	// === Input ===

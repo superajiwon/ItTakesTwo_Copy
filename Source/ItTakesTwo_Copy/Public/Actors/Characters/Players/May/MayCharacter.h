@@ -71,9 +71,9 @@ public:
 	
 	// === Dash ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat|State")
-	float DashStrength = 2500.0f;
+	float DashStrength = 3000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat|State")
-	float DashDuration = 0.25f;
+	float DashDuration = 0.3f;
 	
 	void MayDash(FVector DashDir, float Strength, float Duration);
 	

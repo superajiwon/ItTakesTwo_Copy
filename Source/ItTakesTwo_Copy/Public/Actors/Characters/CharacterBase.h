@@ -9,6 +9,7 @@
 
 class UHPComponent;
 class UStatComponent;
+class UWidgetComponent;
 
 UCLASS()
 class ITTAKESTWO_COPY_API ACharacterBase : public ACharacter, public IDamagable, public IHealable
@@ -34,14 +35,19 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UStatComponent* StatComp;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
+	UWidgetComponent* HPUIComp;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Setting", meta=(AllowPrivateAccess = "true"))
 	FName TargetName = "";
-
+	
 public:
 	UFUNCTION(BlueprintCallable, Category="Components")
 	UHPComponent* GetHPComponent() { return HPComp; }
 	UFUNCTION(BlueprintCallable, Category="Components")
 	UStatComponent* GetStatComponent() { return StatComp; }
+	UFUNCTION(BlueprintCallable, Category="Components")
+	UWidgetComponent* GetHPUIComponent() const { return HPUIComp; }
 
 	virtual void Heal(float HealAmount) override;
 	virtual void Damage(float DamageAmount, AActor* Causer) override;

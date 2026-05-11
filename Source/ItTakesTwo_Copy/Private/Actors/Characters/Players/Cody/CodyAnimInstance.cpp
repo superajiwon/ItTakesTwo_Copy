@@ -4,7 +4,6 @@
 #include "Actors/Characters/Players/Cody/CodyUltimateBox.h"
 #include "Components/StatComponent.h"
 #include "Shared/VFXObjectPoolSubsystem.h"
-#include "Shared/Components/DotHitBoxComponent.h"
 #include "Shared/Struct/FVFXSpawn_Info.h"
 
 
@@ -17,7 +16,9 @@ void UCodyAnimInstance::AnimNotify_DashOn()
 	auto* Owner = Cast<ACodyCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
-	// 애니메이션 타이밍에 맞춰서 정확하게 코디를 순간이동시킵니다.
+	// 로컬 컨트롤러에서만 실행 (다른 플레이어 머신에서 Cody를 로컬로 텔레포트시키면 안 됨)
+	if (!Owner->IsLocallyControlled()) return;
+	
 	Owner->CodyTeleport(Owner->TeleportLength);
 
 	if (Owner->GetLocalRole() == ROLE_AutonomousProxy)

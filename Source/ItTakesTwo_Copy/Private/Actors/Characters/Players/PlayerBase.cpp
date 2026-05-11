@@ -15,9 +15,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NavigationSystem.h"
+#include "Components/WidgetComponent.h"
+#include "UI/InGameHPBar.h"
 
-
-class UEnhancedInputLocalPlayerSubsystem;
 
 APlayerBase::APlayerBase()
 {
@@ -76,6 +76,11 @@ void APlayerBase::BeginPlay()
 	
 	GetHPComponent()->OnDeath.AddDynamic(this, &APlayerBase::OnDeath);
 	GetHPComponent()->OnRevive.AddDynamic(this, &APlayerBase::OnRevive);
+	
+	if (UInGameHPBar* HPBarWidget = Cast<UInGameHPBar>(GetHPUIComponent()->GetWidget()))
+	{
+		HPBarWidget->SetColors(FLinearColor::Green);
+	}
 	
 	// 카메라에서 찾지 못했을 경우 직접 넣어줌
 	AActor* FoundCamera = UGameplayStatics::GetActorOfClass(GetWorld(), ACameraManagerActor::StaticClass());
@@ -295,6 +300,14 @@ void APlayerBase::Multicast_PlayReviveNiagara_Implementation()
 	if (ReviveNiagara)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ReviveNiagara, GetActorLocation(), GetActorRotation());
+	}
+}
+
+void APlayerBase::Multicast_PlayHitVFX_Implementation(FVector ImpactPoint)
+{
+	if (HitNiagara)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitNiagara, ImpactPoint, FRotator::ZeroRotator);
 	}
 }
 

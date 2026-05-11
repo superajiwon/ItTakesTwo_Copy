@@ -58,7 +58,7 @@ public:
 	
 	// === Dash ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat|State")
-	float TeleportLength = 300.0f;
+	float TeleportLength = 500.0f;
 	
 	void CodyTeleport(float Distance);
 	
