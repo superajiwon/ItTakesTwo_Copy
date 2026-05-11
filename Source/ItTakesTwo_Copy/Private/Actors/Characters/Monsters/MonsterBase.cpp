@@ -43,6 +43,8 @@ void AMonsterBase::BeginPlay()
 	{
 		HPBarWidget->SetColors(FLinearColor::Red);
 	}
+	
+	AnimInstance = GetMesh() ? Cast<UMonsterAnimInstance>(GetMesh()->GetAnimInstance()) : nullptr;
 }
 
 void AMonsterBase::Tick(float DeltaTime)
@@ -52,7 +54,10 @@ void AMonsterBase::Tick(float DeltaTime)
 	{
 		SetMonsterState(EMonsterState::Dead);
 		bDead = true;
-		AnimInstance->CurrentState = EMonsterState::Dead;
+		if (AnimInstance)
+		{
+			AnimInstance->CurrentState = EMonsterState::Dead;
+		}
 	}
 
 	// const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));

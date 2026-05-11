@@ -71,7 +71,11 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	
 	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 	{
-		FHitRequest Request(GetOwner(), OtherActor, Damage, SweepResult.ImpactPoint);
+		FVector HitLocation;
+		if (bFromSweep) HitLocation = SweepResult.ImpactPoint;
+		else			HitLocation = OtherActor->GetActorLocation();
+		
+		FHitRequest Request(GetOwner(), OtherActor, Damage, HitLocation);
 		CombatSystem->ProcessHit(Request);
 		
 		// 서버에서만 Multicast 호출 → 모든 클라이언트에 HitVFX 전파
@@ -79,7 +83,7 @@ void UHitBoxComponent::OnHitBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		{
 			if (APlayerBase* Player = Cast<APlayerBase>(GetOwner()))
 			{
-				Player->Multicast_PlayHitVFX(SweepResult.ImpactPoint);
+				Player->Multicast_PlayHitVFX(HitLocation);
 			}
 		}
 	}
