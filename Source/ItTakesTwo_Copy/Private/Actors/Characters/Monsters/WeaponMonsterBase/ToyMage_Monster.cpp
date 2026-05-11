@@ -175,25 +175,9 @@ void AToyMage_Monster::ProjectileFire()
 	 };
 	 for (const FVector& Direction : ProjectileDirections)
 	 {
-	 	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(
-	 		this,
-	 		ProjectileNiagara,
-	 		ProjectileSpeed,
-	 		SpawnLocation,
-	 		Direction,
-	 		ProjectileLifeTime
-	 	);
-	 	SpawnInfo.WithSphereCollision(
-	 		true,
-	 		FName(TEXT("MonsterWeapon")),
-	 		ProjectileDamage,
-	 		ProjectileRadius
-	 	);
-	 	SpawnInfo.WithOverlapExplosion(
-	 		OverlapNiagara,
-	 		0.f
-	 	);
-	
+	 	FVFXSpawn_Info SpawnInfo = FVFXSpawn_Info::CreateDirectionProjectileLifeTime(this,ProjectileNiagara, ProjectileSpeed,SpawnLocation,	Direction, ProjectileLifeTime);
+	 	SpawnInfo.WithSphereCollision(true,	FName(TEXT("MonsterWeapon")), ProjectileDamage, ProjectileRadius);
+	 	SpawnInfo.WithOverlapExplosion(OverlapNiagara,0.f	);
 	 	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 	 }
 

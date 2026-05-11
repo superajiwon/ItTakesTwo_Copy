@@ -24,6 +24,6 @@ void UToyOgre_Hole_RightHand_RecoverState::HandleAnimNotify(FName NotifyName)
 {
 	if (NotifyName == TEXT("RightHandRecoverEnd"))
 	{
-		OwnerOgre->GetStateMachine()->ChangeState(OwnerOgre->GrabBothHandsStateClass);
+		OwnerOgre->CompleteRightHandRecover();
 	}
 }

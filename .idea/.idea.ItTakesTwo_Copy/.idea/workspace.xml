@@ -152,7 +152,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Debug",
+    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -325,6 +325,7 @@
       <workItem from="1778320699917" duration="20809000" />
       <workItem from="1778413636283" duration="7989000" />
       <workItem from="1778426790705" duration="3423000" />
+      <workItem from="1778458301065" duration="5462000" />
     </task>
     <servers />
   </component>

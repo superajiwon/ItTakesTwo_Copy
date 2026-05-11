@@ -199,18 +199,12 @@ void AToyOgre_Monster::OnHandBroken(bool IsLeftHand)
 	if (!HasAuthority())
 		return;
 
+	if (bOgreDying)
+		return;
+
 	if (AreBothHandsBroken())
 	{
-		DeactivateHandColliders();
-
-		if (IsLeftHand)
-		{
-			GetStateMachine()->ChangeState(LeftHandHurtDeathStateClass);
-		}
-		else
-		{
-			GetStateMachine()->ChangeState(RightHandHurtDeathStateClass);
-		}
+		StartHandDeath(IsLeftHand);
 		return;
 	}
 
@@ -379,6 +373,44 @@ void AToyOgre_Monster::SpawnHandColliders()
 	}
 	DeactivateHandColliders();
 }
+void AToyOgre_Monster::CompleteLeftHandRecover()
+{
+	if (!HasAuthority() || bOgreDying)
+		return;
+
+	if (RightHandCollider && RightHandCollider->IsBroken())
+	{
+		StartHandDeath(false);
+		return;
+	}
+
+	if (LeftHandCollider)
+	{
+		LeftHandCollider->RegenHand();
+	}
+
+	GetStateMachine()->ChangeState(GrabBothHandsStateClass);
+}
+
+void AToyOgre_Monster::CompleteRightHandRecover()
+{
+	if (!HasAuthority() || bOgreDying)
+		return;
+
+	if (LeftHandCollider && LeftHandCollider->IsBroken())
+	{
+		StartHandDeath(true);
+		return;
+	}
+
+	if (RightHandCollider)
+	{
+		RightHandCollider->RegenHand();
+	}
+
+	GetStateMachine()->ChangeState(GrabBothHandsStateClass);
+}
+
 
 void AToyOgre_Monster::ActivateLeftHandCollider()
 {
@@ -438,25 +470,15 @@ void AToyOgre_Monster::DeactivateHandColliders()
 
 void AToyOgre_Monster::RegenHand(bool IsLeftHand)
 {
-	if (!HasAuthority() || ToyOgreState == EToyOgreState::Dead)
+	if (!HasAuthority() || bOgreDying || ToyOgreState == EToyOgreState::Dead)
 		return;
 
 	if (IsLeftHand)
 	{
-		if (LeftHandCollider)
-		{
-			LeftHandCollider->RegenHand();
-		}
-
 		GetStateMachine()->ChangeState(LeftHandRecoverStateClass);
 	}
 	else
 	{
-		if (RightHandCollider)
-		{
-			RightHandCollider->RegenHand();
-		}
-
 		GetStateMachine()->ChangeState(RightHandRecoverStateClass);
 	}
 }
@@ -465,4 +487,30 @@ bool AToyOgre_Monster::AreBothHandsBroken() const
 {
 	return LeftHandCollider &&	RightHandCollider &&
 		LeftHandCollider->IsBroken() &&	RightHandCollider->IsBroken();
+}
+
+void AToyOgre_Monster::StartHandDeath(bool IsLeftHand)
+{
+		if (!HasAuthority() || bOgreDying)
+    		return;
+    
+    	bOgreDying = true;
+    
+    	ClearHandRegenTimers();
+    	DeactivateHandColliders();
+    
+    	if (IsLeftHand)
+    	{
+    		GetStateMachine()->ChangeState(LeftHandHurtDeathStateClass);
+    	}
+    	else
+    	{
+    		GetStateMachine()->ChangeState(RightHandHurtDeathStateClass);
+    	}
+}
+
+void AToyOgre_Monster::ClearHandRegenTimers()
+{
+	GetWorldTimerManager().ClearTimer(LeftHandRegenTimer);
+	GetWorldTimerManager().ClearTimer(RightHandRegenTimer);
 }

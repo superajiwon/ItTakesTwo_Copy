@@ -8,8 +8,11 @@
 
 void UToyOgre_Hole_RightHand_Hurt_DeathState::Enter()
 {
+	
 	OwnerOgre->SetToyOgreState(EToyOgreState::Hole_RightHand_Hurt_Death);
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->RightHandDeathMontage);
+	OwnerOgre->DeactivateHandColliders();
+	OwnerOgre->ClearHandRegenTimers();
 	OwnerOgre->DeactivateHandColliders();
 }
 

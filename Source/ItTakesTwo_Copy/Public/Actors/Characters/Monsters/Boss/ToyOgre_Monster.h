@@ -97,6 +97,8 @@ private:
 	void SpawnHandColliders();
 	
 public:
+	void CompleteLeftHandRecover();
+	void CompleteRightHandRecover();
 	void ActivateLeftHandCollider();
 	void DeactivateLeftHandCollider();
 
@@ -108,11 +110,23 @@ public:
 	void RegenHand(bool IsLeftHand);
 	bool AreBothHandsBroken() const;
 
+	
+	void StartHandDeath(bool IsLeftHand);
+	void ClearHandRegenTimers();
+
+	
+	
 	// 상태 함수
 public:
 	UFUNCTION()
 	void OnRep_ToyOgreState();
 	void SetToyOgreState(EToyOgreState NewState);
+	
+	bool IsOgreDying() const
+	{
+		return bOgreDying;
+	}
+	
 	
 	// 애니메이션
 public:
@@ -194,6 +208,9 @@ public:
 
 	FTimerHandle LeftHandRegenTimer;
 	FTimerHandle RightHandRegenTimer;
+
+	UPROPERTY()
+	bool bOgreDying = false;
 
 	// 몽타지
 public:

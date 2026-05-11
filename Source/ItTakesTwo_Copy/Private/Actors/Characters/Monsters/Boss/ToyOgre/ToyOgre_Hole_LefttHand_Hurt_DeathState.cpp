@@ -11,6 +11,8 @@ void UToyOgre_Hole_LefttHand_Hurt_DeathState::Enter()
 	OwnerOgre->SetToyOgreState(EToyOgreState::Hole_LeftHand_Hurt_Death);
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->LeftHandDeathMontage);
 	OwnerOgre->DeactivateHandColliders();
+	OwnerOgre->ClearHandRegenTimers();
+	OwnerOgre->DeactivateHandColliders();
 }
 
 void UToyOgre_Hole_LefttHand_Hurt_DeathState::Tick(float DeltaTime)
