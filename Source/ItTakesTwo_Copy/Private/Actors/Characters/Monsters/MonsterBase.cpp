@@ -7,9 +7,11 @@
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/HPComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "UI/InGameHPBar.h"
 
 
 AMonsterBase::AMonsterBase()
@@ -36,6 +38,11 @@ void AMonsterBase::BeginPlay()
 	Super::BeginPlay();
 
 	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
+	
+	if (UInGameHPBar* HPBarWidget = Cast<UInGameHPBar>(GetHPUIComponent()->GetWidget()))
+	{
+		HPBarWidget->SetColors(FLinearColor::Red);
+	}
 }
 
 void AMonsterBase::Tick(float DeltaTime)

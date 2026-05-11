@@ -1,8 +1,11 @@
 
 #include "Actors/Characters/CharacterBase.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Components/HPComponent.h"
 #include "Components/StatComponent.h"
+#include "Components/WidgetComponent.h"
+#include "UI/InGameHPBar.h"
 
 ACharacterBase::ACharacterBase()
 {
@@ -13,18 +16,36 @@ ACharacterBase::ACharacterBase()
 	
 	HPComp = CreateDefaultSubobject<UHPComponent>(TEXT("HPComp"));
 	StatComp = CreateDefaultSubobject<UStatComponent>(TEXT("StatComp"));
+	
+	HPUIComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
+	HPUIComp->SetupAttachment(GetMesh());
+	static ConstructorHelpers::FClassFinder<UUserWidget> HPWidgetAsset(TEXT("/Game/UI/Blueprints/WBP_InGameHPBar.WBP_InGameHPBar_C"));
+	if (HPWidgetAsset.Succeeded()) HPUIComp->SetWidgetClass(HPWidgetAsset.Class);
+	float Height = GetCapsuleComponent()->GetScaledCapsuleHalfHeight()*2 + 50.0f;
+	HPUIComp->SetRelativeLocation(FVector(0.0f, 0.0f, Height));
+	HPUIComp->SetWidgetSpace(EWidgetSpace::Screen);
+	HPUIComp->SetDrawSize(FVector2D(200.0f, 15.0f));
+	HPUIComp->SetDrawAtDesiredSize(true);
 }
 
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	HPUIComp->InitWidget(); 
+	
+	if (UInGameHPBar* HPBarWidget = Cast<UInGameHPBar>(HPUIComp->GetWidget()))
+	{
+		HPBarWidget->UpdateHP(HPComp->GetCurHP(), HPComp->GetMaxHP());
+		HPComp->OnHPChanged.AddDynamic(HPBarWidget, &UInGameHPBar::UpdateHP);
+	}
 }
 
 void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	PrintNetLog();
+	// PrintNetLog();
 }
 
 void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -44,6 +65,7 @@ void ACharacterBase::Damage(float DamageAmount, AActor* Causer)
 	IDamagable::Damage(DamageAmount, Causer);
 	
 	GetHPComponent()->ApplyDamage(DamageAmount, Causer);
+	
 }
 
 void ACharacterBase::PrintNetLog()

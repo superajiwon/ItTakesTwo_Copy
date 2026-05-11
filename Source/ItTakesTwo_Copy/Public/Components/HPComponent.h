@@ -72,6 +72,7 @@ protected:
 	UFUNCTION() // HP가 복제 될 때 클라이언트에서 호출 될 함수 (UI 갱신용)
 	void OnRep_CurHP();
 	
+	
 	// === Dead === 
 	UPROPERTY(EditAnywhere, ReplicatedUsing=OnRep_IsDead, Category = "HP|Dead")
 	bool bIsDead = false;
@@ -103,7 +104,7 @@ protected:
 	float RecoverSpeed = 0.3f;
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP|Recovering")
 	float RecoverAmount = 1.0f;
-
+	
 	void StartRecoverDelay();
 	void StartRecover();
 	void RecoverTick();

@@ -104,15 +104,14 @@ void ACodyCharacter::SpecialAttack(const FInputActionValue& Value)
 
 void ACodyCharacter::CodyTeleport(float Distance)
 {
-	FVector StartLocation = GetActorLocation();
+	FVector StartLocation = GetActorLocation() + FVector(0.0f, 0.0f, 50.0f);
 	FVector DistLocation = StartLocation + (GetActorForwardVector() * Distance);
-	
 	FHitResult Hit;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	
-	bool bCanTeleport = false; 
-	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, GetActorLocation(), DistLocation, ECC_Visibility, Params);
+	bool bCanTeleport = false;
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, StartLocation, DistLocation, ECC_Visibility, Params);
 	if (bHit && Hit.GetActor())
 	{
 		bCanTeleport = Hit.GetActor()->ActorHasTag(FName("CanTeleport"));

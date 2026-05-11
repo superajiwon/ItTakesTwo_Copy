@@ -1,10 +1,10 @@
 
-#include "Actors/Characters/Players/PlayerBase.h"
 #include "Actors/Characters/Players/Cody/CodyUltimateBox.h"
-#include "Engine/World.h"
+#include "Actors/Characters/Players/PlayerBase.h"
 
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
+#include "Components/UltimateComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Shared/Components/DotHitBoxComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
@@ -62,22 +62,29 @@ void ACodyUltimateBox::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	if (!bIsBeamActive) return;
-	// ★★★ 클라이언트 동기화 지연 방어코드 ★★★
-	// 통신 지연으로 인해 아직 코디 캐릭터(손)에 부착되지 않았다면 레이저를 쏘지 않고 기다립니다.
-	// (이 코드가 없으면 바닥(0,0,0)에서 쏴버려서 거리가 0으로 고정됩니다!)
 	if (!GetAttachParentActor()) return;
 	
 	FVector S = GetActorLocation();
 	FVector E = S + GetActorForwardVector() * MaxDistance;
 	FHitResult Hit;
 	FCollisionQueryParams Params; 	
-	Params.AddIgnoredActor(this); // 자기 자신 무시
-	if (GetOwner()) Params.AddIgnoredActor(GetOwner()); // 서버에서 세팅된 오너 무시
-	//if (GetAttachParentActor()) Params.AddIgnoredActor(GetAttachParentActor()); // 클라이언트에서 부착된 부모(코디) 무시
+	Params.AddIgnoredActor(this); 
 	Params.AddIgnoredActor(GetAttachParentActor()); // 부모(코디) 무조건 무시
+	if (GetOwner()) Params.AddIgnoredActor(GetOwner()); // 서버에서 세팅된 오너 무시
 	
-	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, S, E, ECC_Visibility, Params);
+	// 1. 콜리전 응답 파라미터를 하나 만들어 줍니다!
+	FCollisionResponseParams ResponseParams;
+	// 2. 대장님의 커스텀 채널(예: 채널 1)을 Ignore로 덮어씌웁니다!
+	ResponseParams.CollisionResponse.SetResponse(ECC_GameTraceChannel1, ECR_Ignore);
+	ResponseParams.CollisionResponse.SetResponse(ECC_GameTraceChannel2, ECR_Ignore);
+	ResponseParams.CollisionResponse.SetResponse(ECC_GameTraceChannel3, ECR_Ignore);
+	ResponseParams.CollisionResponse.SetResponse(ECC_GameTraceChannel4, ECR_Ignore);
+	ResponseParams.CollisionResponse.SetResponse(ECC_GameTraceChannel8, ECR_Ignore);
 	
+	// 3. 함수의 맨 마지막 6번째 인자로 ResponseParams를 넘깁니다!
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, S, E, ECC_Visibility, Params, ResponseParams);
+	
+	// bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, S, E, ECC_Visibility, Params);
 	if (bHit)
 	{	// 벽에 맞은 경우: 히트 거리를 목표로 설정
 		TargetDistance = Hit.Distance;
@@ -88,8 +95,7 @@ void ACodyUltimateBox::Tick(float DeltaTime)
 	else
 	{
 		// 벽이 없는 경우: MaxDistance까지 뻗어나가도록 설정
-		// (Hit.Distance는 미스 시 0이므로 절대 사용하면 안 됨)
-		TargetDistance = Hit.Distance;
+		TargetDistance = MaxDistance;
 		Impact->SetVisibility(false);
 		Impact->Deactivate();
 	}
