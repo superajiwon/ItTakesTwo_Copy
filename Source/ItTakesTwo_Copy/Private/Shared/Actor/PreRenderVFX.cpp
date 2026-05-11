@@ -19,14 +19,14 @@ APreRenderVFX::APreRenderVFX()
 void APreRenderVFX::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GetWorldTimerManager().SetTimer(
-		PreRenderTimerHandle,
-		this,
-		&APreRenderVFX::StartPreRender,
-		PreRenderDelay,
-		false
-	);
+	//
+	// GetWorldTimerManager().SetTimer(
+	// 	PreRenderTimerHandle,
+	// 	this,
+	// 	&APreRenderVFX::StartPreRender,
+	// 	PreRenderDelay,
+	// 	false
+	// );
 }
 
 void APreRenderVFX::StartPreRender()
@@ -104,5 +104,6 @@ void APreRenderVFX::SpawnPreRenderBatch()
 			PreRenderBatchInterval,
 			false
 		);
+		return;
 	}
 }

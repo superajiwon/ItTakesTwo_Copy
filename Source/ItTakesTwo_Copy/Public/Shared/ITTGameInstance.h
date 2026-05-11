@@ -5,6 +5,7 @@
 #include "Shared/ITTTypes.h"
 #include "ITTGameInstance.generated.h"
 
+
 UCLASS()
 class ITTAKESTWO_COPY_API UITTGameInstance : public UGameInstance
 {
@@ -18,4 +19,32 @@ public:
 	// 클라이언트(Client)가 선택한 캐릭터 역할
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Game Data")
 	EPlayerRole ClientSelectedRole = EPlayerRole::None;
+	
+	// -------------------------------------------------------------------
+	// -------------------------------------------------------------------
+	
+public:
+	virtual void Init() override;
+	virtual void Shutdown() override;
+	
+public:	
+	UFUNCTION(BlueprintCallable)
+	void StartPreRenderVFX(UWorld* LoadedWorld);
+	
+private:
+	void BeginLoadingScreen(const FString& MapName);
+	void EndLoadingScreen(UWorld* LoadedWorld);
+	
+	
+private:
+	UFUNCTION()
+	void FinishLoadingScreenAfterPreRenderVFX();
+	
+
+	
+	
+	
+	
+	
+	
 };
