@@ -27,6 +27,7 @@ void ACameraManagerActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	TargetCameraRotation = DefaultCameraRotation;
 	SpringArm->SetRelativeRotation(DefaultCameraRotation);
 	
 	// 플레이어들을 한 번만 찾아서 등록
@@ -68,26 +69,11 @@ void ACameraManagerActor::RemoveTarget(AActor* Target)
 	TrackTargets.Remove(Target);
 }
 
+void ACameraManagerActor::SetTargetCameraRotation(FRotator NewRotation)
+{ TargetCameraRotation = NewRotation; }
+
 void ACameraManagerActor::UpdateCameraPosition(float DeltaTime)
 {
-	// 방장(호스트)이나 클라이언트가 AddTarget을 개별적으로 호출하면서 생기는 싱크/네트워크 꼬임을 완벽하게 방지.
-	// 기존에 추가된 미니보스 등의 타겟을 날리지 않기 위해 AddUnique만 수행.
-	// TArray<AActor*> FoundPlayers;
-	// UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerBase::StaticClass(), FoundPlayers);
-	// for (AActor* Player : FoundPlayers)
-	// {
-	// 	APlayerBase* PlayerBase = Cast<APlayerBase>(Player);
-	// 	if (PlayerBase && !PlayerBase->GetHPComponent()->GetIsDead())
-	// 	{
-	// 		TrackTargets.AddUnique(Player);	
-	// 	}
-	// 	else
-	// 	{
-	// 		TrackTargets.Remove(Player);
-	// 	}
-	// }
-	//! 성능 최적화를 위해 BeginPlay에서 한번만 실행
-	
 	if (TrackTargets.Num() == 0) return;
 	
 	// 타겟들의 위치를 모두 합산할 변수
@@ -99,7 +85,7 @@ void ACameraManagerActor::UpdateCameraPosition(float DeltaTime)
 	FVector MinLocation = FVector(MAX_flt, MAX_flt, MAX_flt);
 	FVector MaxLocation = FVector(-MAX_flt, -MAX_flt, -MAX_flt);
 
-	// 2. 등록된 모든 타겟(메이, 코디, 미니보스 등)을 순회하며 위치 정보를 수집합니다.
+	// 2. 등록된 모든 타겟(메이, 코디, 미니보스 등)을 순회하며 위치 정보 수집
 	for (AActor* Target : TrackTargets)
 	{
 		// 유효한 액터인지 검사 (중간에 파괴된 액터가 있을 수 있으므로 방어 코드)
@@ -189,5 +175,12 @@ void ACameraManagerActor::UpdateCameraPosition(float DeltaTime)
 	// 8. 카메라의 부드러운 줌 아웃/인 (거리 댐핑 처리)
 	// 스프링암의 길이 역시 설정된 줌 속도(CameraZoomSpeed)에 맞춰 부드럽게 변환시킵니다.
 	SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, TargetArmLength, DeltaTime, CameraZoomSpeed);
+	
+	// 9. 카메라 회전 보간
+	// 목표 회전값(TargetCameraRotation)으로 부드럽게 회전시킵니다.
+	FRotator CurrentRotation = SpringArm->GetRelativeRotation();
+	FRotator SmoothedRotation = FMath::RInterpTo(CurrentRotation, TargetCameraRotation, DeltaTime, CameraRotationSpeed);
+	SpringArm->SetRelativeRotation(SmoothedRotation);
+	// UE_LOG(LogTemp, Warning, TEXT("SpringArm->GetRelativeRotation(X:%f, Y:%f, Z:%f"), SpringArm->GetRelativeRotation().Roll, SpringArm->GetRelativeRotation().Pitch, SpringArm->GetRelativeRotation().Yaw);
 }
 

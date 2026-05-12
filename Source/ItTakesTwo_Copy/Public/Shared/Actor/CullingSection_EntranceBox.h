@@ -8,6 +8,7 @@
 
 class UBoxComponent;
 class ACullingBoundBoxManager;
+class ARespawn_TargetPoint;
 
 UCLASS()
 class ITTAKESTWO_COPY_API ACullingSection_EntranceBox : public AActor
@@ -46,4 +47,15 @@ protected:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Culling|TriggerBox")
 	TObjectPtr<ACullingBoundBoxManager> CullingManager;
 	
+	UPROPERTY(BlueprintReadWrite, Category = "Culling|RespawnPoint")
+	TObjectPtr<ARespawn_TargetPoint> CurRespawnPointMay;
+	UPROPERTY(BlueprintReadWrite, Category = "Culling|RespawnPoint")
+	TObjectPtr<ARespawn_TargetPoint> CurRespawnPointCody;
+	
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Culling|Camera")
+	bool bChangeCameraRotation = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Culling|Camera", meta=(EditCondition="bChangeCameraRotation"))
+	FRotator TargetCameraRotation = FRotator(-45.f, -45.f, 0.f);
 };

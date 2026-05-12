@@ -11,7 +11,7 @@ void UToyOgre_WallHitState::Enter()
 {
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->WallHitMontage);
 	OwnerOgre->SetToyOgreState(EToyOgreState::WallHit);
-
+	OwnerOgre->Multicast_PlayCamShake(5);
 }
 
 void UToyOgre_WallHitState::Tick(float DeltaTime)

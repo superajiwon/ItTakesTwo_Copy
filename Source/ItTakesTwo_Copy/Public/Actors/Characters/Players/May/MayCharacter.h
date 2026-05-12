@@ -51,9 +51,14 @@ public:
 	
 	// === Ultimate Attack === 
 	// 궁극기 폼 체인지 상태
-	UPROPERTY(Replicated, BlueprintReadOnly, Category="Combat|State")
+	UPROPERTY(ReplicatedUsing=OnRep_IsUltimateForm, BlueprintReadOnly, Category="Combat|State")
 	bool bIsUltimateForm = false;
+	UFUNCTION()
+	void OnRep_IsUltimateForm();
 
+	UPROPERTY(Replicated, BlueprintReadOnly, Category="Combat|State")
+	float OriginSpeed;
+	
 	// bIsUltimateForm == false → NormalAttackData    (3콤보, 스페셜 A)
 	// bIsUltimateForm == true  → UltimateAttackData  (1콤보, 스페셜 B)
 	virtual FAttackModeData* GetCurrentAttackData() override;

@@ -12,25 +12,12 @@ bool UCombatSystem::ProcessHit(const FHitRequest& Request)
 	
 	if (IDamagable* DamagableTarget = Cast<IDamagable>(Request.Target))
 	{
-		// if (ACharacterBase* Target = Cast<ACharacterBase>(DamagableTarget))
-		// {
-		// 	if (!Target->GetHPComponent()->GetIsInInvincible())
-		// 	{
-		// 		// 플레이어 궁 게이지 
-		// 		if (APlayerBase* Player = Cast<APlayerBase>(Request.Attacker))
-		// 		{
-		// 			Player->GetUltimateComponent()->AddGauge(10);
-		// 		}
-		// 	}
-		// }
-		
 		// 플레이어 궁 게이지 
 		if (APlayerBase* Player = Cast<APlayerBase>(Request.Attacker))
 		{
 			Player->GetUltimateComponent()->AddGauge(10);
+			Player->PlayCamShake();
 		}
-		
-		UE_LOG(LogTemp, Warning, TEXT("jiwon 아니 어쩌라고 %d"), Request.Damage);
 		
 		DamagableTarget->Damage(Request.Damage, Request.Attacker);
 		

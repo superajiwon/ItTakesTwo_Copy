@@ -12,6 +12,9 @@ AWeaponMonsterBase::AWeaponMonsterBase()
 	Tags.AddUnique(TEXT("SectionCullTick"));
 	RightHand_WeaponMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RightWeaponMeshComponent"));
 	RightHand_WeaponMeshComponent->SetupAttachment(GetMesh(), FName(TEXT("RightHandSocket")));
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PlayerArrow(TEXT("/Script/Engine.StaticMesh'/Game/Models/Characters/ArrowDecal/PlayerArrow_Mesh/StaticMeshes/SM_MonsterArrow.SM_MonsterArrow'"));
+	if (PlayerArrow.Succeeded()) PlayerArrowComp->SetStaticMesh(PlayerArrow.Object);
 }
 
 void AWeaponMonsterBase::BeginPlay()

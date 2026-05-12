@@ -17,15 +17,38 @@
   <component name="ChangeListManager">
     <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyArbalist/BP_ToyArbalist_Monster.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyArbalist/BP_ToyArbalist_Monster.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyCrusher/BP_ToyCrusher_Monster.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyCrusher/BP_ToyCrusher_Monster.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyMage/BP_ToyMage_Monster.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyMage/BP_ToyMage_Monster.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyOgre/BP_ToyOgre_Monster.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyOgre/BP_ToyOgre_Monster.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyShielder/BP_ToyShielder_Monster.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Monsters/ToyShielder/BP_ToyShielder_Monster.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_CodyUltimate.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_CodyUltimate.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/Lv_ServerTestMain.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Lv_ServerTestMain.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ItTakesTwo_Copy.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/ItTakesTwo_Copy.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyAnimInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/May/BP_May.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/May/BP_May.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Maps/M_PostProcess.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Maps/M_PostProcess.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Shareds/BP_CullingSection_EntranceBox.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Shareds/BP_CullingSection_EntranceBox.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Lv_Dungeon.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Lv_Dungeon.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/Blueprints/WBP_InGameHP1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/Blueprints/WBP_InGameHP1.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/Blueprints/WBP_InGameHPBar.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/Blueprints/WBP_InGameHPBar.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/CharacterBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/CharacterBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Managers/CameraManagerActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Managers/CameraManagerActor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyCrusher_Monster.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyCrusher_Monster.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_WallHitState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_WallHitState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/MonsterBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/WeaponMonsterBase/WeaponMonsterBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/WeaponMonsterBase/WeaponMonsterBase.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyUltimateBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyUltimateBox.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyUltimateBox.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyUltimateBox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/May/MayCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/May/MayCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/PlayerBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/ITTGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/ITTGameMode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Actor/CullingSection_EntranceBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Actor/CullingSection_EntranceBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Subsystems/CombatSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Shared/Subsystems/CombatSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/CharacterBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/CharacterBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Managers/CameraManagerActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Managers/CameraManagerActor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/May/MayCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/May/MayCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/PlayerBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Respawn_TargetPoint.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Respawn_TargetPoint.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/ITTGameMode.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/ITTGameMode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Actor/CullingSection_EntranceBox.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Actor/CullingSection_EntranceBox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Subsystems/CombatSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Subsystems/CombatSystem.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,11 +62,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/Math/Box.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Engine/World.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/MenuController.gen.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_DropCollider.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_HandCollider.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -140,6 +158,18 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Struct/VFXSpawnRep_Info.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Subsystems/TargetPointSubsystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/VFXObjectPoolSubsystem.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Plugins/Animation/DNACalib/Source/DNACalibLib/Private/dnacalib/dna/filters/JointFilter.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/Gauntlet/Framework/Base/Gauntlet.TestNode.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/Gauntlet/SelfTest/TestData/LogParser/Win64Assert.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/Gauntlet/SelfTest/TestData/LogParser/Win64FatalError.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/Gauntlet/Unreal/Game/EpicGame.TestConfig.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/Linux/LinuxPlatform.Automation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/OneSkyLocalization/OneSkyLocalizationProvider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/SteamDeck/SteamDeckSupport.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/XLocLocalization/XLocLocalizationProvider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Core/JsonWriter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Perforce/PerforceInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerController.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -150,24 +180,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "Gwonseon",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.lczerniawski.bettercomments.settings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ 프로젝트.ItTakesTwo_Copy.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;NZW&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.lczerniawski.bettercomments.settings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="C/C++ 프로젝트.ItTakesTwo_Copy">
     <configuration name="ItTakesTwo_Copy" type="CppProject" factoryName="C++ Project">
       <configuration_1 setup="1">
@@ -326,6 +356,7 @@
       <workItem from="1778413636283" duration="7989000" />
       <workItem from="1778426790705" duration="3423000" />
       <workItem from="1778458301065" duration="5462000" />
+      <workItem from="1778555114339" duration="30370000" />
     </task>
     <servers />
   </component>
