@@ -6,8 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "PreRenderVFX.generated.h"
 
-class UNiagaraSystem;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPreRenderFinished);
 
+
+class UNiagaraSystem;
 UCLASS()
 class ITTAKESTWO_COPY_API APreRenderVFX : public AActor
 {
@@ -15,6 +17,18 @@ class ITTAKESTWO_COPY_API APreRenderVFX : public AActor
 public:
 	APreRenderVFX();
 	virtual void BeginPlay() override;
+	
+public:
+	void StartPreRender();
+	
+private:
+	void SpawnPreRenderBatch();
+	
+	
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnPreRenderFinished OnPreRenderFinished;
+	
 	
 protected:
 	UPROPERTY(EditAnywhere, Category="VFX|PreNiagara")
@@ -32,12 +46,10 @@ protected:
 	float PreRenderBatchInterval = 0.1f;
 
 	UPROPERTY(EditAnywhere, Category="VFX|PreNiagara")
-	float PreRenderKeepAliveTime = 0.3f;
+	float PreRenderKeepAliveTime = 1.f;
 
 	int32 CurrentPreRenderIndex = 0;
 
 	FTimerHandle BatchTimerHandle;
-private:
-	void StartPreRender();
-	void SpawnPreRenderBatch();
+
 };

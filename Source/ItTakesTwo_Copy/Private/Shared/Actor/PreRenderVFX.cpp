@@ -10,7 +10,7 @@
 
 APreRenderVFX::APreRenderVFX()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	USceneComponent* SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	RootComponent = SceneRoot;
@@ -19,21 +19,24 @@ APreRenderVFX::APreRenderVFX()
 void APreRenderVFX::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GetWorldTimerManager().SetTimer(
-		PreRenderTimerHandle,
-		this,
-		&APreRenderVFX::StartPreRender,
-		PreRenderDelay,
-		false
-	);
+	//
+	// GetWorldTimerManager().SetTimer(
+	// 	PreRenderTimerHandle,
+	// 	this,
+	// 	&APreRenderVFX::StartPreRender,
+	// 	PreRenderDelay,
+	// 	false
+	// );
 }
 
 void APreRenderVFX::StartPreRender()
 {
 	UWorld* World = GetWorld();
 	if (!World)
+	{
+		OnPreRenderFinished.Broadcast();
 		return;
+	}
 
 	if (UVFXObjectPoolSubsystem* Pool = World->GetSubsystem<UVFXObjectPoolSubsystem>())
 	{
@@ -49,7 +52,10 @@ void APreRenderVFX::SpawnPreRenderBatch()
 {
 	UWorld* World = GetWorld();
 	if (!World)
+	{
+		OnPreRenderFinished.Broadcast();
 		return;
+	}
 
 	const int32 EndIndex = FMath::Min(
 		CurrentPreRenderIndex + PreRenderBatchSize,
@@ -94,7 +100,6 @@ void APreRenderVFX::SpawnPreRenderBatch()
 	}
 
 	CurrentPreRenderIndex = EndIndex;
-
 	if (CurrentPreRenderIndex < PreNiagaraAssets.Num())
 	{
 		World->GetTimerManager().SetTimer(
@@ -104,5 +109,7 @@ void APreRenderVFX::SpawnPreRenderBatch()
 			PreRenderBatchInterval,
 			false
 		);
+		return;
 	}
+	OnPreRenderFinished.Broadcast();
 }

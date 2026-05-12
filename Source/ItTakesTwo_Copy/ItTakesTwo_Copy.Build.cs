@@ -25,7 +25,8 @@ public class ItTakesTwo_Copy : ModuleRules
 			"Chaos",
 			"NavigationSystem",
 			"LevelSequence",
-			"MovieScene"
+			"MovieScene",
+			"MoviePlayer"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
