@@ -19,6 +19,6 @@ public:
 	bool ProcessHit(const FHitRequest& Request);
 
 private:
-	/** 피격 요청의 유효성 검사 (널 체크, 자기 자신, 서버 권한, 데미지 > 0) */
+	// 피격 요청의 유효성 검사 (널 체크, 자기 자신, 서버 권한, 데미지 > 0)
 	bool IsValidHitRequest(const FHitRequest& Request) const;
 };

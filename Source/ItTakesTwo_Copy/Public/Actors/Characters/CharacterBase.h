@@ -22,7 +22,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:	 
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -37,6 +37,10 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UWidgetComponent* HPUIComp;
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh", meta=(AllowPrivateAccess = "true"))
+	UStaticMeshComponent* PlayerArrowComp;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Setting", meta=(AllowPrivateAccess = "true"))
 	FName TargetName = "";
@@ -56,5 +60,12 @@ public:
 	FName GetTargetName() { return TargetName; }
 	UFUNCTION(BlueprintCallable, Category="Components")
 	void SetTargetName(FName NameTag) { TargetName = NameTag; }
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Effect")
+	TSubclassOf<UCameraShakeBase> CamShake;
+	
+	void PlayCamShake(float Scale = 1.0f);
+	UFUNCTION(NetMulticast, Unreliable)
+	void Multicast_PlayCamShake(float Scale = 1.0f);
 	
 };

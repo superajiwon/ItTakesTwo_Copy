@@ -30,6 +30,8 @@ public:
 		return IsCody;
 	}
 	
+
+	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="RespawnPoint")
 	int32 PointIndex{};

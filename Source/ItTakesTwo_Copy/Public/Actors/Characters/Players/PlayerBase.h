@@ -12,6 +12,7 @@ class UUltimateComponent;
 class UInputMappingContext;
 class UInputAction;
 class UNiagaraSystem;
+class UCameraShakeBase;
 struct FInputActionValue;
 
 UCLASS()
@@ -137,6 +138,7 @@ public:
 
 	UFUNCTION(NetMulticast, Unreliable)
 	void Multicast_PlayHitVFX(FVector ImpactPoint);
+	
 	
 public:
 	// === Input ===

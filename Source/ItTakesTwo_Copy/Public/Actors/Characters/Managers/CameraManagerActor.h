@@ -76,7 +76,19 @@ protected:
 	// 쿼터뷰 기본 각도
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shared Camera")
 	FRotator DefaultCameraRotation = FRotator(-45.f, -45.f, 0.f);
-	                                                                                 
+	
+	// 카메라 회전 부드러움 정도
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shared Camera")
+	float CameraRotationSpeed = 3.f;
+
+	// 목표 회전 각도
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shared Camera")
+	FRotator TargetCameraRotation;
+	
+public:
+	UFUNCTION(BlueprintCallable, Category = "Shared Camera")
+	void SetTargetCameraRotation(FRotator NewRotation);
+
 private:
 	void UpdateCameraPosition(float DeltaTime);
 };

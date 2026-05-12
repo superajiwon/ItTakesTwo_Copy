@@ -118,14 +118,15 @@ void AToyCrusher_Monster::AnimNotify_CrusherAttack()
 		ImpactNiagara,
 		SpawnLocation
 	);
-
+	
 	SpawnInfo.WithBoxCollision(
-	true,
-	FName(TEXT("MonsterWeapon")),
-	ImpactDamage,
-	ImpactExtents
-);
+		true,
+		FName(TEXT("MonsterWeapon")),
+		ImpactDamage,
+		ImpactExtents
+	);
 
+	Multicast_PlayCamShake(5);
 	PoolSubsystem->UseVFX_Explosion(SpawnInfo);
 }
 

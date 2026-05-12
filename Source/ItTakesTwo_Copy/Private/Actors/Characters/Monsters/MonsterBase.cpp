@@ -9,7 +9,6 @@
 #include "Components/HPComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "UI/InGameHPBar.h"
 
@@ -31,6 +30,10 @@ AMonsterBase::AMonsterBase()
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("MonsterBody"));
 	this->Tags.AddUnique(TEXT("Monster"));
 	SetTargetName(TEXT("Player"));
+	
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->CustomDepthStencilValue = 2;
+	
 }
 
 void AMonsterBase::BeginPlay()

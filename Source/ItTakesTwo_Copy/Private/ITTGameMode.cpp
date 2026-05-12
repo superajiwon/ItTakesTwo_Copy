@@ -50,3 +50,26 @@ void AITTGameMode::PostLogin(APlayerController* NewPlayer)
 		}
 	}
 }
+
+void AITTGameMode::UpdateRespawnPoint(ARespawn_TargetPoint* NewRespawnPointCody, ARespawn_TargetPoint* NewRespawnPointMay)
+{
+	CurRespawnPointCody = NewRespawnPointCody;
+	CurRespawnPointMay = NewRespawnPointMay;
+}
+
+FTransform AITTGameMode::GetRespawnTransform(APawn* Player) const
+{
+	if (!Player) return FTransform::Identity;
+
+	if (Player->IsA(MayCharacterClass))
+	{
+		return CurRespawnPointMay ? CurRespawnPointMay->GetActorTransform() : FTransform::Identity;
+	}
+	else if (Player->IsA(CodyCharacterClass))
+	{
+		return CurRespawnPointCody ? CurRespawnPointCody->GetActorTransform() : FTransform::Identity;
+	}
+	
+	return FTransform::Identity;
+}
+
