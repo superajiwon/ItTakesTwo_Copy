@@ -12,6 +12,7 @@ class ITTAKESTWO_COPY_API AITTGameMode : public AGameModeBase
 	
 public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer) override;
 
 	// 블루프린트로 할당될 메이(May)의 클래스
 	UPROPERTY(EditDefaultsOnly, Category = "Characters")

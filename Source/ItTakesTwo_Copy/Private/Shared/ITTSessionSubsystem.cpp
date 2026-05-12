@@ -8,6 +8,43 @@
 #include "OnlineSubsystem.h"
 #include "OnlineSubsystemUtils.h"
 #include "OnlineSessionSettings.h"
+#include "Online/OnlineSessionNames.h"
+#include "Interfaces/OnlinePresenceInterface.h"
+
+ 
+void UITTSessionSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+	
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Initialize: SessionInterface is invalid."));
+		return;
+	}
+
+	SessionInviteAcceptedDelegate =
+		FOnSessionUserInviteAcceptedDelegate::CreateUObject(
+			this,
+			&UITTSessionSubsystem::OnSessionUserInviteAccepted
+		);
+
+	SessionInviteAcceptedDelegateHandle =
+		SessionInterface->AddOnSessionUserInviteAcceptedDelegate_Handle(
+			SessionInviteAcceptedDelegate
+		);
+}
+
+void UITTSessionSubsystem::Deinitialize()
+{
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->ClearOnSessionUserInviteAcceptedDelegate_Handle(SessionInviteAcceptedDelegateHandle);
+	}
+
+	Super::Deinitialize();
+}
 
 void UITTSessionSubsystem::CreateSession(int32 NumPublicConnection)
 {
@@ -30,15 +67,27 @@ void UITTSessionSubsystem::CreateSession(int32 NumPublicConnection)
 	CreateSessionCompleteDelegateHandle =
 		SessionInterface->AddOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegate);
 
-	LastSessionSettings = MakeShared<FOnlineSessionSettings>();
+	 LastSessionSettings = MakeShared<FOnlineSessionSettings>();
+	
+	// Local에서 구현했을 때
+	// LastSessionSettings->NumPublicConnections = NumPublicConnection;
+	// LastSessionSettings->bIsLANMatch = true;
+	// LastSessionSettings->bShouldAdvertise = true;
+	// LastSessionSettings->bAllowJoinInProgress = true;
+	// LastSessionSettings->bAllowJoinViaPresence = true;
+	// LastSessionSettings->bUsesPresence = true;
+	// LastSessionSettings->bUseLobbiesIfAvailable = true;
+	
+	// 스팀으로 초대하는 구현
 	LastSessionSettings->NumPublicConnections = NumPublicConnection;
-	LastSessionSettings->bIsLANMatch = true;
+	LastSessionSettings->bIsLANMatch = false;
 	LastSessionSettings->bShouldAdvertise = true;
 	LastSessionSettings->bAllowJoinInProgress = true;
+	LastSessionSettings->bAllowInvites = true;
 	LastSessionSettings->bAllowJoinViaPresence = true;
 	LastSessionSettings->bUsesPresence = true;
 	LastSessionSettings->bUseLobbiesIfAvailable = true;
-
+	
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	if (!LocalPlayer)
 	{
@@ -126,9 +175,8 @@ void UITTSessionSubsystem::FindSession()
 
 	LastSessionSearch = MakeShared<FOnlineSessionSearch>();
 	LastSessionSearch->MaxSearchResults = 10;
-	LastSessionSearch->bIsLanQuery = true;
-	// LastSessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
-
+	LastSessionSearch->bIsLanQuery = false;
+	LastSessionSearch->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	if (!LocalPlayer)
 	{
@@ -145,6 +193,176 @@ void UITTSessionSubsystem::FindSession()
 		UE_LOG(LogTemp, Error, TEXT("FindSession failed: FindSessions call returned false."));
 		SessionInterface->ClearOnFindSessionsCompleteDelegate_Handle(FindSessionsCompleteDelegateHandle);
 	}
+}
+
+void UITTSessionSubsystem::TrySendPendingInvite()
+{
+	if (!PendingInviteFriendId.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TrySendPendingInvite: PendingInviteFriendId is invalid."));
+		return;
+	}
+
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("TrySendPendingInvite failed: SessionInterface is invalid."));
+		return;
+	}
+
+	if (SessionInterface->GetNamedSession(GameSessionName) == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("TrySendPendingInvite failed: Session does not exist."));
+		return;
+	}
+
+	const bool bSent = SessionInterface->SendSessionInviteToFriend(
+		0,
+		GameSessionName,
+		*PendingInviteFriendId
+	);
+
+	UE_LOG(LogTemp, Warning, TEXT("Steam Invite Sent: %d"), bSent);
+
+	PendingInviteFriendId.Reset();
+}
+
+void UITTSessionSubsystem::ReadSteamFriends()
+{
+	IOnlineFriendsPtr FriendsInterface = Online::GetFriendsInterface(GetWorld());
+	if (!FriendsInterface.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("ReadSteamFriends failed: FriendsInterface is invalid."));
+		return;
+	}
+
+	const bool bReadStarted = FriendsInterface->ReadFriendsList(
+		0,
+		EFriendsLists::ToString(EFriendsLists::Default),
+		FOnReadFriendsListComplete::CreateUObject(
+			this,
+			&UITTSessionSubsystem::OnReadSteamFriendsComplete
+		)
+	);
+
+	if (!bReadStarted)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ReadSteamFriends failed: ReadFriendsList returned false."));
+	}
+}
+
+TArray<FSteamFriendEntry> UITTSessionSubsystem::GetSteamFriendEntries() const
+{
+	return CachedFriendEntries;
+}
+
+void UITTSessionSubsystem::InviteFriendByIndex(int32 FriendIndex)
+{
+	
+	if (!CachedFriends.IsValidIndex(FriendIndex))
+	{
+		UE_LOG(LogTemp, Error, TEXT("초대 인덱스 실패"));
+		return;
+	}
+	// 선택한 친구 NetId 저장
+	PendingInviteFriendId = CachedFriends[FriendIndex]->GetUserId();
+	
+	// 내가 Host가 되기 위해 세션 생성
+	CreateSession(2);
+}
+
+void UITTSessionSubsystem::OnReadSteamFriendsComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName,
+	const FString& ErrorStr)
+{
+	CachedFriends.Empty();
+	CachedFriendEntries.Empty();
+
+	if (!bWasSuccessful)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ReadSteamFriends failed: %s"), *ErrorStr);
+		return;
+	}
+
+	IOnlineFriendsPtr FriendsInterface = Online::GetFriendsInterface(GetWorld());
+	if (!FriendsInterface.IsValid())
+		return;
+
+	if (!FriendsInterface->GetFriendsList(LocalUserNum, ListName, CachedFriends))
+	{
+		UE_LOG(LogTemp, Error, TEXT("GetFriendsList failed."));
+		return;
+	}
+
+	for (int32 i = 0; i < CachedFriends.Num(); ++i)
+	{
+		const TSharedRef<FOnlineFriend>& Friend = CachedFriends[i];
+
+		FSteamFriendEntry Entry;
+		Entry.DisplayName = Friend->GetDisplayName();
+		Entry.FriendIndex = i;
+		Entry.bIsOnline = Friend->GetPresence().bIsOnline;
+
+		CachedFriendEntries.Add(Entry);
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Steam Friends Loaded: %d"), CachedFriendEntries.Num());
+}
+
+void UITTSessionSubsystem::JoinSessionByResult(const FOnlineSessionSearchResult& SearchResult)
+{
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (!SessionInterface.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("JoinSessionByResult failed: SessionInterface is invalid."));
+		return;
+	}
+
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	if (!LocalPlayer)
+	{
+		UE_LOG(LogTemp, Error, TEXT("JoinSessionByResult failed: LocalPlayer is null."));
+		return;
+	}
+
+	JoinSessionCompleteDelegate =
+		FOnJoinSessionCompleteDelegate::CreateUObject(
+			this,
+			&UITTSessionSubsystem::OnJoinSessionComplete
+		);
+
+	JoinSessionCompleteDelegateHandle =
+		SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(
+			JoinSessionCompleteDelegate
+		);
+
+	const bool bJoinStarted = SessionInterface->JoinSession(
+		*LocalPlayer->GetPreferredUniqueNetId(),
+		GameSessionName,
+		SearchResult
+	);
+
+	if (!bJoinStarted)
+	{
+		UE_LOG(LogTemp, Error, TEXT("JoinSessionByResult failed: JoinSession returned false."));
+		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegateHandle);
+	}
+}
+
+void UITTSessionSubsystem::OnSessionUserInviteAccepted(bool bWasSuccessful, int32 LocalUserNum, FUniqueNetIdPtr UserId,
+	const FOnlineSessionSearchResult& InviteResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("OnSessionUserInviteAccepted: Success=%d"), bWasSuccessful);
+
+	if (!bWasSuccessful)
+		return;
+
+	if (!InviteResult.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("OnSessionUserInviteAccepted failed: InviteResult is invalid."));
+		return;
+	}
+
+	JoinSessionByResult(InviteResult);
 }
 
 void UITTSessionSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)

@@ -101,7 +101,7 @@ void APlayerBase::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
-	auto* PC = Cast<AITTPlayerController>(GetController());
+	APlayerController* PC = Cast<APlayerController>(GetController());
 	if (PC && PC->IsLocalPlayerController())
 	{
 		auto Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());

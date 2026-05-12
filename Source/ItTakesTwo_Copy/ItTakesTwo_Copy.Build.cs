@@ -26,7 +26,8 @@ public class ItTakesTwo_Copy : ModuleRules
 			"NavigationSystem",
 			"LevelSequence",
 			"MovieScene",
-			"MoviePlayer"
+			"MoviePlayer",
+			"OnlineSubsystemSteam"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

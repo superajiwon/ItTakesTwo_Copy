@@ -8,13 +8,16 @@
 void AMenuController::BeginPlay()
 {
 	Super::BeginPlay();
-
+	if (UITTSessionSubsystem* SessionSubsystem = GetGameInstance()->GetSubsystem<UITTSessionSubsystem>())
+	{
+		SessionSubsystem->TrySendPendingInvite();
+	}
 }
 
 void AMenuController::HostStart()
 {
 	UITTSessionSubsystem* SessionSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UITTSessionSubsystem>();
-	SessionSubsystem->CreateSession(4);
+	SessionSubsystem->CreateSession(2);
 }
 
 void AMenuController::ClientJoin()
@@ -89,10 +92,13 @@ void AMenuController::Server_StartGame_Implementation()
 	UITTGameInstance* GI = GetGameInstance<UITTGameInstance>();
 	if (!GI) return;
 
-	// 양쪽 플레이어가 모두 캐릭터를 골랐을 때만 맵을 넘깁니다.
+	UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] HostRole=%d ClientRole=%d"),
+		static_cast<int32>(GI->HostSelectedRole),
+		static_cast<int32>(GI->ClientSelectedRole));
+
 	if (GI->HostSelectedRole != EPlayerRole::None && GI->ClientSelectedRole != EPlayerRole::None)
 	{
-		// 서버와 클라이언트 모두 던전 맵으로 이동 (listen 옵션 포함)
-		GetWorld()->ServerTravel("Lv_Dungeon?listen");
+		UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to Lv_Dungeon"));
+		GetWorld()->ServerTravel(TEXT("/Game/Maps/Lv_Dungeon"), true);
 	}
 }
