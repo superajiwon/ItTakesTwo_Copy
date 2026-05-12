@@ -5,7 +5,7 @@
 #include "Shared/ITTTypes.h"
 #include "ITTGameInstance.generated.h"
 
-
+class UUserWidget;
 UCLASS()
 class ITTAKESTWO_COPY_API UITTGameInstance : public UGameInstance
 {
@@ -35,15 +35,30 @@ private:
 	void BeginLoadingScreen(const FString& MapName);
 	void EndLoadingScreen(UWorld* LoadedWorld);
 	
-	
+	void ShowLoadingWidget(UWorld* World);
+	void HideLoadingWidget();
+	void SetLocalInputEnabled(UWorld* World, bool bEnabled);
+	void FinishLoadingAfterDelay();
+	bool ShouldShowLoadingForWorld(UWorld* LoadedWorld) const;
 private:
 	UFUNCTION()
 	void FinishLoadingScreenAfterPreRenderVFX();
 	
 
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Loading", meta=(AllowPrivateAccess="true"))
+	TSubclassOf<UUserWidget> LoadingWidgetClass;
 	
-	
-	
+private:
+	UPROPERTY()
+	TObjectPtr<UUserWidget> LoadingWidget;
+
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Loading", meta=(AllowPrivateAccess="true"))
+	float LoadingHideDelay = 3.f;
+
+	FTimerHandle LoadingHideTimerHandle;
+
 	
 	
 	

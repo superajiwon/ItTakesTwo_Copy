@@ -46,7 +46,7 @@ protected:
 	float PreRenderBatchInterval = 0.1f;
 
 	UPROPERTY(EditAnywhere, Category="VFX|PreNiagara")
-	float PreRenderKeepAliveTime = 0.3f;
+	float PreRenderKeepAliveTime = 1.f;
 
 	int32 CurrentPreRenderIndex = 0;
 

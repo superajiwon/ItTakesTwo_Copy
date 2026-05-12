@@ -42,6 +42,7 @@
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/Math/Box.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Engine/GameInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Engine/World.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/MenuController.gen.cpp" root0="SKIP_HIGHLIGHTING" />
@@ -327,6 +328,8 @@
       <workItem from="1778426790705" duration="3423000" />
       <workItem from="1778458301065" duration="5462000" />
       <workItem from="1778476477596" duration="3095000" />
+      <workItem from="1778480084776" duration="2132000" />
+      <workItem from="1778554931962" duration="6012000" />
     </task>
     <servers />
   </component>
