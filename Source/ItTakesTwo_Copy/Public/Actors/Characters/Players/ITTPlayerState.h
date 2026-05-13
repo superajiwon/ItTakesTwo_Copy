@@ -13,6 +13,9 @@ class ITTAKESTWO_COPY_API AITTPlayerState : public APlayerState
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
-	UPROPERTY(Replicated, Transient, BlueprintReadOnly, Category="Role")
+	UPROPERTY(Replicated, Transient, BlueprintReadOnly, Category="PlayerState|Role")
 	EPlayerRole PlayerRole;
+	
+	UPROPERTY(Replicated, Transient, BlueprintReadOnly, Category="PlayerState|Slot")
+	EPlayerSlot PlayerSlot;
 };

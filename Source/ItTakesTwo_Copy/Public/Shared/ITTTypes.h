@@ -20,3 +20,11 @@ enum class EActionType : uint8
 	Ultimate	UMETA(DisplayName = "Ultimate"),
 	TakeDamage	UMETA(DisplayName = "TakeDamage"),
 };
+
+UENUM(BlueprintType)
+enum class EPlayerSlot : uint8
+{
+	None	UMETA(DisplayName = "None"),
+	Host	UMETA(DisplayName = "Host"),
+	Client	UMETA(DisplayName = "Client")
+};

@@ -227,6 +227,7 @@ void UITTGameInstance::FinishLoadingAfterDelay()
 	if (UWorld* World = GetWorld())
 	{
 		SetLocalInputEnabled(World, true);
+		OnDungeonLoadingFinished.Broadcast(World);
 	}
 }
 

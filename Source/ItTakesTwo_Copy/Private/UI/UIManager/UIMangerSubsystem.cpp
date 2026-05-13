@@ -22,13 +22,18 @@ void UUIMangerSubsystem::BeginLobbyUI()
 	
 }
 
-void UUIMangerSubsystem::BeginHUD()
+void UUIMangerSubsystem::BeginHUD(APlayerController* OwningPC)
 {
+	if (!OwningPC || !OwningPC->IsLocalController())
+		return;
+
 	if (!HUDViewModel)
 	{
 		HUDViewModel = NewObject<UHUDViewModel>(this);
-		HUDViewModel->Initialize(GetWorld()->GetFirstPlayerController());
+		HUDViewModel->Initialize(OwningPC);
 	}
+	
+	// 여기서ㅕ UserWidget 만들자!!
 	
 }
 

@@ -5,6 +5,8 @@
 #include "Shared/ITTTypes.h"
 #include "ITTGameInstance.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnDungeonLoadingFinished, UWorld*);
+
 class UUserWidget;
 UCLASS()
 class ITTAKESTWO_COPY_API UITTGameInstance : public UGameInstance
@@ -60,6 +62,7 @@ private:
 	FTimerHandle LoadingHideTimerHandle;
 
 	
-	
+public:
+	FOnDungeonLoadingFinished OnDungeonLoadingFinished;
 	
 };

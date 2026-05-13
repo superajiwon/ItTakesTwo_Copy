@@ -1,5 +1,7 @@
 
 #include "ITTGameMode.h"
+
+#include "Actors/Characters/Players/ITTPlayerState.h"
 #include "Shared/ITTGameInstance.h"
 #include "GameFramework/PlayerController.h"
 
@@ -19,18 +21,26 @@ void AITTGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 
 	TSubclassOf<APawn> PawnClassToSpawn = nullptr;
 
-	if (NewPlayer->IsLocalController())
+	// 서버에서 이 플레이어의 세션 슬롯과 캐릭터 역할을 확정합니다.
+	const bool bIsHostPlayer = NewPlayer->IsLocalController();
+
+	const EPlayerSlot SelectedSlot = bIsHostPlayer
+		? EPlayerSlot::Host
+		: EPlayerSlot::Client;
+
+	const EPlayerRole SelectedRole = bIsHostPlayer
+		? GI->HostSelectedRole
+		: GI->ClientSelectedRole;
+
+	if (AITTPlayerState* ITTPS = NewPlayer->GetPlayerState<AITTPlayerState>())
 	{
-		PawnClassToSpawn = (GI->HostSelectedRole == EPlayerRole::May)
-			? MayCharacterClass
-			: CodyCharacterClass;
+		ITTPS->PlayerSlot = SelectedSlot;
+		ITTPS->PlayerRole = SelectedRole;
 	}
-	else
-	{
-		PawnClassToSpawn = (GI->ClientSelectedRole == EPlayerRole::May)
-			? MayCharacterClass
-			: CodyCharacterClass;
-	}
+
+	PawnClassToSpawn = SelectedRole == EPlayerRole::May
+		? MayCharacterClass
+		: CodyCharacterClass;
 
 	UE_LOG(LogTemp, Warning, TEXT("[ITTGameMode] Start Player=%s IsLocal=%d HostRole=%d ClientRole=%d PawnClass=%s"),
 		*GetNameSafe(NewPlayer),

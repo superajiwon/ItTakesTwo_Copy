@@ -10,4 +10,5 @@ void AITTPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME(AITTPlayerState, PlayerRole);
+	DOREPLIFETIME(AITTPlayerState, PlayerSlot);
 }

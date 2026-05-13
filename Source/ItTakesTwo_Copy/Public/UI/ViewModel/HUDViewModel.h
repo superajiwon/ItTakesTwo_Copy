@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "ItTakesTwo_Copy/Public/UI/ViewModel/ViewModelBase.h"
+#include "Shared/ITTTypes.h"
+#include "Shared/Struct/HUDPlayerInfo.h"
 #include "HUDViewModel.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FHUDHPChangedSignature, float, CurHP, float, MaxHP);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHUDChangedPlayerInfo,	const FHUDPlayerInfo&,	PlayerInfo);
 class APlayerBase;
 class UHPComponent;
-
 UCLASS()
 class ITTAKESTWO_COPY_API UHUDViewModel : public UViewModelBase
 {
@@ -18,39 +18,34 @@ class ITTAKESTWO_COPY_API UHUDViewModel : public UViewModelBase
 public:
 	virtual void Initialize(TObjectPtr<APlayerController> PlayerController) override;
 	virtual void Deinitialize() override;
+	
 	void BindPlayerHP();
 	void UnbindPlayerHP();
-	void HandleHPChanged(float InCurHP, float InMaxHP);
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "HUD|HP")
-	float GetCurHP() const
-	{
-		return CurHP;
-	}
-	UFUNCTION(BlueprintCallable, Category = "HUD|HP")
-	float GetMaxHP() const
-	{
-		return MaxHP;
-	}
-	UFUNCTION(BlueprintCallable, Category = "HUD|HP")
-	float GetHPPercent() const
-	{
-		return MaxHP > 0.f ? CurHP / MaxHP : 0.f;
-	}
+	void BindHostHP(APlayerBase* Player, UHPComponent* HPComp, EPlayerSlot PlayerSlot, EPlayerRole PlayerRole);
+	void BindClientHP(APlayerBase* Player, UHPComponent* HPComp, EPlayerSlot PlayerSlot, EPlayerRole PlayerRole);
+	
+private:
+	UFUNCTION()
+	void HostHpChanging(float HostHP, float HostMaxHP);
+	UFUNCTION()
+	void ClientHpChanging(float ClientHP, float ClientMaxHP);
 	
 public:
 	UPROPERTY(BlueprintAssignable, Category = "HUD|HP")
-	FHUDHPChangedSignature OnHUDHPChanged;
+	FHUDChangedPlayerInfo OnHUDHPChanged;
 	
 private:
-	TWeakObjectPtr<APlayerBase> CachedPlayer;
-	TWeakObjectPtr<UHPComponent> CachedHPComponent;
+	TWeakObjectPtr<APlayerBase> HostPlayer ;
+	TWeakObjectPtr<UHPComponent> HostHPComponent ;
+	
+	TWeakObjectPtr<APlayerBase> ClientPlayer ;
+	TWeakObjectPtr<UHPComponent> ClientHPComponent ;
+	
 	
 private:
-	UPROPERTY(BlueprintReadOnly, Category = "HP", meta = (AllowPrivateAccess = "true"))
-	float CurHP = 0.f;
-
-	UPROPERTY(BlueprintReadOnly, Category = "HP", meta = (AllowPrivateAccess = "true"))
-	float MaxHP = 0.f;
+	FHUDPlayerInfo HostInfo;
+	FHUDPlayerInfo ClientInfo;
+	
 };
