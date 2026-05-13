@@ -20,7 +20,6 @@ AWeaponMonsterBase::AWeaponMonsterBase()
 void AWeaponMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	bUseControllerRotationYaw = true;
 }

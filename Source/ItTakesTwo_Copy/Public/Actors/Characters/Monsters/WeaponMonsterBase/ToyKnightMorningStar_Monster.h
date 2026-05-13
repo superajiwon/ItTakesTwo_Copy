@@ -19,6 +19,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void AnimNotify_CollisionOn() override;
+	virtual void AnimNotify_MontageEnd() override;
 public:
 	virtual void Tick(float DeltaTime) override;
 

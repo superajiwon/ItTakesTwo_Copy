@@ -39,17 +39,19 @@ AToyMage_Monster::AToyMage_Monster()
 	}
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> OverlapAsset(
 		TEXT("/Game/VFX/Using/NS_MageProjectileEnd.NS_MageProjectileEnd"));
-	if (Niagara.Succeeded())
+	if (OverlapAsset.Succeeded())
 	{
 		OverlapNiagara = OverlapAsset.Object;
 	}
 	
 }
-
 void AToyMage_Monster::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (!HasAuthority())
+		return;
+
 	UTargetPointSubsystem* Subsystem = GetWorld()->GetSubsystem<UTargetPointSubsystem>();
 	if (Subsystem)
 	{
@@ -59,6 +61,7 @@ void AToyMage_Monster::BeginPlay()
 		{
 			TargetLocationMap.Add(Point->GetIndex(), Point->GetActorTransform());
 		}
+
 		if (FTransform* FoundTransform = TargetLocationMap.Find(CurrentLocationIndex))
 		{
 			SetActorTransform(*FoundTransform);
@@ -114,10 +117,14 @@ void AToyMage_Monster::Tick(float DeltaTime)
 void AToyMage_Monster::AnimNotify_MontageEnd()
 {
 	if (MonsterState == EMonsterState::Fire)
+	{
 		ProjectileFire();
+	}
 	else if (MonsterState == EMonsterState::Swing)
+	{
 		HitBoxComponent->CollisionOff();
-	
+		HitBoxComponent->ClearHitRecords();
+	}
 	
 	Super::AnimNotify_MontageEnd();
 	

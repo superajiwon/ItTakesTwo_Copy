@@ -181,6 +181,8 @@ void AMonsterBase::OnRep_MonsterState()
 
 void AMonsterBase::AnimNotify_MontageEnd()
 {
+	if (!HasAuthority())
+		return;
 	if (MonsterState == EMonsterState::Dead)
 	{
 		return;

@@ -1,7 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "Actors/Characters/Monsters/WeaponMonsterBase/AnimNotifyState_MageTeleportMove.h"
+﻿#include "Actors/Characters/Monsters/WeaponMonsterBase/AnimNotifyState_MageTeleportMove.h"
 
 void UAnimNotifyState_MageTeleportMove::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
 	float TotalDuration, const FAnimNotifyEventReference& EventReference)
@@ -22,9 +19,8 @@ void UAnimNotifyState_MageTeleportMove::NotifyBegin(USkeletalMeshComponent* Mesh
 	else
 	{
 		TargetLocation = StartLocation - FVector(0.f, 0.f, OffsetZ);
+		TargetLocation.Z = FMath::Max(TargetLocation.Z, -125.f);
 	}
-	
-	
 }
 
 void UAnimNotifyState_MageTeleportMove::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
@@ -39,12 +35,12 @@ void UAnimNotifyState_MageTeleportMove::NotifyTick(USkeletalMeshComponent* MeshC
 
 	const float Alpha = FMath::Clamp(ElapsedTime / Duration, 0.f, 1.f);
 
-	const FVector NewLocation = FMath::Lerp(
+	FVector NewLocation = FMath::Lerp(
 		StartLocation,
 		TargetLocation,
 		Alpha
 	);
-
+	NewLocation.Z = FMath::Min(NewLocation.Z, -125.f);
 	MeshComp->SetRelativeLocation(
 		NewLocation,
 		false,
@@ -60,7 +56,8 @@ void UAnimNotifyState_MageTeleportMove::NotifyEnd(USkeletalMeshComponent* MeshCo
 	
 	if (!MeshComp)
 		return;
-
+	FVector FinalLocation = TargetLocation;
+	FinalLocation.Z = FMath::Min(FinalLocation.Z, -125.f);
 	MeshComp->SetRelativeLocation(
 		TargetLocation,
 		false,

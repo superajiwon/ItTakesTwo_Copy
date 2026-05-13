@@ -40,7 +40,17 @@ void AToyShielder_Monster::AnimNotify_CollisionOn()
 void AToyShielder_Monster::AnimNotify_DeadMotionEnd()
 {
 	Super::AnimNotify_DeadMotionEnd();
-	Destroy();
+}
+
+void AToyShielder_Monster::AnimNotify_MontageEnd()
+{
+	if (MonsterState == EMonsterState::Swing && HitBoxComponent)
+	{
+		HitBoxComponent->CollisionOff();
+		HitBoxComponent->ClearHitRecords();
+	}
+
+	Super::AnimNotify_MontageEnd();
 }
 
 void AToyShielder_Monster::Tick(float DeltaTime)

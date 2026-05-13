@@ -37,6 +37,16 @@ void AToyKnightSword_Monster::AnimNotify_CollisionOn()
 	Super::AnimNotify_CollisionOn();
 }
 
+void AToyKnightSword_Monster::AnimNotify_MontageEnd()
+{
+	if (MonsterState == EMonsterState::Swing && HitBoxComponent)
+	{
+		HitBoxComponent->CollisionOff();
+		HitBoxComponent->ClearHitRecords();
+	}
+	Super::AnimNotify_MontageEnd();
+}
+
 void AToyKnightSword_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

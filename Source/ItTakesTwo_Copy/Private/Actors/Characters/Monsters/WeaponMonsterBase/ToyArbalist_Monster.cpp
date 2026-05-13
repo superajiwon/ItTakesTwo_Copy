@@ -22,6 +22,7 @@ AToyArbalist_Monster::AToyArbalist_Monster()
 void AToyArbalist_Monster::BeginPlay()
 {
 	Super::BeginPlay();
+	RightHand_WeaponMeshComponent->SetCollisionProfileName(TEXT("NoCollision"));
 	
 }
 
