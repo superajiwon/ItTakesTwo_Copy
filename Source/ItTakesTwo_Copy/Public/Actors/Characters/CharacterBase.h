@@ -38,12 +38,20 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UWidgetComponent* HPUIComp;
 
+	void InitHPBar();
+	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh", meta=(AllowPrivateAccess = "true"))
 	UStaticMeshComponent* PlayerArrowComp;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Setting", meta=(AllowPrivateAccess = "true"))
 	FName TargetName = "";
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
+	FLinearColor HPBarColor = FLinearColor::White;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
+	FLinearColor HPBarHitColor = FLinearColor::White;
 	
 public:
 	UFUNCTION(BlueprintCallable, Category="Components")

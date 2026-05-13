@@ -67,7 +67,7 @@ protected:
 	// === HP ===
 	UPROPERTY(EditAnywhere, Replicated, Category = "HP")
 	float MaxHp = 100.0f;
-	UPROPERTY(EditAnywhere, ReplicatedUsing=OnRep_CurHp, Category = "HP")
+	UPROPERTY(EditAnywhere, ReplicatedUsing=OnRep_CurHP, Category = "HP")
 	float CurHp = 0.0f;
 	UFUNCTION() // HP가 복제 될 때 클라이언트에서 호출 될 함수 (UI 갱신용)
 	void OnRep_CurHP();

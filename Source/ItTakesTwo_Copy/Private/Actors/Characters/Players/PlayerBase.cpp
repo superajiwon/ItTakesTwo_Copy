@@ -97,7 +97,7 @@ void APlayerBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	PrintNetLog();
+	// PrintNetLog();
 }
 
 void APlayerBase::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)

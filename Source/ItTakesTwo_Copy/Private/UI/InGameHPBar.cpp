@@ -21,6 +21,11 @@ void UInGameHPBar::NativeConstruct()
 	DynMat->SetVectorParameterValue(TEXT("FillColor_R"), FillColor);
 	DynMat->SetVectorParameterValue(TEXT("HitColor_B"), HitColor);
 	DynMat->SetVectorParameterValue(TEXT("BackGround_G"), BackGroundColor);
+	
+	// 머티리얼의 초기 채움 상태도 명시적으로 설정합니다 (안 보임 방지)
+	DynMat->SetScalarParameterValue(TEXT("Fill"), Fill);
+	DynMat->SetScalarParameterValue(TEXT("Hit"), Hit);
+	
 	HPBar->SetWidgetStyle(Style);
 }
 
@@ -67,6 +72,12 @@ void UInGameHPBar::SetColors(FLinearColor FillLinearColor, FLinearColor HitLinea
 {
 	FillColor = FillLinearColor;
 	HitColor = HitLinearColor;
+		
+	if (DynMat != nullptr)
+	{
+		DynMat->SetVectorParameterValue(TEXT("FillColor_R"), FillColor);
+		DynMat->SetVectorParameterValue(TEXT("HitColor_B"), HitColor);
+	}
 }
 
 void UInGameHPBar::UpdateHP(float CurHp, float MaxHp)
