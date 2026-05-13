@@ -142,7 +142,7 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/Subsystems/TargetPointSubsystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Shared/VFXObjectPoolSubsystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/UI/View/CooldownBox.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/UI/View/Main_View.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/UI/View/Main_View.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -334,6 +334,7 @@
       <workItem from="1778554931962" duration="6012000" />
       <workItem from="1778565678896" duration="20020000" />
       <workItem from="1778632481673" duration="5921000" />
+      <workItem from="1778641300452" duration="3112000" />
     </task>
     <servers />
   </component>

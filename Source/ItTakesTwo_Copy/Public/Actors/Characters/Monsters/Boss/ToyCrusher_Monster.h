@@ -47,6 +47,10 @@ private:
 	UPROPERTY()
 	bool bActive{false};
 	
+	UPROPERTY()
+	bool bTravelRequested{false};
+	
+	
 private:
 	UPROPERTY()
 	UBoxComponent* BoxComponent;

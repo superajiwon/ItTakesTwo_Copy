@@ -59,6 +59,18 @@ void AITTGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	UE_LOG(LogTemp, Warning, TEXT("[ITTGameMode] Pawn after start: %s"), *GetNameSafe(NewPlayer->GetPawn()));
 }
 
+void AITTGameMode::ChangeLevel(const FString& LevelPath)
+{
+	UWorld* World = GetWorld();
+	if (!World)
+		return;
+
+	bUseSeamlessTravel = true;
+	// World->ServerTravel(TEXT("/Game/Maps/Lv_CowDungeon"), true);
+	const FString TravelURL = LevelPath + TEXT("?listen");
+	World->ServerTravel(TravelURL, true);
+}
+
 void AITTGameMode::UpdateRespawnPoint(ARespawn_TargetPoint* NewRespawnPointCody, ARespawn_TargetPoint* NewRespawnPointMay)
 {
 	CurRespawnPointCody = NewRespawnPointCody;

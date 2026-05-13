@@ -3,6 +3,7 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyCrusher_Monster.h"
 
+#include "ITTGameMode.h"
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Actors/Map/MapObjectBase.h"
 #include "Actors/Map/MapObject_Attackable.h"
@@ -129,12 +130,22 @@ void AToyCrusher_Monster::AnimNotify_CrusherAttack()
 	Multicast_PlayCamShake(5);
 	PoolSubsystem->UseVFX_Explosion(SpawnInfo);
 }
-
 void AToyCrusher_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	if (!HasAuthority())
 		return;
+
+	if (!bTravelRequested && GetActorLocation().Z <= -1640.f)
+	{
+		bTravelRequested = true;
+		if (AITTGameMode* ITTGameMode = GetWorld()->GetAuthGameMode<AITTGameMode>())
+		{
+			ITTGameMode->ChangeLevel(TEXT("/Game/Maps/Lv_CowDungeon"));
+		}
+		return;
+	}
 
 	if (!bActive)
 	{
@@ -181,6 +192,4 @@ void AToyCrusher_Monster::Tick(float DeltaTime)
 		}
 	}
 }
-
-
 
