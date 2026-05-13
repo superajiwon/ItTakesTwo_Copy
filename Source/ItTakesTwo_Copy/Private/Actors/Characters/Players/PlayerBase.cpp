@@ -3,19 +3,20 @@
 #include "Actors/Characters/Players/ITTPlayerController.h"
 #include "Actors/Characters/Managers/CameraManagerActor.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/HPComponent.h"
 #include "Components/SkillComponent.h"
 #include "Components/UltimateComponent.h"
-#include "Components/HPComponent.h"
+#include "Components/WidgetComponent.h"
 #include "EngineUtils.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "ITTGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NavigationSystem.h"
-#include "Components/WidgetComponent.h"
 #include "UI/InGameHPBar.h"
 
 
@@ -51,6 +52,8 @@ APlayerBase::APlayerBase()
 	if (TempDashInput.Succeeded()) IA_Dash = TempDashInput.Object;
 	ConstructorHelpers::FObjectFinder<UInputAction> TempUltiInput(TEXT("/Script/EnhancedInput.InputAction'/Game/Inputs/IA_Ultimate.IA_Ultimate'"));
 	if (TempUltiInput.Succeeded()) IA_Ultimate = TempUltiInput.Object;
+	
+
 }
 
 void APlayerBase::BeginPlay()
@@ -256,7 +259,6 @@ void APlayerBase::Respawn()
 	if (!HasAuthority()) return;
 	
 	APlayerBase* OtherPlayer = nullptr;
-	// todo 이부분 이거 이렇게 꼭 가져와야하나 ..? 흠
 	for (TActorIterator<APlayerBase> It(GetWorld()); It; ++It)
 	{
 		if (*It != this)
@@ -268,7 +270,6 @@ void APlayerBase::Respawn()
 	
 	if (OtherPlayer && !OtherPlayer->GetHPComponent()->GetIsDead())
 	{
-		// todo 여기는 맵에 배치 되어있는 네비메쉬.. 생각해야함
 		UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 		if (NavSys)
 		{
@@ -282,8 +283,35 @@ void APlayerBase::Respawn()
 	}
 	else
 	{
-		// todo 둘 다 죽은 경우 
+		// 둘 다 죽은 경우 
 		UE_LOG(LogTemp, Warning, TEXT("둘다 쥬금. 체크 포인트 필요"));
+		if (AITTGameMode* GM = Cast<AITTGameMode>(GetWorld()->GetAuthGameMode()))
+		{
+			FTransform RespawnPoint = GM->GetRespawnTransform(this);
+			if (RespawnPoint.Equals(FTransform::Identity))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("체크포인트 없음!"));
+				RespawnPoint = FTransform(GetActorRotation(), GetActorLocation() + FVector(0, 0, 100.0f));
+			}
+			
+			TeleportTo(RespawnPoint.GetLocation(), RespawnPoint.GetRotation().Rotator());
+			GetHPComponent()->Revive();
+			
+			if (OtherPlayer && OtherPlayer->GetHPComponent()->GetIsDead())
+			{
+				GetWorld()->GetTimerManager().ClearTimer(OtherPlayer->RespawnTimer);
+				FTransform OtherTransform = GM->GetRespawnTransform(OtherPlayer);
+				
+				if (OtherTransform.Equals(FTransform::Identity))
+				{
+					// 위치를 못 찾으면 내 옆에 스폰
+					OtherTransform = FTransform(OtherPlayer->GetActorRotation(), RespawnPoint.GetLocation() + FVector(150.0f, 0, 0));
+				}
+				
+				OtherPlayer->TeleportTo(OtherTransform.GetLocation(), OtherTransform.GetRotation().Rotator());
+				OtherPlayer->GetHPComponent()->Revive();
+			}
+		}
 	}
 }
 

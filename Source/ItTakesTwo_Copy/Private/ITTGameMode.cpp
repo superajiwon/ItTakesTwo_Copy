@@ -58,3 +58,26 @@ void AITTGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 
 	UE_LOG(LogTemp, Warning, TEXT("[ITTGameMode] Pawn after start: %s"), *GetNameSafe(NewPlayer->GetPawn()));
 }
+
+void AITTGameMode::UpdateRespawnPoint(ARespawn_TargetPoint* NewRespawnPointCody, ARespawn_TargetPoint* NewRespawnPointMay)
+{
+	CurRespawnPointCody = NewRespawnPointCody;
+	CurRespawnPointMay = NewRespawnPointMay;
+}
+
+FTransform AITTGameMode::GetRespawnTransform(APawn* Player) const
+{
+	if (!Player) return FTransform::Identity;
+
+	if (Player->IsA(MayCharacterClass))
+	{
+		return CurRespawnPointMay ? CurRespawnPointMay->GetActorTransform() : FTransform::Identity;
+	}
+	else if (Player->IsA(CodyCharacterClass))
+	{
+		return CurRespawnPointCody ? CurRespawnPointCody->GetActorTransform() : FTransform::Identity;
+	}
+	
+	return FTransform::Identity;
+}
+

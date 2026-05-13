@@ -65,6 +65,14 @@ AMayCharacter::AMayCharacter()
 	if (DashNiagaraAsset.Succeeded()) DashNiagaraComp->SetAsset(DashNiagaraAsset.Object);
 	DashNiagaraComp->SetupAttachment(DashSplineComp);
 	DashNiagaraComp->SetAutoActivate(false);
+	
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->CustomDepthStencilValue = 1;
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PlayerArrow(TEXT("/Script/Engine.StaticMesh'/Game/Models/Characters/ArrowDecal/PlayerArrow_Mesh/StaticMeshes/SM_MayArrow.SM_MayArrow'"));
+	if (PlayerArrow.Succeeded()) PlayerArrowComp->SetStaticMesh(PlayerArrow.Object);
+	
+	OriginSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
 void AMayCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -73,6 +81,7 @@ void AMayCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& 
 	
 	// bIsUltimateForm을 모든 클라이언트에 복제
 	DOREPLIFETIME(AMayCharacter, bIsUltimateForm);
+	DOREPLIFETIME(AMayCharacter, OriginSpeed);
 }
 
 void AMayCharacter::SetWeaponCollision(bool bEnable)
@@ -127,12 +136,34 @@ FAttackModeData* AMayCharacter::GetCurrentAttackData()
 void AMayCharacter::OnUltimateActivated()
 {
 	// 서버에서만 호출되므로 HasAuthority() 체크 불필요
-	bIsUltimateForm = !bIsUltimateForm;
+	// bIsUltimateForm = !bIsUltimateForm;
+	bIsUltimateForm = true;
+	
+	// 서버에서도 이동속도 적용 (OnRep은 클라이언트에서만 불리므로 서버는 직접 설정)
+	GetCharacterMovement()->MaxWalkSpeed = OriginSpeed * 2;
+	DefaultMaxWalkSpeed = OriginSpeed * 2;
+}
+
+void AMayCharacter::OnRep_IsUltimateForm()
+{
+	if (bIsUltimateForm)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = OriginSpeed * 2;
+		DefaultMaxWalkSpeed = OriginSpeed * 2;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = OriginSpeed;
+		DefaultMaxWalkSpeed = OriginSpeed;
+	}
 }
 
 void AMayCharacter::Ultimate(const FInputActionValue& Value)
 {
 	Super::Ultimate(Value);
+	
+	GetCharacterMovement()->MaxWalkSpeed = OriginSpeed * 2;
+	DefaultMaxWalkSpeed = OriginSpeed * 2;
 }
 
 void AMayCharacter::EndUltimate()
@@ -141,6 +172,8 @@ void AMayCharacter::EndUltimate()
 	
 	// 서버에서 관리되는 상태 롤백 (로컬 예측을 위해 Authority 체크 제거)
 	bIsUltimateForm = false;
+	GetCharacterMovement()->MaxWalkSpeed = OriginSpeed;
+	DefaultMaxWalkSpeed = OriginSpeed;
 	
 	if (UltimateCollision)
 	{

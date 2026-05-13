@@ -5,6 +5,7 @@
 #include "Components/HPComponent.h"
 #include "Components/StatComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/InGameHPBar.h"
 
 ACharacterBase::ACharacterBase()
@@ -26,6 +27,9 @@ ACharacterBase::ACharacterBase()
 	HPUIComp->SetWidgetSpace(EWidgetSpace::Screen);
 	HPUIComp->SetDrawSize(FVector2D(200.0f, 15.0f));
 	HPUIComp->SetDrawAtDesiredSize(true);
+	
+	PlayerArrowComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerArrowComp"));
+	PlayerArrowComp->SetupAttachment(GetMesh());
 }
 
 void ACharacterBase::BeginPlay()
@@ -66,6 +70,33 @@ void ACharacterBase::Damage(float DamageAmount, AActor* Causer)
 	
 	GetHPComponent()->ApplyDamage(DamageAmount, Causer);
 	
+}
+
+void ACharacterBase::PlayCamShake(float Scale)
+{
+	if (CamShake)
+	{
+		if (APlayerController* PC = Cast<APlayerController>(GetController()))
+		{
+			PC->ClientStartCameraShake(CamShake, Scale);
+		}
+		else if (HasAuthority())
+		{
+			Multicast_PlayCamShake(Scale);
+		}
+	}
+}
+
+void ACharacterBase::Multicast_PlayCamShake_Implementation(float Scale)
+{
+	if (CamShake)
+	{
+		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		if (PC && PC->PlayerCameraManager)
+		{
+			PC->PlayerCameraManager->StartCameraShake(CamShake, Scale);
+		}
+	}
 }
 
 void ACharacterBase::PrintNetLog()

@@ -29,7 +29,7 @@ ACodyCharacter::ACodyCharacter()
 	FHitComp_Info BasicHitCompInfo(FName("Player_CodyBasic"), FName("PlayerWeapon"), FVector(250.0f,0.0f,0.0f), 200.f);
 	BaseCollision->InitializeHitComp(BasicHitCompInfo, GetTargetName());
 	BaseCollision->CollisionOff();
-	
+
 	SpecialProjectilePoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpecialProjectilePoint"));
 	SpecialProjectilePoint->SetupAttachment(AttackColliderPoint);
 	SpecialProjectilePoint->SetRelativeLocation(FVector(70.0f,0.0f,125.0f));
@@ -40,6 +40,12 @@ ACodyCharacter::ACodyCharacter()
 	if (HandNiagaraAsset.Succeeded()) HandNiagaraComp->SetAsset(HandNiagaraAsset.Object);
 	HandNiagaraComp->SetupAttachment(GetMesh(), FName("RightNiagaraSocket"));
 	HandNiagaraComp->SetAutoActivate(true); // 항상 켜져있음
+	
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->CustomDepthStencilValue = 3;
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PlayerArrow(TEXT("/Script/Engine.StaticMesh'/Game/Models/Characters/ArrowDecal/PlayerArrow_Mesh/StaticMeshes/SM_CodyArrow.SM_CodyArrow'"));
+	if (PlayerArrow.Succeeded()) PlayerArrowComp->SetStaticMesh(PlayerArrow.Object);
 }
 
 void ACodyCharacter::BeginPlay()
