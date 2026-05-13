@@ -15,6 +15,8 @@ AWeaponMonsterBase::AWeaponMonsterBase()
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> PlayerArrow(TEXT("/Script/Engine.StaticMesh'/Game/Models/Characters/ArrowDecal/PlayerArrow_Mesh/StaticMeshes/SM_MonsterArrow.SM_MonsterArrow'"));
 	if (PlayerArrow.Succeeded()) PlayerArrowComp->SetStaticMesh(PlayerArrow.Object);
+	
+	HPBarColor = FLinearColor::Red;
 }
 
 void AWeaponMonsterBase::BeginPlay()
