@@ -219,6 +219,20 @@ bool USkillComponent::CanExecuteSkill(EActionType ActionType) const
 	return true;
 }
 
+float USkillComponent::GetCooldownTime(EActionType ActionType) const
+{
+	if (const FTimerHandle* TimerHandle = CooldownTimers.Find(ActionType))
+	{
+		if (UWorld* World = GetWorld())
+		{
+			// 타이머 매니저를 통해 현재 남은 시간을 반환
+			return World->GetTimerManager().GetTimerRemaining(*TimerHandle);
+		}
+	}
+	
+	return 0.0f;
+}
+
 void USkillComponent::StartCooldown(EActionType ActionType)
 {
 	float CooldownTime = 0;

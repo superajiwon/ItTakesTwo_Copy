@@ -109,10 +109,10 @@ public:
 	
 	//=== Death & Revive ===
 	UFUNCTION()
-	virtual void OnDeath();
+	virtual void OnPlayerDeath();
 	
 	UFUNCTION()
-	virtual void OnRevive();
+	virtual void OnPlayerRevive();
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Niagara")
 	UNiagaraSystem* DeathNiagara;
