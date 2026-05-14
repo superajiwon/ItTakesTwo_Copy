@@ -6,6 +6,7 @@
     <projectFile kind="Docker">../../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Perforce.Fixture/EpicGames.Perforce.Fixture.csproj</projectFile>
     <projectFile>../../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/UnrealBuildTool/UnrealBuildTool.csproj</projectFile>
     <projectFile>../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/AutomationTool/AutomationTool.csproj</projectFile>
+    <projectFile profileName="EpicGames.AspNet">../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.AspNet/EpicGames.AspNet.csproj</projectFile>
     <projectFile kind="Docker">../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Perforce.Fixture/EpicGames.Perforce.Fixture.csproj</projectFile>
     <projectFile>../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/UnrealBuildTool/UnrealBuildTool.csproj</projectFile>
     <projectFile>Intermediate/ProjectFiles/ItTakesTwo_Copy.vcxproj</projectFile>
@@ -17,15 +18,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b9a2c085-4ffb-4074-b9c4-d3e95f0db2ad" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ItTakesTwo_Copy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_Cody.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_CodyUltimate.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Characters/Players/Cody/BP_CodyUltimate.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/Lv_ServerTestMain.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Lv_ServerTestMain.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ItTakesTwo_Copy.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/ItTakesTwo_Copy.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyAnimInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyUltimateBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Players/Cody/CodyUltimateBox.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyUltimateBox.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/Actors/Characters/Players/Cody/CodyUltimateBox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,14 +32,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Core/Public/Math/Box.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Engine/GameInstance.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/Engine/World.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerController.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/GameplayStatics.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Public/Materials/MaterialExpressionCollectionParameter.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/HUDPlayerInfo.gen.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/MenuController.gen.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/SoundInfo.gen.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -156,6 +142,10 @@
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/UI/View/CooldownBox.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Public/UI/View/Main_View.h" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -165,25 +155,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;C/C++ 프로젝트.ItTakesTwo_Copy.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Gwonseon&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.lczerniawski.bettercomments.settings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.AutomationTool.executor": "Run",
+    "C/C++ Project.ItTakesTwo_Copy.executor": "Run",
+    "C/C++ 프로젝트.ItTakesTwo_Copy.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "Doeun",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.lczerniawski.bettercomments.settings",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="C/C++ 프로젝트.ItTakesTwo_Copy">
+}]]></component>
+  <component name="RunManager" selected="C/C++ Project.ItTakesTwo_Copy">
     <configuration name="ItTakesTwo_Copy" type="CppProject" factoryName="C++ Project">
       <configuration_1 setup="1">
         <option name="CONFIGURATION" value="Development_Editor" />
@@ -254,12 +250,21 @@
         <option name="Build" />
       </method>
     </configuration>
-    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
-      <deployment type="dockerfile">
-        <settings />
-      </deployment>
-      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
-      <method v="2" />
+    <configuration name="EpicGames.AspNet" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.AspNet/EpicGames.AspNet.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="EpicGames.AspNet" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <option name="AUTO_ATTACH_CHILDREN" value="0" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <method v="2">
+        <option name="Build" />
+      </method>
     </configuration>
     <configuration name="EpicGames.Perforce.Fixture/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
       <deployment type="dockerfile">
@@ -268,6 +273,13 @@
           <option name="contextFolderPath" value="C:\PU_Project\_TeamProjects\ItTakesThree\_Git\ItTakesTwo_Copy" />
           <option name="sourceFilePath" value="../../../../../Program Files/Epic Games/UE_5.7/Engine/Source/Programs/Shared/EpicGames.Perforce.Fixture/Dockerfile" />
         </settings>
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile">
+        <settings />
       </deployment>
       <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
       <method v="2" />
@@ -353,6 +365,7 @@
       <workItem from="1778717257027" duration="1423000" />
       <workItem from="1778727816575" duration="15056000" />
       <workItem from="1778749924800" duration="3918000" />
+      <workItem from="1778759535912" duration="1524000" />
     </task>
     <servers />
   </component>
