@@ -16,6 +16,17 @@ void UPlayerUltimateExpBar::NativeConstruct()
 	ProgressBar_ExpGauge->SetWidgetStyle(Style);
 }
 
+void UPlayerUltimateExpBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	
+	if (!FMath::IsNearlyEqual(Progress, TargetProgress, 0.001f))
+	{
+		float NewProgress = FMath::FInterpTo(Progress, TargetProgress, InDeltaTime, 5.0f);
+		SetProgress(NewProgress);
+	}
+}
+
 void UPlayerUltimateExpBar::SetIsUsing(float IsUsing)
 {
 	bIsUsing = IsUsing;
@@ -48,11 +59,12 @@ void UPlayerUltimateExpBar::SetGaugeColor(FLinearColor Color)
 
 void UPlayerUltimateExpBar::UpdateGauge(float CurGauge, float MaxGauge)
 {
-	double Val = FMath::FInterpTo(CurGauge, MaxGauge, GetWorld()->GetDeltaSeconds(), 5.0f);
-	
-	if (CurGauge <= MaxGauge || FMath::IsNearlyEqual(CurGauge, MaxGauge, 0.001f))
+	if (MaxGauge > 0.0f)
 	{
-		SetProgress(MaxGauge);
-		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+		TargetProgress = CurGauge / MaxGauge;
+	}
+	else
+	{
+		TargetProgress = 0.0f;
 	}
 }

@@ -4,6 +4,9 @@
 #include "ItTakesTwo_Copy/Public/UI/UIManager/UIMangerSubsystem.h"
 #include "ItTakesTwo_Copy/Public/UI/ViewModel/HUDViewModel.h"
 #include "ItTakesTwo_Copy/Public/UI/ViewModel/LobbyViewModel.h"
+#include "UI/View/MainGameUI.h"
+
+#include "Blueprint/UserWidget.h"
 
 void UUIMangerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -18,8 +21,6 @@ void UUIMangerSubsystem::BeginLobbyUI()
 		LobbyViewModel = NewObject<ULobbyViewModel>(this);
 		LobbyViewModel->Initialize(GetWorld()->GetFirstPlayerController());
 	}
-	
-	
 }
 
 void UUIMangerSubsystem::BeginHUD(APlayerController* OwningPC)
@@ -33,8 +34,25 @@ void UUIMangerSubsystem::BeginHUD(APlayerController* OwningPC)
 		HUDViewModel->Initialize(OwningPC);
 	}
 	
-	// 여기서ㅕ UserWidget 만들자!!
-	
+	// 여기서 UserWidget 만들자!!
+	if (!MainGameUIWidget)
+	{
+		FString WidgetPath = TEXT("/Game/UI/Blueprints/WBP_MainGameUI.WBP_MainGameUI_C"); 
+		TSubclassOf<UMainGameUI> UIClass = LoadClass<UMainGameUI>(nullptr, *WidgetPath);
+		
+		if (UIClass)
+		{
+			MainGameUIWidget = CreateWidget<UMainGameUI>(OwningPC, UIClass);
+			if (MainGameUIWidget)
+			{
+				MainGameUIWidget->AddToViewport();
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("MainGameUI 클래스를 로드하지 못했습니다. 경로를 확인해주세요: %s"), *WidgetPath);
+		}
+	}
 }
 
 void UUIMangerSubsystem::EndLobbyUI()
@@ -48,11 +66,15 @@ void UUIMangerSubsystem::EndLobbyUI()
 
 void UUIMangerSubsystem::EndHUD()
 {
+	if (MainGameUIWidget)
+	{
+		MainGameUIWidget->RemoveFromParent();
+		MainGameUIWidget = nullptr;
+	}
+	
 	if (HUDViewModel)
 	{
 		HUDViewModel->Deinitialize();
 		HUDViewModel = nullptr;
 	}
-
-
 }

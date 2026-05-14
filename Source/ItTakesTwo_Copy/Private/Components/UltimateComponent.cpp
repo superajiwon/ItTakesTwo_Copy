@@ -32,6 +32,7 @@ void UUltimateComponent::TickComponent(float DeltaTime, enum ELevelTick TickType
 			CurUltimateGauge = 0.0f;
 			EndUltimate();
 		}
+		OnUltimateGaugeChanged.Broadcast(CurUltimateGauge, MaxUltimateGauge);
 	}
 }
 
@@ -51,7 +52,11 @@ void UUltimateComponent::AddGauge(float GaugeAmount)
 	CurUltimateGauge += GaugeAmount;
 	
 	if (CurUltimateGauge >= MaxUltimateGauge)
+	{
 		CurUltimateGauge = MaxUltimateGauge;
+	}
+	
+	OnUltimateGaugeChanged.Broadcast(CurUltimateGauge, MaxUltimateGauge);
 }
 
 bool UUltimateComponent::CanUseUltimate()
@@ -76,6 +81,11 @@ void UUltimateComponent::EndUltimate()
 
 	// 캐릭터쪽에 전달
 	OnUltimateFinish.Broadcast();
+}
+
+void UUltimateComponent::OnRep_CurUltimateGauge()
+{
+	OnUltimateGaugeChanged.Broadcast(CurUltimateGauge, MaxUltimateGauge);
 }
 
 void UUltimateComponent::OnRep_IsUltimateActive()

@@ -9,6 +9,7 @@
 
 class ULobbyViewModel;
 class UHUDViewModel;
+class UMainGameUI;
 
 UCLASS()
 class ITTAKESTWO_COPY_API UUIMangerSubsystem : public UGameInstanceSubsystem
@@ -29,7 +30,8 @@ public: // 레벨 전환 시 바인딩한 ViewModel, WBP 삭제로직
 	void EndLobbyUI();
 	void EndHUD();
 	
-	
+public:
+	UHUDViewModel* GetHUDViewModel() const { return HUDViewModel; }
 	
 private:
 	UPROPERTY()
@@ -38,5 +40,6 @@ private:
 	UPROPERTY()
 	TObjectPtr<ULobbyViewModel> LobbyViewModel;
 	
-	
+	UPROPERTY()
+	TObjectPtr<UMainGameUI> MainGameUIWidget;
 };

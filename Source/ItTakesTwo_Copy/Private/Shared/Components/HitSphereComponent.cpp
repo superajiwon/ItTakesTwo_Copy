@@ -1,5 +1,7 @@
 ﻿
 #include "Shared/Components/HitSphereComponent.h"
+
+#include "Actors/Characters/Players/PlayerBase.h"
 #include "Shared/Struct/HitComp_Info.h"
 #include "Shared/Struct/HitRequest.h"
 #include "Shared/Subsystems/CombatSystem.h"
@@ -65,8 +67,21 @@ void UHitSphereComponent::OnHitSphereBeginOverlap(UPrimitiveComponent* Overlappe
 	
 	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 	{
+		FVector HitLocation;
+		if (bFromSweep) HitLocation = SweepResult.ImpactPoint;
+		else			HitLocation = OtherActor->GetActorLocation();
+		
 		FHitRequest Request(GetOwner(), OtherActor, Damage, SweepResult.ImpactPoint);
 		CombatSystem->ProcessHit(Request);
+		
+		// 서버에서만 Multicast 호출 → 모든 클라이언트에 HitVFX 전파
+		if (GetOwner()->HasAuthority())
+		{
+			if (APlayerBase* Player = Cast<APlayerBase>(GetOwner()))
+			{
+				Player->Multicast_PlayHitVFX(HitLocation);
+			}
+		}
 	}
 }
 

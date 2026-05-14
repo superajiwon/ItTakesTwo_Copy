@@ -52,8 +52,6 @@ APlayerBase::APlayerBase()
 	if (TempDashInput.Succeeded()) IA_Dash = TempDashInput.Object;
 	ConstructorHelpers::FObjectFinder<UInputAction> TempUltiInput(TEXT("/Script/EnhancedInput.InputAction'/Game/Inputs/IA_Ultimate.IA_Ultimate'"));
 	if (TempUltiInput.Succeeded()) IA_Ultimate = TempUltiInput.Object;
-	
-
 }
 
 void APlayerBase::BeginPlay()
@@ -234,7 +232,6 @@ void APlayerBase::OnPlayerDeath()
 	if (HasAuthority())
 	{
 		Multicast_PlayDeathNiagara();
-		// todo 이 부분 음.. HPComponent에서 E를 연타하면 부활 속도 빨라지는 것 구현해야함 
 		GetWorld()->GetTimerManager().SetTimer(RespawnTimer, this, &APlayerBase::Respawn, 3.0f, false);
 	}
 }

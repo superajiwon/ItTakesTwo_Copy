@@ -4,7 +4,6 @@
 #include "Shared/Struct/HitRequest.h"
 #include "Shared/Subsystems/CombatSystem.h"
 
-
 UDotHitBoxComponent::UDotHitBoxComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -12,13 +11,11 @@ UDotHitBoxComponent::UDotHitBoxComponent()
 	SetGenerateOverlapEvents(false);
 }
 
-
 void UDotHitBoxComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 }
-
 
 void UDotHitBoxComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

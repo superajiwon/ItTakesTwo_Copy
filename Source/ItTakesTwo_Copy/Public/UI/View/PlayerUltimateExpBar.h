@@ -12,7 +12,9 @@ class ITTAKESTWO_COPY_API UPlayerUltimateExpBar : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
 	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
 	void SetIsUsing(float IsUsing);
 	void SetProgress(float ExpProgress);
@@ -30,7 +32,8 @@ public:
 	
 	float bIsUsing{0.0f}; // 0 -> 준비중, 1 -> 사용중
 	float Progress{0.0f};
+	float TargetProgress{0.0f};
 	FLinearColor GaugeColor{FLinearColor::White};
 	
-	FTimerHandle TimerHandle;
+	// FTimerHandle TimerHandle;
 };

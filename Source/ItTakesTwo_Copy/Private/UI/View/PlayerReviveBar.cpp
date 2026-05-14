@@ -12,18 +12,26 @@ void UPlayerReviveBar::NativeConstruct()
 		
 	FProgressBarStyle Style = ProgressBar_Revive->GetWidgetStyle();
 	DynMat = UWidgetBlueprintLibrary::GetDynamicMaterial(Style.BackgroundImage);
-	DynMat->SetScalarParameterValue(TEXT("bIsReady"), bIsReady);
 	DynMat->SetScalarParameterValue(TEXT("Progress"), Progress);
 	ProgressBar_Revive->SetWidgetStyle(Style);
 }
 
-void UPlayerReviveBar::SetIsSkillReady(bool IsSkillReady)
+void UPlayerReviveBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-	bIsReady = IsSkillReady;
+	Super::NativeTick(MyGeometry, InDeltaTime);
 	
-	if (DynMat != nullptr)
+	if (CurReviveTime > 0.0f)
 	{
-		DynMat->SetScalarParameterValue(TEXT("bIsReady"), bIsReady);
+		CurReviveTime -= InDeltaTime;
+		if (CurReviveTime <= 0.0f)
+		{
+			CurReviveTime = 0.0f;
+			SetProgress(1.0f);
+		}
+		else
+		{
+			SetProgress(1.0f - (CurReviveTime / MaxReviveTime));
+		}
 	}
 }
 
@@ -37,13 +45,18 @@ void UPlayerReviveBar::SetProgress(float ProgressValue)
 	}
 }
 
-void UPlayerReviveBar::UpdateSkillCoolTime(float CurCoolTime, float MaxCoolTime)
+void UPlayerReviveBar::StartRevive(bool bIsDead, float ReviveTime)
 {
-	double Val = FMath::FInterpTo(CurCoolTime, MaxCoolTime, GetWorld()->GetDeltaSeconds(), 5.0f);
-	
-	if (CurCoolTime <= MaxCoolTime || FMath::IsNearlyEqual(CurCoolTime, MaxCoolTime, 0.001f))
+	if (bIsDead && ReviveTime > 0.0f)
 	{
-		SetProgress(MaxCoolTime);
-		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+		CurReviveTime = ReviveTime;
+		MaxReviveTime = ReviveTime;
+		SetProgress(0.0f);
+	}
+	else
+	{
+		CurReviveTime = 0.0f;
+		SetProgress(1.0f);
 	}
 }
+

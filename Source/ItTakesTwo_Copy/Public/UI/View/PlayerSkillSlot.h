@@ -15,14 +15,15 @@ class ITTAKESTWO_COPY_API UPlayerSkillSlot : public UUserWidget
 	
 public:
 	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
 	void SetImages(UTexture2D* KeyTexture, UTexture2D* SkillTexture);
 	
 	void SetIsSkillReady(bool IsSkillReady);
 	void SetProgress(float ProgressValue);
 	
-	UFUNCTION()
-	void UpdateSkillCoolTime(float CurCoolTime, float MaxCoolTime);
+	UFUNCTION(BlueprintCallable)
+	void UpdateSkillCoolTime(bool bIsOnCooldown, float CooldownTime);
 	
 public:
 	UPROPERTY(meta=(BindWidget))
@@ -39,5 +40,8 @@ public:
 	float bIsReady{0.0f}; // 0 -> 준비중, 1 -> 사용가능
 	float Progress{1.0f}; 
 	
-	FTimerHandle TimerHandle;
+	float CurCooldown{0.0f};
+	float MaxCooldown{0.0f};
+	
+	// FTimerHandle TimerHandle;
 };

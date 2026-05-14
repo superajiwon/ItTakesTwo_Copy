@@ -3,35 +3,34 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "PlayerReviveBar.generated.h"
+#include "PlayerPortrait.generated.h"
 
 class UProgressBar;
 
 UCLASS()
-class ITTAKESTWO_COPY_API UPlayerReviveBar : public UUserWidget
+class ITTAKESTWO_COPY_API UPlayerPortrait : public UUserWidget
 {
 	GENERATED_BODY()
-	
 public:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
 	void SetProgress(float ProgressValue);
+	void SetProgressColor(FLinearColor Color);
 	
 	UFUNCTION(BlueprintCallable)
-	void StartRevive(bool bIsDead, float ReviveTime);
+	void UpdateHP(float CurHP, float MaxHP);
 	
 public:
 	UPROPERTY(meta=(BindWidget))
-	UProgressBar* ProgressBar_Revive{};
+	UProgressBar* ProgressBar_HP{};
 	
 	UPROPERTY()
 	UMaterialInstanceDynamic* DynMat;
 	
 	float Progress{1.0f}; 
-	
-	float CurReviveTime{0.0f};
-	float MaxReviveTime{0.0f};
+	float TargetProgress{1.0f};
+	FLinearColor ProgressBarColor{FLinearColor::White};
 	
 	// FTimerHandle TimerHandle;
 };

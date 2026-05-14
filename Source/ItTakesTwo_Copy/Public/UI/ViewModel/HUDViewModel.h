@@ -9,8 +9,15 @@
 #include "HUDViewModel.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHUDChangedPlayerInfo,	const FHUDPlayerInfo&,	PlayerInfo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FHUDSkillCooldownChanged, EPlayerRole, PlayerRole, EActionType, ActionType, bool, bIsOnCooldown, float, CooldownTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHUDUltimateGaugeChanged, EPlayerRole, PlayerRole, float, CurGauge, float, MaxGauge);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHUDReviveTimeChanged, EPlayerRole, PlayerRole, bool, bIsDead, float, ReviveTime);
+
 class APlayerBase;
 class UHPComponent;
+class USkillComponent;
+class UUltimateComponent;
+
 UCLASS()
 class ITTAKESTWO_COPY_API UHUDViewModel : public UViewModelBase
 {
@@ -19,30 +26,64 @@ public:
 	virtual void Initialize(TObjectPtr<APlayerController> PlayerController) override;
 	virtual void Deinitialize() override;
 	
-	void BindPlayerHP();
-	void UnbindPlayerHP();
+	void BindPlayerStats();
+	void UnbindPlayerStats();
 
 public:
-	void BindHostHP(APlayerBase* Player, UHPComponent* HPComp, EPlayerSlot PlayerSlot, EPlayerRole PlayerRole);
-	void BindClientHP(APlayerBase* Player, UHPComponent* HPComp, EPlayerSlot PlayerSlot, EPlayerRole PlayerRole);
+	void BindHostStats(APlayerBase* Player, EPlayerSlot PlayerSlot, EPlayerRole PlayerRole);
+	void BindClientStats(APlayerBase* Player, EPlayerSlot PlayerSlot, EPlayerRole PlayerRole);
 	
 private:
-	UFUNCTION()
+	UFUNCTION() 
 	void HostHpChanging(float HostHP, float HostMaxHP);
 	UFUNCTION()
 	void ClientHpChanging(float ClientHP, float ClientMaxHP);
 	
+	UFUNCTION()
+	void HostSkillCooldownChanging(EActionType ActionType, bool bIsOnCooldown, float CooldownTime);
+	UFUNCTION()
+	void ClientSkillCooldownChanging(EActionType ActionType, bool bIsOnCooldown, float CooldownTime);
+	
+	UFUNCTION()
+	void HostUltimateGaugeChanging(float CurGauge, float MaxGauge);
+	UFUNCTION()
+	void ClientUltimateGaugeChanging(float CurGauge, float MaxGauge);
+	
+	UFUNCTION()
+	void HostReviveTimeChanging(bool bIsDead, float ReviveTime);
+	UFUNCTION()
+	void ClientReviveTimeChanging(bool bIsDead, float ReviveTime);
+	
+	UFUNCTION()
+	void OnHostDeath();
+	UFUNCTION()
+	void OnHostRevive();
+	
+	UFUNCTION()
+	void OnClientDeath();
+	UFUNCTION()
+	void OnClientRevive();
+	
 public:
 	UPROPERTY(BlueprintAssignable, Category = "HUD|HP")
 	FHUDChangedPlayerInfo OnHUDHPChanged;
+	UPROPERTY(BlueprintAssignable, Category = "HUD|Skill")
+	FHUDSkillCooldownChanged OnHUDSkillCooldownChanged;
+	UPROPERTY(BlueprintAssignable, Category = "HUD|Ultimate")
+	FHUDUltimateGaugeChanged OnHUDUltimateGaugeChanged;
+	UPROPERTY(BlueprintAssignable, Category = "HUD|Revive")
+	FHUDReviveTimeChanged OnHUDReviveTimeChanged;
 	
 private:
-	TWeakObjectPtr<APlayerBase> HostPlayer ;
-	TWeakObjectPtr<UHPComponent> HostHPComponent ;
+	TWeakObjectPtr<APlayerBase> HostPlayer;
+	TWeakObjectPtr<UHPComponent> HostHPComponent;
+	TWeakObjectPtr<USkillComponent> HostSkillComponent;
+	TWeakObjectPtr<UUltimateComponent> HostUltimateComponent;
 	
-	TWeakObjectPtr<APlayerBase> ClientPlayer ;
-	TWeakObjectPtr<UHPComponent> ClientHPComponent ;
-	
+	TWeakObjectPtr<APlayerBase> ClientPlayer;
+	TWeakObjectPtr<UHPComponent> ClientHPComponent;
+	TWeakObjectPtr<USkillComponent> ClientSkillComponent;
+	TWeakObjectPtr<UUltimateComponent> ClientUltimateComponent;
 	
 private:
 	FHUDPlayerInfo HostInfo;

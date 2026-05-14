@@ -40,29 +40,45 @@ void AMenuController::Server_SelectCharacter_Implementation(EPlayerRole Selected
 	if (!GI) return;
 
 	// 버튼이 눌렸는지 확인하기 위한 로그 출력
-	FString RoleStr = (SelectedRole == EPlayerRole::May) ? TEXT("May") : (SelectedRole == EPlayerRole::Cody) ? TEXT("Cody") : TEXT("None");
+	FString RoleStr = (SelectedRole == EPlayerRole::Cody) ? TEXT("Cody"): (SelectedRole == EPlayerRole::May) ? TEXT("May")  : TEXT("None");
 	UE_LOG(LogTemp, Warning, TEXT("[Server_SelectCharacter] Button Clicked! Requested Role: %s"), *RoleStr);
 
 	// 역할을 중복 선택하지 못하게 방어
 	if (IsLocalPlayerController()) // 서버 입장에서는 자기가 호스트인지 체크
 	{
 		// 호스트가 선택하는 경우
-		if (GI->ClientSelectedRole == SelectedRole && SelectedRole != EPlayerRole::None)
+		if (GI->HostSelectedRole == SelectedRole && SelectedRole != EPlayerRole::None)
+		{
+			// 자신이 이미 선택한 캐릭터를 다시 누르면 취소 (None으로 변경)
+			GI->HostSelectedRole = EPlayerRole::None;
+		}
+		else if (GI->ClientSelectedRole == SelectedRole && SelectedRole != EPlayerRole::None)
 		{
 			// 클라이언트가 이미 선점한 캐릭터를 골랐으므로 무시
 			return;
 		}
-		GI->HostSelectedRole = SelectedRole;
+		else
+		{
+			GI->HostSelectedRole = SelectedRole;
+		}
 	}
 	else
 	{
 		// 클라이언트가 선택하는 경우
-		if (GI->HostSelectedRole == SelectedRole && SelectedRole != EPlayerRole::None)
+		if (GI->ClientSelectedRole == SelectedRole && SelectedRole != EPlayerRole::None)
+		{
+			// 자신이 이미 선택한 캐릭터를 다시 누르면 취소 (None으로 변경)
+			GI->ClientSelectedRole = EPlayerRole::None;
+		}
+		else if (GI->HostSelectedRole == SelectedRole && SelectedRole != EPlayerRole::None)
 		{
 			// 호스트가 이미 선점했으므로 무시
 			return;
 		}
-		GI->ClientSelectedRole = SelectedRole;
+		else
+		{
+			GI->ClientSelectedRole = SelectedRole;
+		}
 	}
 	
 	// 선택이 정상적으로 적용된 후 로그 출력

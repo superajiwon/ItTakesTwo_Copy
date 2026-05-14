@@ -16,6 +16,26 @@ void UPlayerSkillSlot::NativeConstruct()
 	ProgressBar_Skill->SetWidgetStyle(Style);
 }
 
+void UPlayerSkillSlot::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	
+	if (CurCooldown > 0.0f)
+	{
+		CurCooldown -= InDeltaTime;
+		if (CurCooldown <= 0.0f)
+		{
+			CurCooldown = 0.0f;
+			SetProgress(1.f);
+			SetIsSkillReady(false);
+		}
+		else
+		{
+			SetProgress(1.0f - (CurCooldown / MaxCooldown)); //? 왜
+		}
+	}
+}
+
 void UPlayerSkillSlot::SetImages(UTexture2D* KeyTexture, UTexture2D* SkillTexture)
 {
 	Img_Key->SetBrushFromTexture(KeyTexture);
@@ -42,13 +62,19 @@ void UPlayerSkillSlot::SetProgress(float ProgressValue)
 	}
 }
 
-void UPlayerSkillSlot::UpdateSkillCoolTime(float CurCoolTime, float MaxCoolTime)
+void UPlayerSkillSlot::UpdateSkillCoolTime(bool bIsOnCooldown, float CooldownTime)
 {
-	double Val = FMath::FInterpTo(CurCoolTime, MaxCoolTime, GetWorld()->GetDeltaSeconds(), 5.0f);
-	
-	if (CurCoolTime <= MaxCoolTime || FMath::IsNearlyEqual(CurCoolTime, MaxCoolTime, 0.001f))
+	if (bIsOnCooldown && CooldownTime > 0.0f)
 	{
-		SetProgress(MaxCoolTime);
-		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+		CurCooldown = CooldownTime;
+		MaxCooldown = CooldownTime;
+		SetProgress(0.0f);
+		SetIsSkillReady(false);
+	}
+	else
+	{
+		CurCooldown = 0.0f;
+		SetProgress(1.0f);
+		SetIsSkillReady(true);
 	}
 }
