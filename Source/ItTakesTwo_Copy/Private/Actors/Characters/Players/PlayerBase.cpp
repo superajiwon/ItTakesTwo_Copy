@@ -77,8 +77,8 @@ void APlayerBase::BeginPlay()
 		UltimateComp->OnUltimateFinish.AddDynamic(this, &APlayerBase::EndUltimate);
 	}
 	
-	GetHPComponent()->OnDeath.AddDynamic(this, &APlayerBase::OnDeath);
-	GetHPComponent()->OnRevive.AddDynamic(this, &APlayerBase::OnRevive);
+	GetHPComponent()->OnDeath.AddDynamic(this, &APlayerBase::OnPlayerDeath);
+	GetHPComponent()->OnRevive.AddDynamic(this, &APlayerBase::OnPlayerRevive);
 	
 	if (UInGameHPBar* HPBarWidget = Cast<UInGameHPBar>(GetHPUIComponent()->GetWidget()))
 	{
@@ -222,7 +222,7 @@ void APlayerBase::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 	}
 }
 
-void APlayerBase::OnDeath()
+void APlayerBase::OnPlayerDeath()
 {
 	bIsActionLocked = true;
 	ResetCombo();
@@ -239,7 +239,7 @@ void APlayerBase::OnDeath()
 	}
 }
 
-void APlayerBase::OnRevive()
+void APlayerBase::OnPlayerRevive()
 {
 	bIsActionLocked = false;	
 	ResetCombo();
