@@ -9,7 +9,7 @@
 
 AToyOgre_HandCollider::AToyOgre_HandCollider()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	bReplicates = true;
 	SetReplicateMovement(false);
@@ -99,43 +99,43 @@ void AToyOgre_HandCollider::BeginPlay()
 void AToyOgre_HandCollider::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	if (!SphereCollision)
-		return;
-
-	const FVector Location = SphereCollision->GetComponentLocation();
-	const float Radius = SphereCollision->GetScaledSphereRadius();
-
-	// 콜라이더 범위 출력
-	DrawDebugSphere(
-		GetWorld(),
-		Location,
-		Radius,
-		24,
-		bBroken ? FColor::Red : FColor::Green,
-		false,
-		0.f,
-		0,
-		2.f
-	);
+	//
+	// if (!SphereCollision)
+	// 	return;
+	//
+	// const FVector Location = SphereCollision->GetComponentLocation();
+	// const float Radius = SphereCollision->GetScaledSphereRadius();
+	//
+	// // 콜라이더 범위 출력
+	// DrawDebugSphere(
+	// 	GetWorld(),
+	// 	Location,
+	// 	Radius,
+	// 	24,
+	// 	bBroken ? FColor::Red : FColor::Green,
+	// 	false,
+	// 	0.f,
+	// 	0,
+	// 	2.f
+	// );
 
 	// HP 텍스트 출력
-	const FString DebugText = FString::Printf(
-		TEXT("%s Hand\nHP: %.0f / %.0f\nBroken: %s"),
-		IsLeftHand ? TEXT("Left") : TEXT("Right"),
-		CurrentHP,
-		MaxHP,
-		bBroken ? TEXT("true") : TEXT("false")
-	);
-
-	DrawDebugString(
-		GetWorld(),
-		Location + FVector(0.f, 0.f, Radius + 50.f),
-		DebugText,
-		nullptr,
-		FColor::White,
-		0.f,
-		true
-	);
+	// const FString DebugText = FString::Printf(
+	// 	TEXT("%s Hand\nHP: %.0f / %.0f\nBroken: %s"),
+	// 	IsLeftHand ? TEXT("Left") : TEXT("Right"),
+	// 	CurrentHP,
+	// 	MaxHP,
+	// 	bBroken ? TEXT("true") : TEXT("false")
+	// );
+	//
+	// DrawDebugString(
+	// 	GetWorld(),
+	// 	Location + FVector(0.f, 0.f, Radius + 50.f),
+	// 	DebugText,
+	// 	nullptr,
+	// 	FColor::White,
+	// 	0.f,
+	// 	true
+	// );
 }
 

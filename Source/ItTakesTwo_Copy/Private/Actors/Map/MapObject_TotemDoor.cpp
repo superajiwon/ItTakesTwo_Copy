@@ -5,6 +5,7 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_DropCollider.h"
 #include "Actors/Map/MapObject_Totem.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 
 AMapObject_TotemDoor::AMapObject_TotemDoor()
@@ -36,8 +37,17 @@ void AMapObject_TotemDoor::Tick(float DeltaTime)
 		return;
 
 	if (!bOpening && AllTotemCheckActivate())
+	{
 		bOpening = true;
 
+		if (UGameInstance* GameInstance = GetGameInstance())
+		{
+			if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+			{
+				SoundManager->PlaySFX2D(TEXT("Ogre_DoorOpen"));
+			}
+		}
+	}
 	if (bOpening)
 		OpenDoor(DeltaTime);
 	

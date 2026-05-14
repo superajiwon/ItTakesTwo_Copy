@@ -9,6 +9,7 @@
 #include "Components/HPComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Shared/ITTGameInstance.h"
 
 
 AMonsterBase::AMonsterBase()
@@ -45,6 +46,14 @@ void AMonsterBase::BeginPlay()
 void AMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (const UITTGameInstance* GI = GetGameInstance<UITTGameInstance>())
+	{
+		if (GI->IsGameplayPausedForLoading())
+		{
+			return;
+		}
+	}
 	if (GetHPComponent()->GetIsDead())
 	{
 		SetMonsterState(EMonsterState::Dead);
