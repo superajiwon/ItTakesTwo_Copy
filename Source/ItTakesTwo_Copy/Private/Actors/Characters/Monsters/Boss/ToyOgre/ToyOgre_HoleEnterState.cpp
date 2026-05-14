@@ -27,7 +27,8 @@ void UToyOgre_HoleEnterState::Enter()
 	{
 		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
 		{
-			SoundManager->PlaySFX3D(TEXT("Ogre_EnterHole"), OwnerOgre->GetActorLocation());
+			// SoundManager->PlaySFX3D(TEXT("Ogre_EnterHole"), OwnerOgre->GetActorLocation());
+			SoundManager->PlaySFX2D(TEXT("Ogre_EnterHole"));
 		}
 	}
 }

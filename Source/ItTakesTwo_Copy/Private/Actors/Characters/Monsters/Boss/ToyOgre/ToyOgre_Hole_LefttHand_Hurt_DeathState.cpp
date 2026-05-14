@@ -18,7 +18,8 @@ void UToyOgre_Hole_LefttHand_Hurt_DeathState::Enter()
 	{
 		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
 		{
-			SoundManager->PlaySFX3D(TEXT("Ogre_Death"), OwnerOgre->GetActorLocation());
+			// SoundManager->PlaySFX3D(TEXT("Ogre_Death"), OwnerOgre->GetActorLocation());
+			SoundManager->PlaySFX2D(TEXT("Ogre_Death"));
 		}
 	}
 }

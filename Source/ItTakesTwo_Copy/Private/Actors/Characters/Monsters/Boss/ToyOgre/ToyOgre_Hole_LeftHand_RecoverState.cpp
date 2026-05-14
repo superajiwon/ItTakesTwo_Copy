@@ -16,7 +16,8 @@ void UToyOgre_Hole_LeftHand_RecoverState::Enter()
 	{
 		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
 		{
-			SoundManager->PlaySFX3D(TEXT("Ogre_Recovery"), OwnerOgre->GetActorLocation());
+			// SoundManager->PlaySFX3D(TEXT("Ogre_Recovery"), OwnerOgre->GetActorLocation());
+			SoundManager->PlaySFX2D(TEXT("Ogre_Recovery"));
 		}
 	}
 }
