@@ -84,9 +84,13 @@ private:
 	TWeakObjectPtr<UHPComponent> ClientHPComponent;
 	TWeakObjectPtr<USkillComponent> ClientSkillComponent;
 	TWeakObjectPtr<UUltimateComponent> ClientUltimateComponent;
-	
+
 private:
 	FHUDPlayerInfo HostInfo;
 	FHUDPlayerInfo ClientInfo;
+	
+public:
+	const FHUDPlayerInfo& GetHostInfo() const { return HostInfo; }
+	const FHUDPlayerInfo& GetClientInfo() const { return ClientInfo; }
 	
 };

@@ -5,6 +5,8 @@
 
 #include "Shared/ITTSessionSubsystem.h"
 #include "Shared/Subsystems/SoundManagerSubsystem.h"
+#include "Actors/Characters/Players/Rose/RoseCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 void AMenuController::BeginPlay()
 {
@@ -122,8 +124,14 @@ void AMenuController::Server_StartGame_Implementation()
 		static_cast<int32>(GI->ClientSelectedRole));
 
 	if (GI->HostSelectedRole != EPlayerRole::None && GI->ClientSelectedRole != EPlayerRole::None)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to Lv_Dungeon"));
-		GetWorld()->ServerTravel(TEXT("/Game/Maps/Lv_Dungeon"), true);
+	{		
+		// 레벨에 배치된 RoseCharacter를 찾아서 IsSelect를 true로 변경
+		if (ARoseCharacter* RoseCharacter = Cast<ARoseCharacter>(UGameplayStatics::GetActorOfClass(GetWorld(), ARoseCharacter::StaticClass())))
+		{
+			RoseCharacter->IsSelect = true;
+		}
+		// todo Animation에 넣기 
+		// UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to Lv_Dungeon"));
+		// GetWorld()->ServerTravel(TEXT("/Game/Maps/Lv_Dungeon"), true);
 	}
 }

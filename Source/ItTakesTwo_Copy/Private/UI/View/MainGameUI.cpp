@@ -50,6 +50,10 @@ void UMainGameUI::NativeConstruct()
 				VM->OnHUDSkillCooldownChanged.AddDynamic(this, &UMainGameUI::OnSkillCooldownChanged);
 				VM->OnHUDUltimateGaugeChanged.AddDynamic(this, &UMainGameUI::OnUltimateGaugeChanged);
 				VM->OnHUDReviveTimeChanged.AddDynamic(this, &UMainGameUI::OnReviveTimeChanged);
+				
+				// 바인딩 직후 현재 VM이 가지고 있는 정보로 초기 UI 갱신
+				OnHPChanged(VM->GetHostInfo());
+				OnHPChanged(VM->GetClientInfo());
 			}
 		}
 	}
@@ -76,11 +80,13 @@ void UMainGameUI::NativeDestruct()
 
 void UMainGameUI::OnHPChanged(const FHUDPlayerInfo& PlayerInfo)
 {
-	if (PlayerInfo.Role == EPlayerRole::May &&Portrait_May)
+	// 데이터가 들어오는지 확인하기 위한 로그
+	UE_LOG(LogTemp, Warning, TEXT("OnHPChanged Called: Role=%d, HP=%f/%f"), (int32)PlayerInfo.Role, PlayerInfo.CurHP, PlayerInfo.MaxHP);
+	if (PlayerInfo.Role == EPlayerRole::May && Portrait_May)
 	{
 		Portrait_May->UpdateHP(PlayerInfo.CurHP, PlayerInfo.MaxHP);
 	}
-	else if (PlayerInfo.Role == EPlayerRole::Cody &&Portrait_Cody)
+	else if (PlayerInfo.Role == EPlayerRole::Cody && Portrait_Cody)
 	{
 		Portrait_Cody->UpdateHP(PlayerInfo.CurHP, PlayerInfo.MaxHP);
 	}
