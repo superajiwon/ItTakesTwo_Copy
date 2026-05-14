@@ -33,6 +33,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartPreRenderVFX(UWorld* LoadedWorld);
 	
+	UFUNCTION(BlueprintCallable)
+	bool IsGameplayPausedForLoading() const
+	{ 
+		return bGameplayPausedForLoading;
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void SetGameplayPausedForLoading(bool bPaused)
+	{
+		bGameplayPausedForLoading = bPaused;
+	}
+
+	
 private:
 	void BeginLoadingScreen(const FString& MapName);
 	void EndLoadingScreen(UWorld* LoadedWorld);
@@ -61,6 +74,8 @@ private:
 
 	FTimerHandle LoadingHideTimerHandle;
 
+	UPROPERTY()
+	bool bGameplayPausedForLoading = false;
 	
 public:
 	FOnDungeonLoadingFinished OnDungeonLoadingFinished;

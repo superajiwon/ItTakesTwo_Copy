@@ -19,6 +19,6 @@ void UToyOgre_Hole_GrabBothHandsState::Tick(float DeltaTime)
 
 void UToyOgre_Hole_GrabBothHandsState::Exit()
 {
-	// 양손 콜라이더 켜기
+	
 }
 

@@ -46,6 +46,13 @@ void UToyOgre_HoleEnterState::HandleAnimNotify(FName NotifyName)
 {
 	if (NotifyName == TEXT("HoleEnterEnd"))
 	{
+		// if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+		// {
+		// 	if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		// 	{
+		// 		SoundManager->PlaySFX2D(TEXT("Ogre_GrapBoth"));
+		// 	}
+		// }
 		OwnerOgre->GetStateMachine()->ChangeState(OwnerOgre->GrabBothHandsStateClass);
 	}
 }

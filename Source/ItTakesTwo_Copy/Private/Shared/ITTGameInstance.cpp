@@ -90,6 +90,7 @@ void UITTGameInstance::EndLoadingScreen(UWorld* LoadedWorld)
 		return;
 	}
 	
+	SetGameplayPausedForLoading(true);
 	ShowLoadingWidget(LoadedWorld);
 	SetLocalInputEnabled(LoadedWorld, false);
 
@@ -222,6 +223,7 @@ void UITTGameInstance::SetLocalInputEnabled(UWorld* World, bool bEnabled)
 
 void UITTGameInstance::FinishLoadingAfterDelay()
 {
+	SetGameplayPausedForLoading(false);
 	HideLoadingWidget();
 
 	if (UWorld* World = GetWorld())

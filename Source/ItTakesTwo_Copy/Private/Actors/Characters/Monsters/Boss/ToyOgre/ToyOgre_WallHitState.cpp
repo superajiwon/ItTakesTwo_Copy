@@ -6,12 +6,21 @@
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 void UToyOgre_WallHitState::Enter()
 {
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->WallHitMontage);
 	OwnerOgre->SetToyOgreState(EToyOgreState::WallHit);
 	OwnerOgre->Multicast_PlayCamShake(5);
+	
+	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX2D(TEXT("Ogre_Impact"));
+		}
+	}
 }
 
 void UToyOgre_WallHitState::Tick(float DeltaTime)

@@ -15,6 +15,7 @@
 //! 카메라에 보스 추가
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Characters/Managers/CameraManagerActor.h"
+#include "Shared/ITTGameInstance.h"
 
 AToyOgre_Monster::AToyOgre_Monster()
 {
@@ -74,9 +75,17 @@ void AToyOgre_Monster::BeginPlay()
 void AToyOgre_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FString StateStr = UEnum::GetValueAsString(ToyOgreState);
-	const FString LogStr = FString::Printf(TEXT("State : %s"), *StateStr);
-	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
+	if (const UITTGameInstance* GI = GetGameInstance<UITTGameInstance>())
+	{
+		if (GI->IsGameplayPausedForLoading())
+		{
+			return;
+		}
+	}
+	
+	// FString StateStr = UEnum::GetValueAsString(ToyOgreState);
+	// const FString LogStr = FString::Printf(TEXT("State : %s"), *StateStr);
+	// DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 
 	if (HasAuthority())
 	{
@@ -201,7 +210,7 @@ void AToyOgre_Monster::SpawnMeteor()
 		SpawnInfo.WithOverlapExplosion(MeteorImpactNiagara, 3.f);
 		SpawnInfo.WithOverlapExplosionSphereCollision(FName(TEXT("MonsterWeapon")), MeteorDamage, MeteorCollisionRadius);
 		SpawnInfo.AsProjectileTriggerExplosionOnly();
-		SpawnInfo.WithSpawnSound(TEXT("Ogre_Impact"));
+		SpawnInfo.WithSpawnSound(TEXT("Ogre_Explosion"));
 		PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 
 	}
