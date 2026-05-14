@@ -85,7 +85,7 @@ private:
 	FName GameSessionName{NAME_GameSession};
 	
 	UPROPERTY()
-	FName ListenLevelName{FName("/Game/Maps/Lv_CharacterSelect")}; //Lv_ServerPlayerSelect
+	FName ListenLevelName{FName("Lv_CharacterSelect")}; //Lv_ServerPlayerSelect
 	
 	// 스팀 
 private:
