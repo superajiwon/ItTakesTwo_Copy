@@ -5,11 +5,19 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 void UToyOgre_ChargeStartState::Enter()
 {
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->ChargeStartMontage);
 	OwnerOgre->SetToyOgreState(EToyOgreState::ChargeStart);
+	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX2D(TEXT("Ogre_Breath"));
+		}
+	}
 }
 
 void UToyOgre_ChargeStartState::Tick(float DeltaTime)

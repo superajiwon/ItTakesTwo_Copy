@@ -6,6 +6,7 @@
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 void UToyOgre_HoleEnterState::Enter()
 {
@@ -19,6 +20,15 @@ void UToyOgre_HoleEnterState::Enter()
 	{
 		OwnerOgre->HitBoxComponent->CollisionOff();
 		OwnerOgre->HitBoxComponent->ClearHitRecords();
+	}
+	
+	
+	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX3D(TEXT("Ogre_EnterHole"), OwnerOgre->GetActorLocation());
+		}
 	}
 }
 

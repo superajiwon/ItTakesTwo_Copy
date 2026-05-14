@@ -4,10 +4,19 @@
 #include "Shared/MenuController.h"
 
 #include "Shared/ITTSessionSubsystem.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 void AMenuController::BeginPlay()
 {
 	Super::BeginPlay();
+	if (IsLocalController())
+	{
+		if (USoundManagerSubsystem* SoundManager = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlayBGM(TEXT("BGM_MainMenu"));
+		}
+	}
+	
 	if (UITTSessionSubsystem* SessionSubsystem = GetGameInstance()->GetSubsystem<UITTSessionSubsystem>())
 	{
 		SessionSubsystem->TrySendPendingInvite();
