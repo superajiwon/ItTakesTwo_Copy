@@ -187,7 +187,7 @@ protected:
 	// 상태 (애님 블프용)
 public:
 	UPROPERTY(ReplicatedUsing=OnRep_ToyOgreState, BlueprintReadOnly, Category="ToyOgre|Animation")
-	EToyOgreState ToyOgreState = EToyOgreState::Idle;
+	EToyOgreState ToyOgreState{EToyOgreState::Idle};
 	
 	UPROPERTY()
 	bool bEnterHole{false};

@@ -162,7 +162,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVFXCollision_Info OverlapExplosionCollisionInfo;
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName SpawnSoundId{NAME_None};
 	
 public:
 	FVFXSpawn_Info() = default;
@@ -367,6 +368,12 @@ public:
 		return *this;
 	}
 
+	
+	FVFXSpawn_Info& WithSpawnSound(FName SoundId)
+	{
+		SpawnSoundId = SoundId;
+		return *this;
+	}
 	
 private:
 	static FVFXSpawn_Info MakeBaseProjectile(

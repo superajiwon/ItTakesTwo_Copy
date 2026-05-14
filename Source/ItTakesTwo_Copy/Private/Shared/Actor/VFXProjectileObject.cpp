@@ -105,15 +105,23 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 				// 	VFXInfo.OverlapExplosionNiagara,	GetActorLocation(), VFXInfo.OverlapExplosionLifeTime);
 			if (VFXInfo.OverlapExplosionLifeTime > 0.f)
 			{
-				ExplosionInfo = FVFXSpawn_Info::CreateExplosionLifeTime(VFXInfo.OwnerActor,
-					VFXInfo.OverlapExplosionNiagara, GetActorLocation(), VFXInfo.OverlapExplosionLifeTime);
+				ExplosionInfo = FVFXSpawn_Info::CreateExplosionLifeTime(
+					VFXInfo.OwnerActor,
+					VFXInfo.OverlapExplosionNiagara,
+					GetActorLocation(),
+					VFXInfo.OverlapExplosionLifeTime
+				);
 			}
 			else
 			{
-				ExplosionInfo = FVFXSpawn_Info::CreateExplosionOnce(VFXInfo.OwnerActor,
-					VFXInfo.OverlapExplosionNiagara, GetActorLocation());
+				ExplosionInfo = FVFXSpawn_Info::CreateExplosionOnce(
+					VFXInfo.OwnerActor,
+					VFXInfo.OverlapExplosionNiagara,
+					GetActorLocation()
+				);
 			}
-			
+
+			ExplosionInfo.SpawnSoundId = VFXInfo.SpawnSoundId;
 			
 			if (VFXInfo.OverlapExplosionCollisionInfo.bAttack)
 			{

@@ -2,7 +2,7 @@
 
 
 #include "Shared/Actor/VFXExplosionObject.h"
-
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 #include "Actors/Characters/Players/Cody/CodyCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
@@ -123,13 +123,23 @@ void AVFXExplosionObject::OnExplosionBeginOverlap(UPrimitiveComponent* Overlappe
 	}
 }
 
-
 void AVFXExplosionObject::UseVFXObject(const FVFXSpawn_Info& SpawnInfo)
 {
 	Super::UseVFXObject(SpawnInfo);
-	
-}
 
+	if (SpawnInfo.SpawnSoundId.IsNone())
+		return;
+
+	UGameInstance* GameInstance = GetGameInstance();
+	if (!GameInstance)
+		return;
+
+	USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>();
+	if (!SoundManager)
+		return;
+
+	SoundManager->PlaySFX3D(SpawnInfo.SpawnSoundId, GetActorLocation());
+}
 void AVFXExplosionObject::FinishVFXObject()
 {
 	Super::FinishVFXObject();

@@ -201,6 +201,7 @@ void AToyOgre_Monster::SpawnMeteor()
 		SpawnInfo.WithOverlapExplosion(MeteorImpactNiagara, 3.f);
 		SpawnInfo.WithOverlapExplosionSphereCollision(FName(TEXT("MonsterWeapon")), MeteorDamage, MeteorCollisionRadius);
 		SpawnInfo.AsProjectileTriggerExplosionOnly();
+		SpawnInfo.WithSpawnSound(TEXT("Ogre_Impact"));
 		PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 
 	}

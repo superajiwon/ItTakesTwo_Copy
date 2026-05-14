@@ -5,6 +5,7 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 void UToyOgre_Hole_LefttHand_Hurt_DeathState::Enter()
 {
@@ -13,6 +14,13 @@ void UToyOgre_Hole_LefttHand_Hurt_DeathState::Enter()
 	OwnerOgre->DeactivateHandColliders();
 	OwnerOgre->ClearHandRegenTimers();
 	OwnerOgre->DeactivateHandColliders();
+	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX3D(TEXT("Ogre_Death"), OwnerOgre->GetActorLocation());
+		}
+	}
 }
 
 void UToyOgre_Hole_LefttHand_Hurt_DeathState::Tick(float DeltaTime)

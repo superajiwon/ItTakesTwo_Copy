@@ -5,6 +5,7 @@
 #include "Shared/ITTGameInstance.h"
 #include "UI/UIManager/UIMangerSubsystem.h"
 #include "EnhancedInputSubsystems.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 AITTPlayerController::AITTPlayerController()
 {
@@ -51,6 +52,20 @@ void AITTPlayerController::DungeonLoadingFinished(UWorld* LoadedWorld)
 	if (LoadedWorld != GetWorld())
 		return;
 
+	// BGM 실행
+	if (USoundManagerSubsystem* SoundManager = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>())
+	{
+		const FString MapName = LoadedWorld->GetMapName();
+		if (MapName.EndsWith(TEXT("Lv_Dungeon")))
+		{
+			SoundManager->PlayBGM(TEXT("BGM_Cave"));
+		}
+		else if (MapName.EndsWith(TEXT("Lv_CowDungeon")))
+		{
+			SoundManager->PlayBGM(TEXT("BGM_Cow"));
+		}
+	}
+	
 	// 던전 로딩이 끝났다는 상태를 저장하고 HUD 생성을 시도합니다.
 	bDungeonLoadingFinished = true;
 	TryCreateHUD();

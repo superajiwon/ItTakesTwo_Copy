@@ -5,11 +5,20 @@
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 void UToyOgre_Hole_RightHand_RecoverState::Enter()
 {
 	OwnerOgre->SetToyOgreState(EToyOgreState::Hole_RightHand_Recover);
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->RightHandRecoverMontage);
+	
+	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX3D(TEXT("Ogre_Recovery"), OwnerOgre->GetActorLocation());
+		}
+	}
 }
 
 void UToyOgre_Hole_RightHand_RecoverState::Tick(float DeltaTime)
