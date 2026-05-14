@@ -49,6 +49,7 @@
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/Engine/Private/GameplayStatics.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/HUDPlayerInfo.gen.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/MenuController.gen.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/ItTakesTwo_Copy/UHT/SoundInfo.gen.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_DropCollider.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_HandCollider.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/ItTakesTwo_Copy/Private/Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_HoleEnterState.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -351,6 +352,7 @@
       <workItem from="1778657048908" duration="7752000" />
       <workItem from="1778717257027" duration="1423000" />
       <workItem from="1778727816575" duration="15056000" />
+      <workItem from="1778749924800" duration="3918000" />
     </task>
     <servers />
   </component>
