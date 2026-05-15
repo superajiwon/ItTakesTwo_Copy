@@ -7,6 +7,7 @@
 #include "Shared/ITTSessionSubsystem.h"
 #include "Shared/Subsystems/SoundManagerSubsystem.h"
 #include "Actors/Characters/Players/Rose/RoseCharacter.h"
+#include "Camera/CameraActor.h"
 #include "Kismet/GameplayStatics.h"
 
 void AMenuController::BeginPlay()
@@ -17,6 +18,15 @@ void AMenuController::BeginPlay()
 		if (USoundManagerSubsystem* SoundManager = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>())
 		{
 			SoundManager->PlayBGM(TEXT("BGM_MainMenu"));
+		}
+		
+		// 레벨에 배치된 CameraActor를 찾습니다.
+		TArray<AActor*> FoundCameras;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACameraActor::StaticClass(), FoundCameras);
+		if (FoundCameras.Num() > 0)
+		{
+			// 찾은 첫 번째 카메라로 시점을 고정합니다.
+			SetViewTargetWithBlend(FoundCameras[0]);
 		}
 	}
 	
@@ -132,7 +142,7 @@ void AMenuController::Server_StartGame_Implementation()
 			ARoseCharacter* Rose = *It;
 			if (Rose)
 			{
-				Rose->IsSelect = true; // IsSelect 변수가 Replicated여야 클라이언트에게도 보임!
+				Rose->Selected();
 				break; // 하나만 찾으면 되므로 탈출
 			}
 		}
