@@ -18,15 +18,6 @@ ACharacterBase::ACharacterBase()
 	HPComp = CreateDefaultSubobject<UHPComponent>(TEXT("HPComp"));
 	StatComp = CreateDefaultSubobject<UStatComponent>(TEXT("StatComp"));
 	
-	HPUIComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
-	HPUIComp->SetupAttachment(GetCapsuleComponent());
-	static ConstructorHelpers::FClassFinder<UUserWidget> HPWidgetAsset(TEXT("/Game/UI/Blueprints/WBP_InGameHPBar.WBP_InGameHPBar_C"));
-	if (HPWidgetAsset.Succeeded()) HPUIComp->SetWidgetClass(HPWidgetAsset.Class);
-	float Height = GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 50.0f;
-	HPUIComp->SetRelativeLocation(FVector(0.0f, 0.0f, Height));
-	HPUIComp->SetWidgetSpace(EWidgetSpace::Screen);
-	HPUIComp->SetDrawSize(FVector2D(50.0f, 10.0f));
-	
 	PlayerArrowComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerArrowComp"));
 	PlayerArrowComp->SetupAttachment(GetMesh());
 }
@@ -35,8 +26,7 @@ void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	HPUIComp->InitWidget(); 
-	InitHPBar();
+
 	
 	// if (UInGameHPBar* HPBarWidget = Cast<UInGameHPBar>(HPUIComp->GetWidget()))
 	// {

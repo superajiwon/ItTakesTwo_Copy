@@ -3,6 +3,7 @@
 
 #include "UI/View/PlayerPortrait.h"
 
+#include "NiagaraCommon.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/ProgressBar.h"
 
@@ -64,6 +65,10 @@ void UPlayerPortrait::UpdateHP(float CurHP, float MaxHP)
 	if (MaxHP > 0.0f)
 	{
 		TargetProgress = CurHP / MaxHP;
+		if (FMath::IsNearlyEqual(CurHP, MaxHP, 0.1f))
+		{
+			TargetProgress = MaxHP;
+		}
 	}
 	else
 	{

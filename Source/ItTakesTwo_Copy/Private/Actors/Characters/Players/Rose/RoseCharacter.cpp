@@ -32,8 +32,18 @@ void ARoseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ARoseCharacter::Selected()
+// void ARoseCharacter::Selected()
+// {
+// 	URoseAnimInstance* Anim = Cast<URoseAnimInstance>(GetMesh()->GetAnimInstance());
+// 	if (Anim)
+// 	{
+// 		Anim->Select();
+// 	}
+// }
+
+void ARoseCharacter::Multicast_Selected_Implementation()
 {
+	// 실제 애니메이션 실행 로직은 여기에 작성
 	URoseAnimInstance* Anim = Cast<URoseAnimInstance>(GetMesh()->GetAnimInstance());
 	if (Anim)
 	{

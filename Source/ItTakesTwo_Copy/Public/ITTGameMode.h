@@ -16,6 +16,7 @@ class ITTAKESTWO_COPY_API AITTGameMode : public AGameModeBase
 public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer) override;
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
 public:
 	void ChangeLevel(const FString& LevelPath);

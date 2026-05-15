@@ -18,6 +18,10 @@ void AITTPlayerController::BeginPlay()
 	if (!IsLocalController())
 		return;
 
+	FInputModeGameOnly InputMode;
+	SetInputMode(InputMode);
+	bShowMouseCursor = false;
+	
 	if (UITTGameInstance* ITTGI = GetGameInstance<UITTGameInstance>())
 	{
 		// 로딩 완료 이벤트를 받아 HUD 생성 조건 확인

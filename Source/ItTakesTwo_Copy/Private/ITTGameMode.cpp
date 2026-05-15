@@ -1,9 +1,11 @@
 
 #include "ITTGameMode.h"
 
+#include "EngineUtils.h"
 #include "Actors/Characters/Players/ITTPlayerState.h"
 #include "Shared/ITTGameInstance.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/PlayerStart.h"
 
 
 void AITTGameMode::PostLogin(APlayerController* NewPlayer)
@@ -67,6 +69,24 @@ void AITTGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	NewPlayer->Possess(NewPawn);
 
 	UE_LOG(LogTemp, Warning, TEXT("[ITTGameMode] Pawn after start: %s"), *GetNameSafe(NewPlayer->GetPawn()));
+}
+
+AActor* AITTGameMode::ChoosePlayerStart_Implementation(AController* Player)
+{
+	AITTPlayerState* PS = Player->GetPlayerState<AITTPlayerState>();
+	if (!PS) return Super::ChoosePlayerStart_Implementation(Player);
+	
+	FName TargetTag = (PS->PlayerRole == EPlayerRole::May) ? FName("May") : FName("Cody");
+	for (TActorIterator<APlayerStart> It(GetWorld()); It; ++It)
+	{
+		APlayerStart* Start = *It;
+		if (Start && Start->PlayerStartTag == TargetTag)
+		{
+			return Start;
+		}
+	}
+	
+	return Super::ChoosePlayerStart_Implementation(Player);
 }
 
 void AITTGameMode::ChangeLevel(const FString& LevelPath)

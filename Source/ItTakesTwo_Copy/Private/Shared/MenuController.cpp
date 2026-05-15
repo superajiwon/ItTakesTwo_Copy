@@ -65,6 +65,11 @@ void AMenuController::FindSession()
 	SessionSubsystem->FindSession();
 }
 
+void AMenuController::ExecuteServerTravel(FString MapName)
+{
+	UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to %s"), *MapName);
+	GetWorld()->ServerTravel(MapName, true);
+}
 
 void AMenuController::Server_SelectCharacter_Implementation(EPlayerRole SelectedRole)
 {
@@ -152,12 +157,10 @@ void AMenuController::Server_StartGame_Implementation()
 			ARoseCharacter* Rose = *It;
 			if (Rose)
 			{
-				Rose->Selected();
-				break; // 하나만 찾으면 되므로 탈출
+				Rose->Multicast_Selected(); // 서버에서 멀티캐스트 함수 호출
+				break;
 			}
 		}
-		// todo Animation에 넣기 
-		// UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to Lv_Dungeon"));
-		// GetWorld()->ServerTravel(TEXT("/Game/Maps/Lv_Dungeon"), true);
+
 	}
 }

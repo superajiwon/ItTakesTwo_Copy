@@ -1,6 +1,7 @@
 ﻿
 #include "UI/View/MainGameUI.h"
 
+#include "Components/HorizontalBox.h"
 #include "UI/View/PlayerSkillList.h"
 #include "UI/View/PlayerSkillSlot.h"
 #include "UI/View/PlayerUltimateExpBar.h"
@@ -133,10 +134,14 @@ void UMainGameUI::OnReviveTimeChanged(EPlayerRole PlayerRole, bool bIsDead, floa
 		{
 			ReviveBar_May->SetVisibility(ESlateVisibility::Visible);
 			PlayAnimation(GettingSmallMay);
+			
+			Panel_May->SetVisibility(ESlateVisibility::Hidden);
 		}
 		else
 		{
 			ReviveBar_May->SetVisibility(ESlateVisibility::Hidden);
+			
+			Panel_May->SetVisibility(ESlateVisibility::Visible);
 		}
 		ReviveBar_May->StartRevive(bIsDead, ReviveTime);
 	}
@@ -146,10 +151,14 @@ void UMainGameUI::OnReviveTimeChanged(EPlayerRole PlayerRole, bool bIsDead, floa
 		{
 			ReviveBar_Cody->SetVisibility(ESlateVisibility::Visible);
 			PlayAnimation(GettingSmallCody);
+			
+			Panel_Cody->SetVisibility(ESlateVisibility::Hidden);
 		}
 		else
 		{
 			ReviveBar_Cody->SetVisibility(ESlateVisibility::Hidden);
+			
+			Panel_Cody->SetVisibility(ESlateVisibility::Visible);
 		}
 		ReviveBar_Cody->StartRevive(bIsDead, ReviveTime);
 	}

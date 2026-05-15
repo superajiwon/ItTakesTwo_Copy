@@ -20,7 +20,6 @@ class ITTAKESTWO_COPY_API ACodyCharacter : public APlayerBase
 	
 public:
 	ACodyCharacter();
-		
 	
 protected:
 	virtual void BeginPlay() override;	

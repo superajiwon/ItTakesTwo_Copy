@@ -73,8 +73,6 @@ AMayCharacter::AMayCharacter()
 	if (PlayerArrow.Succeeded()) PlayerArrowComp->SetStaticMesh(PlayerArrow.Object);
 	
 	OriginSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	
-	HPBarColor = FLinearColor::Blue;
 }
 
 void AMayCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const

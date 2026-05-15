@@ -35,9 +35,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UStatComponent* StatComp;
 	
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess = "true"))
 	UWidgetComponent* HPUIComp;
-
 	void InitHPBar();
 	
 protected:

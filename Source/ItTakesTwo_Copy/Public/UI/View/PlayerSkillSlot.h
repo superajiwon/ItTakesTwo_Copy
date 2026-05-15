@@ -37,7 +37,7 @@ public:
 	UPROPERTY()
 	UMaterialInstanceDynamic* DynMat;
 	
-	float bIsReady{0.0f}; // 0 -> 준비중, 1 -> 사용가능
+	float bIsReady{1.0f}; // 0 -> 준비중, 1 -> 사용가능
 	float Progress{1.0f}; 
 	
 	float CurCooldown{0.0f};

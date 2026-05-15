@@ -32,6 +32,10 @@ public:
 	UFUNCTION(Client, Reliable, BlueprintCallable, Category = "Menu|Lobby")
 	void Client_UpdateSelectionUI(EPlayerRole HostRole, EPlayerRole ClientRole);
 
+	// 헤더 파일 (.h)
+	UFUNCTION(BlueprintCallable, Category="Network")
+	void ExecuteServerTravel(FString MapName);
+	
 protected:
 	// BP에서 이벤트 노드로 UI를 갱신할 수 있도록 마련한 함수 (초상화 잠금 처리 등)
 	UFUNCTION(BlueprintImplementableEvent, Category = "Menu|Lobby")

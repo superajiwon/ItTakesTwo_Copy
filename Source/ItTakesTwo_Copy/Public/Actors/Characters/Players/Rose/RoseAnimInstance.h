@@ -20,4 +20,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Select();
 	
+	
+	virtual void AnimNotify_StartGame();
 };
