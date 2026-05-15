@@ -42,9 +42,10 @@ void ACameraManagerActor::BeginPlay()
 void ACameraManagerActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
+	if (bCinematicMode)
+		return;
 	UpdateCameraPosition(DeltaTime);
-	
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
 		APlayerController* PC = It->Get();
@@ -71,6 +72,11 @@ void ACameraManagerActor::RemoveTarget(AActor* Target)
 
 void ACameraManagerActor::SetTargetCameraRotation(FRotator NewRotation)
 { TargetCameraRotation = NewRotation; }
+
+void ACameraManagerActor::SetCinematicMode(bool bEnable)
+{
+	bCinematicMode = bEnable;
+}
 
 void ACameraManagerActor::UpdateCameraPosition(float DeltaTime)
 {

@@ -45,6 +45,7 @@ enum class EToyOgreState : uint8
 	Dead
 };
 
+class ALevelSequenceActor;
 class UNiagaraSystem;
 class AToyOgre_HandCollider;
 class UToyOgre_StateBase;
@@ -62,7 +63,8 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-
+	
+	
 public:
 	bool RotateToCurrentTarget(float DeltaTime, float RotateSpeed);
 	void SpawnMeteor();
@@ -326,5 +328,20 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="ToyOgre|State")
 	TSubclassOf<UToyOgre_StateBase> RightHandHurtStateClass;
 
+	
+	
+	// 시퀀스 추가
+public:
+	void PlayDeathSequence();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayDeathSequence();
+	
+protected:
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="ToyOgre|Cinematic")
+	TObjectPtr<ALevelSequenceActor> DeathSequenceActor;
+
+	UPROPERTY()
+	bool bDeathSequencePlayed{false};
 	
 };

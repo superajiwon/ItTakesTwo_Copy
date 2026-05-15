@@ -2,7 +2,6 @@
 
 
 #include "Actors/Characters/Monsters/Boss/ToyOgre_Monster.h"
-
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_HandCollider.h"
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
@@ -11,8 +10,8 @@
 #include "Shared/VFXObjectPoolSubsystem.h"
 #include "Shared/Struct/FVFXSpawn_Info.h"
 #include "NiagaraSystem.h"
-
-//! 카메라에 보스 추가
+#include "LevelSequenceActor.h"
+#include "LevelSequencePlayer.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Characters/Managers/CameraManagerActor.h"
 #include "Shared/ITTGameInstance.h"
@@ -151,6 +150,7 @@ void AToyOgre_Monster::AnimNotify_ToyOgre(FName EventName)
 }
 
 
+
 bool AToyOgre_Monster::RotateToCurrentTarget(float DeltaTime, float RotateSpeed)
 {
 	TWeakObjectPtr<AActor> Target = GetCurrentTarget();
@@ -186,7 +186,6 @@ void AToyOgre_Monster::SpawnMeteor()
 	{
 		const float Angle = FMath::RandRange(0.f, 2.f * PI);
 		const float Distance = FMath::Sqrt(FMath::FRand()) * MeteorSpawnRadius;
-
 		const FVector GroundLocation = Center + FVector(
 			FMath::Cos(Angle) * Distance,
 			FMath::Sin(Angle) * Distance,
@@ -553,4 +552,35 @@ void AToyOgre_Monster::ClearHandRegenTimers()
 {
 	GetWorldTimerManager().ClearTimer(LeftHandRegenTimer);
 	GetWorldTimerManager().ClearTimer(RightHandRegenTimer);
+}
+
+void AToyOgre_Monster::PlayDeathSequence()
+{
+	if (!HasAuthority())
+		return;
+
+	if (bDeathSequencePlayed)
+		return;
+
+	bDeathSequencePlayed = true;
+
+	Multicast_PlayDeathSequence();
+	
+}
+
+void AToyOgre_Monster::Multicast_PlayDeathSequence_Implementation()
+{
+	AActor* CameraActor = UGameplayStatics::GetActorOfClass(GetWorld(),	ACameraManagerActor::StaticClass());
+	if (ACameraManagerActor* CameraManager = Cast<ACameraManagerActor>(CameraActor))
+	{
+		CameraManager->SetCinematicMode(true);
+	}
+
+	if (!DeathSequenceActor)
+		return;
+	ULevelSequencePlayer* SequencePlayer = DeathSequenceActor->GetSequencePlayer();
+	if (!SequencePlayer)
+		return;
+	
+	SequencePlayer->Play();
 }

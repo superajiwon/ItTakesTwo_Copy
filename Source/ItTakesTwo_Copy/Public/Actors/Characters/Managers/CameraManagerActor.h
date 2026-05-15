@@ -85,10 +85,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shared Camera")
 	FRotator TargetCameraRotation;
 	
+	// 시네마 실행중인지 확인
+	UPROPERTY()
+	bool bCinematicMode = false;
+	
 public:
 	UFUNCTION(BlueprintCallable, Category = "Shared Camera")
 	void SetTargetCameraRotation(FRotator NewRotation);
-
+	
+	UFUNCTION(BlueprintCallable, Category="Shared Camera")
+	void SetCinematicMode(bool bEnable);
+	
 private:
 	void UpdateCameraPosition(float DeltaTime);
 };

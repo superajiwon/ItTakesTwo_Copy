@@ -24,6 +24,7 @@ void UToyOgre_Hole_RightHand_Hurt_DeathState::Enter()
 			SoundManager->PlaySFX2D(TEXT("Ogre_Death"));
 		}
 	}
+	OwnerOgre->PlayDeathSequence();
 }
 
 void UToyOgre_Hole_RightHand_Hurt_DeathState::Tick(float DeltaTime)
