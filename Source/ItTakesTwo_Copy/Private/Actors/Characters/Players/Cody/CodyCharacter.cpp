@@ -88,16 +88,12 @@ void ACodyCharacter::SetWeaponCollision(bool bEnable)
 
 	if (bEnable)
 	{
-		// Debug
-		BaseCollision->SetHiddenInGame(false);
 		int32 RandDamage = FMath::RandRange(5, 18);
 		BaseCollision->SetDamage(RandDamage);
 		BaseCollision->CollisionOn();
 	}
 	else
 	{
-		// Debug
-		BaseCollision->SetHiddenInGame(true);
 		BaseCollision->CollisionOff();
 	}
 }
@@ -133,6 +129,12 @@ void ACodyCharacter::CodyTeleport(float Distance)
 	// TeleportTo(DistLocation, GetActorRotation(), false, bCanTeleport); 
 }
 
+void ACodyCharacter::PlayHitSFX()
+{	
+	HitSFXID = TEXT("Cody_IceBlast_Impact");
+	Super::PlayHitSFX();
+}
+
 void ACodyCharacter::Server_CodyTeleport_Implementation()
 {
 	CodyTeleport(TeleportLength);
@@ -151,7 +153,6 @@ void ACodyCharacter::EndUltimate()
 	
 	if (UltimateCollision)
 	{
-		// UltimateCollision->SetHiddenInGame(true);
 		UltimateCollision->CollisionOff();
 	}
 	

@@ -12,12 +12,16 @@ bool UCombatSystem::ProcessHit(const FHitRequest& Request)
 	
 	if (IDamagable* DamagableTarget = Cast<IDamagable>(Request.Target))
 	{
-		// 플레이어 궁 게이지 
-		if (APlayerBase* Player = Cast<APlayerBase>(Request.Attacker))
+		APlayerBase* AttackerPlayer = Cast<APlayerBase>(Request.Attacker);
+		if (!AttackerPlayer && Request.Attacker)
+			AttackerPlayer = Cast<APlayerBase>(Request.Attacker->GetOwner()); // 코디 궁
+		if (AttackerPlayer)
 		{
-			Player->GetUltimateComponent()->AddGauge(10);
-			Player->PlayCamShake();
+			AttackerPlayer->GetUltimateComponent()->AddGauge(10);
+			AttackerPlayer->PlayCamShake();
+			AttackerPlayer->PlayHitSFX();
 		}
+
 		
 		DamagableTarget->Damage(Request.Damage, Request.Attacker);
 		

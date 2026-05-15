@@ -1,6 +1,5 @@
 
 #include "Actors/Characters/Players/PlayerBase.h"
-#include "Actors/Characters/Players/ITTPlayerController.h"
 #include "Actors/Characters/Managers/CameraManagerActor.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/HPComponent.h"
@@ -17,6 +16,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NavigationSystem.h"
+#include "Shared/ITTGameInstance.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 #include "UI/InGameHPBar.h"
 
 
@@ -146,6 +147,23 @@ void APlayerBase::PrintNetLog()
 	// DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 }
 
+void APlayerBase::PlayHitSFX()
+{
+	if (USoundManagerSubsystem* SoundManager = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>())
+	{
+		SoundManager->PlaySFX2D(HitSFXID);
+		UE_LOG(LogTemp, Warning, TEXT("플레이 되는거 맞아? 왜?안돼 : %s"), *HitSFXID.ToString());
+	}
+}
+
+void APlayerBase::PlaySFX(FName SoundId)
+{
+	if (USoundManagerSubsystem* SoundManager = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>())
+	{
+		SoundManager->PlaySFX2D(SoundId);
+	}
+}
+
 
 // 현재 상태 (Normal / Ultimate)에 맞는 공격 데이터 반환
 // MayCharacter가 override하여 bIsUltimateForm 상태를 반영합니다.
@@ -175,6 +193,14 @@ void APlayerBase::CancelUltimateOnAction(EActionType ActionType)
 void APlayerBase::Move(const FInputActionValue& Value)
 {
 	if (!Controller) return;
+	
+	if (const UITTGameInstance* GI = GetGameInstance<UITTGameInstance>())
+	{
+		if (GI->IsGameplayPausedForLoading())
+		{
+			return;
+		}
+	}
 
 	FVector2D V = Value.Get<FVector2D>(); 
 	const FRotator Rotation = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation();
@@ -465,4 +491,5 @@ void APlayerBase::Damage(float DamageAmount, AActor* Causer)
 	const int32 RandomIdx = FMath::RandRange(0, ActionData->TakeDamageData.Montages.Num() - 1);
 	SkillComp->RequestExecuteSkill(EActionType::TakeDamage, 0, RandomIdx);
 }
+
 
