@@ -128,10 +128,10 @@ void APlayerBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& Ou
 
 void APlayerBase::PrintNetLog()
 {
-	Super::PrintNetLog();
-	const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
-	const FString LogStr = FString::Printf(TEXT("\n%s / 궁 : %.0f"), *ConStr, UltimateComp->CurUltimateGauge);
-	DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
+	// Super::PrintNetLog();
+	// const FString ConStr = (GetNetMode()==ENetMode::NM_Client ? TEXT("Client") : GetNetMode()==ENetMode::NM_Standalone ? TEXT("Standalone") : TEXT("Server"));
+	// const FString LogStr = FString::Printf(TEXT("\n%s / 궁 : %.0f"), *ConStr, UltimateComp->CurUltimateGauge);
+	// DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 }
 
 
