@@ -3,6 +3,7 @@
 
 #include "Shared/MenuController.h"
 
+#include "EngineUtils.h"
 #include "Shared/ITTSessionSubsystem.h"
 #include "Shared/Subsystems/SoundManagerSubsystem.h"
 #include "Actors/Characters/Players/Rose/RoseCharacter.h"
@@ -124,11 +125,16 @@ void AMenuController::Server_StartGame_Implementation()
 		static_cast<int32>(GI->ClientSelectedRole));
 
 	if (GI->HostSelectedRole != EPlayerRole::None && GI->ClientSelectedRole != EPlayerRole::None)
-	{		
-		// 레벨에 배치된 RoseCharacter를 찾아서 IsSelect를 true로 변경
-		if (ARoseCharacter* RoseCharacter = Cast<ARoseCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
+	{	
+		// [수정된 부분] 레벨에 배치된 RoseCharacter 액터를 직접 찾아야 합니다.
+		for (TActorIterator<ARoseCharacter> It(GetWorld()); It; ++It)
 		{
-			RoseCharacter->IsSelect = true;
+			ARoseCharacter* Rose = *It;
+			if (Rose)
+			{
+				Rose->IsSelect = true; // IsSelect 변수가 Replicated여야 클라이언트에게도 보임!
+				break; // 하나만 찾으면 되므로 탈출
+			}
 		}
 		// todo Animation에 넣기 
 		// UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to Lv_Dungeon"));

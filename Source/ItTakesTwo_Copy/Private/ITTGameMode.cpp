@@ -39,8 +39,8 @@ void AITTGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	}
 
 	PawnClassToSpawn = SelectedRole == EPlayerRole::May
-		? CodyCharacterClass
-		: MayCharacterClass;
+		? MayCharacterClass
+		: CodyCharacterClass;
 
 	UE_LOG(LogTemp, Warning, TEXT("[ITTGameMode] Start Player=%s IsLocal=%d HostRole=%d ClientRole=%d PawnClass=%s"),
 		*GetNameSafe(NewPlayer),

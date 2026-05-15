@@ -12,8 +12,9 @@ void UPlayerPortrait::NativeConstruct()
 	
 	FProgressBarStyle Style = ProgressBar_HP->GetWidgetStyle();
 	DynMat = UWidgetBlueprintLibrary::GetDynamicMaterial(Style.BackgroundImage);
-	DynMat->SetVectorParameterValue(TEXT("ProgressBarColor"), ProgressBarColor);	
 	DynMat->SetScalarParameterValue(TEXT("Progress"), Progress);
+	DynMat->SetVectorParameterValue(TEXT("ProgressBarColor"), ProgressBarColor);	
+	DynMat->SetVectorParameterValue(TEXT("BackgroundColor"), BackgroundColor);	
 	ProgressBar_HP->SetWidgetStyle(Style);
 }
 
@@ -45,6 +46,16 @@ void UPlayerPortrait::SetProgressColor(FLinearColor Color)
 	if (DynMat != nullptr)
 	{	
 		DynMat->SetVectorParameterValue(TEXT("ProgressBarColor"), ProgressBarColor);	
+	}
+}
+
+void UPlayerPortrait::SetBackgroundColor(FLinearColor Color)
+{
+	BackgroundColor = Color;
+		
+	if (DynMat != nullptr)
+	{	
+		DynMat->SetVectorParameterValue(TEXT("BackgroundColor"), BackgroundColor);	
 	}
 }
 

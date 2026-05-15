@@ -17,6 +17,7 @@ public:
 	
 	void SetProgress(float ProgressValue);
 	void SetProgressColor(FLinearColor Color);
+	void SetBackgroundColor(FLinearColor Color);
 	
 	UFUNCTION(BlueprintCallable)
 	void UpdateHP(float CurHP, float MaxHP);
@@ -30,7 +31,7 @@ public:
 	
 	float Progress{1.0f}; 
 	float TargetProgress{1.0f};
-	FLinearColor ProgressBarColor{FLinearColor::White};
-	
+	FLinearColor ProgressBarColor{FLinearColor(0.646578f, 0.004345f, 0.f)};
+	FLinearColor BackgroundColor{FLinearColor(0.039435f, 0.039435f, 0.039435f)};
 	// FTimerHandle TimerHandle;
 };

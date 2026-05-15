@@ -21,6 +21,9 @@ public:
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
+	UFUNCTION(BlueprintCallable)
+	void Selected();
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsSelect = false;
 };

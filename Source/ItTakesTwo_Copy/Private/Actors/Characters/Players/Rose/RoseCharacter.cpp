@@ -3,6 +3,8 @@
 
 #include "Actors/Characters/Players/Rose/RoseCharacter.h"
 
+#include "Actors/Characters/Players/Rose/RoseAnimInstance.h"
+
 
 // Sets default values
 ARoseCharacter::ARoseCharacter()
@@ -28,5 +30,14 @@ void ARoseCharacter::Tick(float DeltaTime)
 void ARoseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void ARoseCharacter::Selected()
+{
+	URoseAnimInstance* Anim = Cast<URoseAnimInstance>(GetMesh()->GetAnimInstance());
+	if (Anim)
+	{
+		Anim->Select();
+	}
 }
 
