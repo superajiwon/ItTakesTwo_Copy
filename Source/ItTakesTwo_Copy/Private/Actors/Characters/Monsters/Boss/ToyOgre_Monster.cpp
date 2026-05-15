@@ -302,9 +302,7 @@ void AToyOgre_Monster::SetMeshWorldLocationForHole(const FVector& MeshWorldLocat
 	if (!HasAuthority() || !GetMesh())
 		return;
 
-	RepMeshTransform.RelativeLocation =
-		GetActorTransform().InverseTransformPosition(MeshWorldLocation);
-
+	RepMeshTransform.WorldLocation = MeshWorldLocation;
 	RepMeshTransform.RelativeRotation = GetMesh()->GetRelativeRotation();
 	RepMeshTransform.bUseOverride = true;
 
@@ -322,20 +320,13 @@ void AToyOgre_Monster::ResetMeshTransform()
 	ApplyMeshTransform();
 	Multicast_ApplyMeshTransform(RepMeshTransform);
 }
-
-void AToyOgre_Monster::StartHoleEnterAtMeshWorldLocation(
-	const FVector& MeshWorldLocation,
-	FName SoundId,
-	bool bUse3DSound
-)
+void AToyOgre_Monster::StartHoleEnterAtMeshWorldLocation(const FVector& MeshWorldLocation, FName SoundId, bool bUse3DSound)
 {
 	if (!HasAuthority() || !GetMesh())
 		return;
 
 	FToyOgre_MeshTransformInfo MeshTransform;
-	MeshTransform.RelativeLocation =
-		GetActorTransform().InverseTransformPosition(MeshWorldLocation);
-
+	MeshTransform.WorldLocation = MeshWorldLocation;
 	MeshTransform.RelativeRotation = GetMesh()->GetRelativeRotation();
 	MeshTransform.bUseOverride = true;
 
@@ -349,6 +340,7 @@ void AToyOgre_Monster::StartHoleEnterAtMeshWorldLocation(
 		bUse3DSound
 	);
 }
+
 
 void AToyOgre_Monster::Multicast_StartHoleEnter_Implementation(
 	const FToyOgre_MeshTransformInfo& MeshTransform,
@@ -403,7 +395,6 @@ void AToyOgre_Monster::OnRep_MeshTransform()
 {
 	ApplyMeshTransform();
 }
-
 void AToyOgre_Monster::ApplyMeshTransform()
 {
 	if (!GetMesh())
@@ -411,10 +402,8 @@ void AToyOgre_Monster::ApplyMeshTransform()
 
 	if (RepMeshTransform.bUseOverride)
 	{
-		GetMesh()->SetRelativeLocationAndRotation(
-			RepMeshTransform.RelativeLocation,
-			RepMeshTransform.RelativeRotation
-		);
+		GetMesh()->SetWorldLocation(RepMeshTransform.WorldLocation);
+		GetMesh()->SetRelativeRotation(RepMeshTransform.RelativeRotation);
 	}
 	else
 	{
@@ -424,6 +413,7 @@ void AToyOgre_Monster::ApplyMeshTransform()
 		);
 	}
 }
+
 
 void AToyOgre_Monster::RightHandHurt() const
 {

@@ -6,6 +6,7 @@
 #include "BossBase.h"
 #include "ToyOgre_Monster.generated.h"
 
+
 USTRUCT(BlueprintType)
 struct FToyOgre_MeshTransformInfo
 {
@@ -15,11 +16,15 @@ struct FToyOgre_MeshTransformInfo
 	FVector_NetQuantize100 RelativeLocation{FVector::ZeroVector};
 
 	UPROPERTY()
+	FVector_NetQuantize100 WorldLocation{FVector::ZeroVector};
+
+	UPROPERTY()
 	FRotator RelativeRotation{FRotator::ZeroRotator};
 
 	UPROPERTY()
 	bool bUseOverride{false};
 };
+
 
 UENUM(BlueprintType)	
 enum class EToyOgreState : uint8

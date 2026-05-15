@@ -21,5 +21,5 @@ public:
 	void Select();
 	
 	
-	virtual void AnimNotify_StartGame();
+//	virtual void AnimNotify_StartGame();
 };
