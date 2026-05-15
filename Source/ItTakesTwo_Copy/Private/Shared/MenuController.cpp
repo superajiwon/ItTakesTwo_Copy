@@ -126,7 +126,7 @@ void AMenuController::Server_StartGame_Implementation()
 	if (GI->HostSelectedRole != EPlayerRole::None && GI->ClientSelectedRole != EPlayerRole::None)
 	{		
 		// 레벨에 배치된 RoseCharacter를 찾아서 IsSelect를 true로 변경
-		if (ARoseCharacter* RoseCharacter = Cast<ARoseCharacter>(UGameplayStatics::GetActorOfClass(GetWorld(), ARoseCharacter::StaticClass())))
+		if (ARoseCharacter* RoseCharacter = Cast<ARoseCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
 		{
 			RoseCharacter->IsSelect = true;
 		}
