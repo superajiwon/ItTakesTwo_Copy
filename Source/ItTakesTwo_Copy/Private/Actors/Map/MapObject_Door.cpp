@@ -5,6 +5,7 @@
 
 #include "Actors/Map/MapObject_Button.h"
 #include "Components/BoxComponent.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 AMapObject_Door::AMapObject_Door()
 {
@@ -47,6 +48,15 @@ void AMapObject_Door::Tick(float DeltaTime)
 	if (PressedCount == ButtonCount)
 	{
 		bActive = true;
+
+		if (UGameInstance* GameInstance = GetGameInstance())
+		{
+			if (USoundManagerSubsystem* SoundManager =
+				GameInstance->GetSubsystem<USoundManagerSubsystem>())
+			{
+				SoundManager->PlaySFX2D(TEXT("SFX_DoorOpen"));
+			}
+		}
 	}
 }
 
@@ -56,11 +66,6 @@ void AMapObject_Door::Damage(float DamageAmount, AActor* Causer)
 	if (!HasAuthority())
 		return;
 	
-	UE_LOG(LogTemp, Warning, TEXT("[Door Damage] %s Damage=%.1f Causer=%s Auth=%d"),
-		*GetName(),
-		DamageAmount,
-		*GetNameSafe(Causer),
-		HasAuthority());
 	
 	Super::Damage(DamageAmount, Causer);
 }

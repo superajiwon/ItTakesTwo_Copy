@@ -38,17 +38,17 @@ void AToyOgre_DropCollider::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (!bActive)
 		return;
-	DrawDebugSphere(
-	GetWorld(),
-	GetActorLocation(),
-	SphereComp->GetScaledSphereRadius(),
-	32,
-	FColor::Red,
-	false,
-	0.f,
-	0,
-	2.f
-);
+// 	DrawDebugSphere(
+// 	GetWorld(),
+// 	GetActorLocation(),
+// 	SphereComp->GetScaledSphereRadius(),
+// 	32,
+// 	FColor::Red,
+// 	false,
+// 	0.f,
+// 	0,
+// 	2.f
+// );
 }
 
 void AToyOgre_DropCollider::NotifyActorBeginOverlap(AActor* OtherActor)

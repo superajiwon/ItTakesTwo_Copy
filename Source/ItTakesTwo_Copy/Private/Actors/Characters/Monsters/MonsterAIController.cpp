@@ -70,16 +70,16 @@ void AMonsterAIController::Tick(float DeltaTime)
 		StopMovement();
 		return;
 	}
-	FString StateStr = UEnum::GetValueAsString(CachedMonster->GetMonsterState());
-	DrawDebugString(
-		GetWorld(),
-		CachedMonster->GetActorLocation() + FVector(0, 0, 100.f),
-		StateStr,
-		nullptr,
-		FColor::White,
-		0.f,
-		true
-	);
+	// FString StateStr = UEnum::GetValueAsString(CachedMonster->GetMonsterState());
+	// DrawDebugString(
+	// 	GetWorld(),
+	// 	CachedMonster->GetActorLocation() + FVector(0, 0, 100.f),
+	// 	StateStr,
+	// 	nullptr,
+	// 	FColor::White,
+	// 	0.f,
+	// 	true
+	// );
 
 	if (CurrentTarget.IsValid())
 	{

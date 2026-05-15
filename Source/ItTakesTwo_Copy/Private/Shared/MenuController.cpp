@@ -11,6 +11,16 @@
 void AMenuController::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	if (GEngine)
+	{
+		GEngine->bEnableOnScreenDebugMessages = false;
+	}
+	UKismetSystemLibrary::ExecuteConsoleCommand(
+	GetWorld(),
+	TEXT("DisableAllScreenMessages"),
+	this
+	);
 	if (IsLocalController())
 	{
 		if (USoundManagerSubsystem* SoundManager = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>())

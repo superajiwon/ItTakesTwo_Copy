@@ -2,7 +2,7 @@
 
 
 #include "Shared/Actor/CullingBoundBox.h"
-
+#include "Actors/Map/MapObject_Attacker.h"
 #include "EngineUtils.h"
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Components/BoxComponent.h"
@@ -97,11 +97,16 @@ void ACullingBoundBox::SetActiveOff()
 		SetActiveActor(Actor, false);
 	}
 }
-
 void ACullingBoundBox::SetActiveActor(AActor* Actor, bool bActive)
 {
 	if (!Actor)
 		return;
+
+	if (AMapObject_Attacker* Attacker = Cast<AMapObject_Attacker>(Actor))
+	{
+		Attacker->SetAttackerActive(bActive);
+		return;
+	}
 
 	Actor->SetActorHiddenInGame(!bActive);
 

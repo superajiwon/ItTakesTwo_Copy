@@ -9,7 +9,7 @@
 #include "Components/StatComponent.h"
 #include "Shared/Struct/HitRequest.h"
 #include "Shared/Subsystems/CombatSystem.h"
-#include "DrawDebugHelpers.h"
+
 
 AVFXExplosionObject::AVFXExplosionObject()
 {
@@ -47,17 +47,17 @@ void AVFXExplosionObject::Tick(float DeltaTime)
 			if (CollisionSphereComponent &&
 				CollisionSphereComponent->GetCollisionEnabled() != ECollisionEnabled::NoCollision)
 			{
-				DrawDebugSphere(
-					GetWorld(),
-					CollisionSphereComponent->GetComponentLocation(),
-					CollisionSphereComponent->GetScaledSphereRadius(),
-					24,
-					FColor::Red,
-					false,
-					0.f,
-					0,
-					3.f
-				);
+				// DrawDebugSphere(
+				// 	GetWorld(),
+				// 	CollisionSphereComponent->GetComponentLocation(),
+				// 	CollisionSphereComponent->GetScaledSphereRadius(),
+				// 	24,
+				// 	FColor::Red,
+				// 	false,
+				// 	0.f,
+				// 	0,
+				// 	3.f
+				// );
 			}
 			break;
 
@@ -65,17 +65,17 @@ void AVFXExplosionObject::Tick(float DeltaTime)
 			if (CollisionBoxComponent &&
 				CollisionBoxComponent->GetCollisionEnabled() != ECollisionEnabled::NoCollision)
 			{
-				DrawDebugBox(
-					GetWorld(),
-					CollisionBoxComponent->GetComponentLocation(),
-					CollisionBoxComponent->GetScaledBoxExtent(),
-					CollisionBoxComponent->GetComponentQuat(),
-					FColor::Red,
-					false,
-					0.f,
-					0,
-					3.f
-				);
+				// DrawDebugBox(
+				// 	GetWorld(),
+				// 	CollisionBoxComponent->GetComponentLocation(),
+				// 	CollisionBoxComponent->GetScaledBoxExtent(),
+				// 	CollisionBoxComponent->GetComponentQuat(),
+				// 	FColor::Red,
+				// 	false,
+				// 	0.f,
+				// 	0,
+				// 	3.f
+				// );
 			}
 			break;
 

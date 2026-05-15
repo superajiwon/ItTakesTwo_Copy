@@ -55,7 +55,7 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere, Category="ObjectSetting")
 	float MaxHP = 100.f;
-	
+
 	UPROPERTY(ReplicatedUsing=OnRep_CurrentHP)
 	float CurrentHP{100.f};
 
@@ -68,6 +68,9 @@ protected:
 	UPROPERTY(Replicated)
 	FVector_NetQuantizeNormal LastHitDirection;
 
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sound")
+	FName DestroySoundId{NAME_None};
 protected:
 	UFUNCTION()
 	void OnRep_CurrentHP();

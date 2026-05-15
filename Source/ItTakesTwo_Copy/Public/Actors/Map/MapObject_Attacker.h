@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "MapObjectBase.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
 #include "MapObject_Attacker.generated.h"
 
 
@@ -21,9 +23,16 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+protected:
+	void StartLoopSound();
+	void StopLoopSound();
+
 
 public:
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintCallable)
+	void SetAttackerActive(bool bActive);
 	
 	
 protected:
@@ -48,5 +57,13 @@ protected:
 	
 	float CurrentDistance = 0.f;
 	int32 MoveDirection = 1;
-	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sound")
+	TObjectPtr<USoundBase> LoopSound;
+
+	UPROPERTY()
+	TObjectPtr<UAudioComponent> LoopAudioComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sound")
+	float SoundFadeOutTime = 0.25f;
 };

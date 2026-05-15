@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "GeometryCollection/GeometryCollectionComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 AMapObject_Attackable::AMapObject_Attackable()
 {
@@ -105,6 +106,7 @@ void AMapObject_Attackable::DestroyObject()
 	if (!HasAuthority() || bDestroyed)
 		return;
 
+	
 	bDestroyed = true;
 	CurrentHP = 0.f;
 
@@ -127,6 +129,20 @@ void AMapObject_Attackable::DestroyObject()
 
 void AMapObject_Attackable::PlayDestroyEffect(const FVector& HitLocation, const FVector& HitDirection)
 {
+	
+	
+	if (!DestroySoundId.IsNone())
+	{
+		if (UGameInstance* GameInstance = GetGameInstance())
+		{
+			if (USoundManagerSubsystem* SoundManager =
+				GameInstance->GetSubsystem<USoundManagerSubsystem>())
+			{
+				SoundManager->PlaySFX2D(DestroySoundId);
+			}
+		}
+	}
+	
 	if (!GeometryCollection)
 		return;
 

@@ -2,7 +2,7 @@
 
 
 #include "Actors/Map/MapObject_Attacker.h"
-
+#include "Kismet/GameplayStatics.h"
 #include "Components/SplineComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
@@ -82,5 +82,70 @@ void AMapObject_Attacker::Tick(float DeltaTime)
 	FRotator Rotation = GetActorRotation();
 	Rotation.Yaw += RotationSpeed * DeltaTime;
 	SetActorRotation(Rotation );
+}
+
+void AMapObject_Attacker::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	StopLoopSound();
+	Super::EndPlay(EndPlayReason);
+}
+
+void AMapObject_Attacker::StartLoopSound()
+{
+	if (!LoopSound)
+		return;
+
+	if (LoopAudioComponent && LoopAudioComponent->IsPlaying())
+		return;
+
+	LoopAudioComponent = UGameplayStatics::SpawnSoundAttached(
+		LoopSound,
+		RootComponent,
+		NAME_None,
+		FVector::ZeroVector,
+		EAttachLocation::KeepRelativeOffset,
+		true
+	);
+}
+
+void AMapObject_Attacker::StopLoopSound()
+{
+	if (!LoopAudioComponent)
+		return;
+
+	if (LoopAudioComponent->IsPlaying())
+	{
+		LoopAudioComponent->FadeOut(SoundFadeOutTime, 0.0f);
+	}
+
+	LoopAudioComponent = nullptr;
+}
+
+void AMapObject_Attacker::SetAttackerActive(bool bActive)
+{
+	SetActorHiddenInGame(!bActive);
+	SetActorEnableCollision(bActive);
+	SetActorTickEnabled(bActive);
+
+	if (HitBoxComponent)
+	{
+		if (bActive)
+		{
+			HitBoxComponent->CollisionOn();
+		}
+		else
+		{
+			HitBoxComponent->CollisionOff();
+		}
+	}
+
+	if (bActive)
+	{
+		StartLoopSound();
+	}
+	else
+	{
+		StopLoopSound();
+	}
 }
 
