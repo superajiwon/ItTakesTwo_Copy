@@ -22,6 +22,10 @@ void AITTPlayerController::BeginPlay()
 	SetInputMode(InputMode);
 	bShowMouseCursor = false;
 	
+	// [추가] 레벨이 시작되자마자(로딩 중) 플레이어의 입력을 막습니다.
+	SetIgnoreMoveInput(true);
+	SetIgnoreLookInput(true);
+	
 	if (UITTGameInstance* ITTGI = GetGameInstance<UITTGameInstance>())
 	{
 		// 로딩 완료 이벤트를 받아 HUD 생성 조건 확인
@@ -55,7 +59,7 @@ void AITTPlayerController::DungeonLoadingFinished(UWorld* LoadedWorld)
 
 	if (LoadedWorld != GetWorld())
 		return;
-
+	
 	// BGM 실행
 	if (USoundManagerSubsystem* SoundManager = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>())
 	{
@@ -73,6 +77,9 @@ void AITTPlayerController::DungeonLoadingFinished(UWorld* LoadedWorld)
 	// 던전 로딩이 끝났다는 상태를 저장하고 HUD 생성을 시도합니다.
 	bDungeonLoadingFinished = true;
 	TryCreateHUD();
+	
+	SetIgnoreMoveInput(false);
+	SetIgnoreLookInput(false);
 }
 
 void AITTPlayerController::TryCreateHUD()

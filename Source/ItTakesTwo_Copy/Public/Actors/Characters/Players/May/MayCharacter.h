@@ -114,4 +114,8 @@ public:
 	// Multicast: Dash 궤적 VFX (서버에서 시작/끝 위치 수집 후 전파)
 	UFUNCTION(NetMulticast, Unreliable)
 	void Multicast_PlayDashSplineVFX(FVector StartPos, FVector EndPos);
+	
+	
+	// === SFX ===
+	virtual void PlayHitSFX() override;
 };

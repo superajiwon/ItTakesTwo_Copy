@@ -61,6 +61,8 @@ void UCodyAnimInstance::AnimNotify_SpecialOn()
 		0.f
 	);
 	
+	SpawnInfo.WithSpawnSound(TEXT("Cody_IceBlast_Impact"));
+	
 	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 }
 

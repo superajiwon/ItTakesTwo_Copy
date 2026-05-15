@@ -136,8 +136,6 @@ void ACodyUltimateBox::CollisionOn()
 		
 		OnRep_IsBeamActive(); // Call for server/host
 		
-		// todo SetHiddenInGame 나중에 지워야함 
-		AttackBox->SetHiddenInGame(false);
 		AttackBox->CollisionOn();
 	}
 }
@@ -150,8 +148,6 @@ void ACodyUltimateBox::CollisionOff()
 		
 		OnRep_IsBeamActive(); // ★ 서버/호스트에서도 빔을 끄기 위해 반드시 직접 호출해야 합니다!
 		
-		// todo SetHiddenInGame 나중에 지워야함 
-		AttackBox->SetHiddenInGame(true);
 		AttackBox->CollisionOff();
 	}
 }

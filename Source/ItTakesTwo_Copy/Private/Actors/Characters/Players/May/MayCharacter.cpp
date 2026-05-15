@@ -90,16 +90,12 @@ void AMayCharacter::SetWeaponCollision(bool bEnable)
 	
 	if (bEnable)
 	{
-		// Debug
-		SwordCollision->SetHiddenInGame(false);
 		int32 RandDamage = FMath::RandRange(5, 18);
 		SwordCollision->SetDamage(RandDamage);
 		SwordCollision->CollisionOn();
 	}
 	else
 	{
-		// Debug
-		SwordCollision->SetHiddenInGame(true);
 		SwordCollision->CollisionOff();
 	}
 }
@@ -177,7 +173,6 @@ void AMayCharacter::EndUltimate()
 	
 	if (UltimateCollision)
 	{
-		UltimateCollision->SetHiddenInGame(true);
 		UltimateCollision->CollisionOff();
 	}
 	
@@ -232,6 +227,12 @@ void AMayCharacter::MayDash(FVector DashDir, float Strength, float Duration)
 			Multicast_PlayDashSplineVFX(DashStart, GetActorLocation());
 		}, Duration, false);
 	}
+}
+
+void AMayCharacter::PlayHitSFX()
+{
+	HitSFXID = TEXT("May_Sword_Impact");
+	Super::PlayHitSFX();
 }
 
 void AMayCharacter::Server_MayDash_Implementation()

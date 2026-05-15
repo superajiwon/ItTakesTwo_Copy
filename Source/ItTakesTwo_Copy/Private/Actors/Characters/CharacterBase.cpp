@@ -1,7 +1,6 @@
 
 #include "Actors/Characters/CharacterBase.h"
 
-#include "Components/CapsuleComponent.h"
 #include "Components/HPComponent.h"
 #include "Components/StatComponent.h"
 #include "Components/WidgetComponent.h"

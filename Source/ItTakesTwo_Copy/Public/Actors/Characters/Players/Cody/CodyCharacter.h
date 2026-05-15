@@ -85,4 +85,8 @@ public:
 	// 모든 클라이언트에서 Teleport 도착 VFX 재생
 	UFUNCTION(NetMulticast, Unreliable)
 	void Multicast_PlayTeleportVFX(FVector Location);
+	
+	
+	// === SFX ===
+	virtual void PlayHitSFX() override;
 };

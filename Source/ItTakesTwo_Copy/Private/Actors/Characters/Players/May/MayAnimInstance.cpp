@@ -33,8 +33,6 @@ void UMayAnimInstance::AnimNotify_SpecialOn()
 	auto* Owner = Cast<AMayCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
-	// Debug
-	Owner->SpecialCollision->SetHiddenInGame(false);
 	int32 RandDamage = FMath::RandRange(5, 18);
 	Owner->SpecialCollision->SetDamage(RandDamage);
 	Owner->SpecialCollision->CollisionOn();
@@ -49,8 +47,6 @@ void UMayAnimInstance::AnimNotify_SpecialOff()
 	auto* Owner = Cast<AMayCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
-	// Debug
-	Owner->SpecialCollision->SetHiddenInGame(true);
 	Owner->SpecialCollision->CollisionOff();
 }
 
@@ -63,7 +59,6 @@ void UMayAnimInstance::AnimNotify_UltimateOn()
 	
 	int32 RandDamage = FMath::RandRange(5, 18);
 	Owner->UltimateCollision->SetDamage(RandDamage);
-	Owner->UltimateCollision->SetHiddenInGame(false);
 	Owner->UltimateCollision->CollisionOn();
 }
 

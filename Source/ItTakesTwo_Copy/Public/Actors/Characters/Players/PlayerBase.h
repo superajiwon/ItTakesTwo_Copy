@@ -141,6 +141,12 @@ public:
 	
 	
 public:
+	// === SFX ===
+	FName HitSFXID;
+	virtual void PlayHitSFX();
+	void PlaySFX(FName SoundId);
+	
+public:
 	// === Input ===
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
 	UInputMappingContext* IMC_PlayerMapping;
@@ -166,4 +172,6 @@ public:
 	virtual void Ultimate(const FInputActionValue& Value);
 	
 	virtual void Damage(float DamageAmount, AActor* Causer) override;
+	
+	void StopInLoading();
 };
