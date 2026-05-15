@@ -11,13 +11,15 @@ void UToyOgre_ChargeStartState::Enter()
 {
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->ChargeStartMontage);
 	OwnerOgre->SetToyOgreState(EToyOgreState::ChargeStart);
-	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
-	{
-		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
-		{
-			SoundManager->PlaySFX2D(TEXT("Ogre_Breath"));
-		}
-	}
+	// if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	// {
+	// 	if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+	// 	{
+	// 		// SoundManager->PlaySFX2D(TEXT("Ogre_Breath"));
+	// 		OwnerOgre->Multicast_PlayOgreSFX2D(TEXT("Ogre_Breath"));
+	// 	}
+	// }
+	OwnerOgre->Multicast_PlayOgreSFX2D(TEXT("Ogre_Breath"));
 }
 
 void UToyOgre_ChargeStartState::Tick(float DeltaTime)

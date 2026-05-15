@@ -16,14 +16,16 @@ void UToyOgre_Hole_RightHand_Hurt_DeathState::Enter()
 	OwnerOgre->ClearHandRegenTimers();
 	OwnerOgre->DeactivateHandColliders();
 	
-	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
-	{
-		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
-		{
-			// SoundManager->PlaySFX3D(TEXT("Ogre_Death"), OwnerOgre->GetActorLocation());
-			SoundManager->PlaySFX2D(TEXT("Ogre_Death"));
-		}
-	}
+	// if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	// {
+	// 	if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+	// 	{
+	// 		// SoundManager->PlaySFX3D(TEXT("Ogre_Death"), OwnerOgre->GetActorLocation());
+	// 		// SoundManager->PlaySFX2D(TEXT("Ogre_Death"));
+	// 	
+	// 	}
+	// }
+	OwnerOgre->Multicast_PlayOgreSFX2D(TEXT("Ogre_Death"));
 	OwnerOgre->PlayDeathSequence();
 }
 

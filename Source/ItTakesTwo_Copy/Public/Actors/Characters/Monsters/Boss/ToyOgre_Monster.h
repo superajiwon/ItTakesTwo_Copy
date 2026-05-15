@@ -64,6 +64,13 @@ protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	
+// 상태에서 실행하는 사운드 실행 함수
+public:
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayOgreSFX2D(FName SoundId);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayOgreSFX3D(FName SoundId);
 	
 public:
 	bool RotateToCurrentTarget(float DeltaTime, float RotateSpeed);
@@ -76,6 +83,11 @@ public:
 	void ResetMeshTransform();
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_ApplyMeshTransform(const FToyOgre_MeshTransformInfo& MeshTransform);
+	
+	void StartHoleEnterAtMeshWorldLocation(	const FVector& MeshWorldLocation,	FName SoundId,	bool bUse3DSound);
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_StartHoleEnter(const FToyOgre_MeshTransformInfo& MeshTransform,	UAnimMontage* Montage,	FName SoundId,	FVector SoundLocation,	bool bUse3DSound);
+	
 private:
 	UFUNCTION()
 	void OnRep_MeshTransform();
