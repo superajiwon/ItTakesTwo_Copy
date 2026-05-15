@@ -17,9 +17,8 @@ class ITTAKESTWO_COPY_API URoseAnimInstance : public UAnimInstance
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsSelected = false;
+	
 	UFUNCTION(BlueprintCallable)
 	void Select();
-	
-	
-//	virtual void AnimNotify_StartGame();
 };
+ 
