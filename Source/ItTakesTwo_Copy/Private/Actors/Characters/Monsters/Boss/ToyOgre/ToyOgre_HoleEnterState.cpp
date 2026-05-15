@@ -7,7 +7,6 @@
 #include "Actors/Characters/Monsters/Boss/ToyOgre/ToyOgre_StateMachineComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 
-
 void UToyOgre_HoleEnterState::Enter()
 {
 	const FVector HoleMeshWorldLocation(-500.0f, 500.0f, 0.0f);
@@ -26,7 +25,6 @@ void UToyOgre_HoleEnterState::Enter()
 		OwnerOgre->HitBoxComponent->ClearHitRecords();
 	}
 }
-
 
 void UToyOgre_HoleEnterState::Tick(float DeltaTime)
 {

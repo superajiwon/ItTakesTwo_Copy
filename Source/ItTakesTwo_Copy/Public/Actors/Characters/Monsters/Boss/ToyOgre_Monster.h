@@ -6,20 +6,13 @@
 #include "BossBase.h"
 #include "ToyOgre_Monster.generated.h"
 
-
 USTRUCT(BlueprintType)
 struct FToyOgre_MeshTransformInfo
 {
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FVector_NetQuantize100 RelativeLocation{FVector::ZeroVector};
-
-	UPROPERTY()
 	FVector_NetQuantize100 WorldLocation{FVector::ZeroVector};
-
-	UPROPERTY()
-	FRotator RelativeRotation{FRotator::ZeroRotator};
 
 	UPROPERTY()
 	bool bUseOverride{false};
@@ -90,9 +83,10 @@ public:
 	void Multicast_ApplyMeshTransform(const FToyOgre_MeshTransformInfo& MeshTransform);
 	
 	void StartHoleEnterAtMeshWorldLocation(	const FVector& MeshWorldLocation,	FName SoundId,	bool bUse3DSound);
+
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_StartHoleEnter(const FToyOgre_MeshTransformInfo& MeshTransform,	UAnimMontage* Montage,	FName SoundId,	FVector SoundLocation,	bool bUse3DSound);
-	
+
 private:
 	UFUNCTION()
 	void OnRep_MeshTransform();

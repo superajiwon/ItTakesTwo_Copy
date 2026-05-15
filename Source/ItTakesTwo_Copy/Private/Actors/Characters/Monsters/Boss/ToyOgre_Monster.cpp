@@ -71,10 +71,15 @@ void AToyOgre_Monster::BeginPlay()
 		CameraManager->AddTarget(this); // 카메라 추적 대상에 보스 추가
 	}
 }
-
 void AToyOgre_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (RepMeshTransform.bUseOverride)
+	{
+		ApplyMeshTransform();
+	}
+
 	if (const UITTGameInstance* GI = GetGameInstance<UITTGameInstance>())
 	{
 		if (GI->IsGameplayPausedForLoading())
@@ -82,16 +87,13 @@ void AToyOgre_Monster::Tick(float DeltaTime)
 			return;
 		}
 	}
-	
-	// FString StateStr = UEnum::GetValueAsString(ToyOgreState);
-	// const FString LogStr = FString::Printf(TEXT("State : %s"), *StateStr);
-	// DrawDebugString(GetWorld(), GetActorLocation() + FVector::UpVector * 200.0f, LogStr, nullptr, FColor::White, 0, true, 1);
 
 	if (HasAuthority())
 	{
 		StateMachine->TickState(DeltaTime);
 	}
 }
+
 
 void AToyOgre_Monster::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -296,14 +298,12 @@ void AToyOgre_Monster::OnHandBroken(bool IsLeftHand)
 		);
 	}
 }
-
 void AToyOgre_Monster::SetMeshWorldLocationForHole(const FVector& MeshWorldLocation)
 {
 	if (!HasAuthority() || !GetMesh())
 		return;
 
 	RepMeshTransform.WorldLocation = MeshWorldLocation;
-	RepMeshTransform.RelativeRotation = GetMesh()->GetRelativeRotation();
 	RepMeshTransform.bUseOverride = true;
 
 	ApplyMeshTransform();
@@ -320,14 +320,15 @@ void AToyOgre_Monster::ResetMeshTransform()
 	ApplyMeshTransform();
 	Multicast_ApplyMeshTransform(RepMeshTransform);
 }
-void AToyOgre_Monster::StartHoleEnterAtMeshWorldLocation(const FVector& MeshWorldLocation, FName SoundId, bool bUse3DSound)
+
+void AToyOgre_Monster::StartHoleEnterAtMeshWorldLocation(const FVector& MeshWorldLocation, FName SoundId,
+	bool bUse3DSound)
 {
 	if (!HasAuthority() || !GetMesh())
 		return;
 
 	FToyOgre_MeshTransformInfo MeshTransform;
 	MeshTransform.WorldLocation = MeshWorldLocation;
-	MeshTransform.RelativeRotation = GetMesh()->GetRelativeRotation();
 	MeshTransform.bUseOverride = true;
 
 	RepMeshTransform = MeshTransform;
@@ -395,6 +396,7 @@ void AToyOgre_Monster::OnRep_MeshTransform()
 {
 	ApplyMeshTransform();
 }
+
 void AToyOgre_Monster::ApplyMeshTransform()
 {
 	if (!GetMesh())
@@ -402,11 +404,19 @@ void AToyOgre_Monster::ApplyMeshTransform()
 
 	if (RepMeshTransform.bUseOverride)
 	{
-		GetMesh()->SetWorldLocation(RepMeshTransform.WorldLocation);
-		GetMesh()->SetRelativeRotation(RepMeshTransform.RelativeRotation);
+		GetMesh()->SetAbsolute(true, false, false);
+
+		GetMesh()->SetWorldLocation(
+			RepMeshTransform.WorldLocation,
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics
+		);
 	}
 	else
 	{
+		GetMesh()->SetAbsolute(false, false, false);
+
 		GetMesh()->SetRelativeLocationAndRotation(
 			DefaultMeshRelativeLocation,
 			DefaultMeshRelativeRotation
