@@ -44,6 +44,14 @@ void UHPComponent::ApplyDamage(int32 DamageAmount, AActor* Causer)
 	// 호스트의 UI 갱신
 	OnHPChanged.Broadcast(CurHp, MaxHp);
 	
+	if (CurHp <= 0.0f)
+	{
+		StopRecover();
+		bIsDead = true;
+		OnDeath.Broadcast();
+		return;
+	}
+
 	// 자동 회복
 	if (bIsPlayer)
 	{
@@ -51,20 +59,11 @@ void UHPComponent::ApplyDamage(int32 DamageAmount, AActor* Causer)
 		StartRecoverDelay();
 	}
 	
-	if (CurHp <= 0.0f)
+	bIsInInvincible = true;	
+	if (UWorld* World = GetWorld())
 	{
-		bIsDead = true;
-		
-		OnDeath.Broadcast();
-	}
-	else
-	{
-		bIsInInvincible = true;		
-		if (UWorld* World = GetWorld())
-		{
-			World->GetTimerManager().SetTimer(InvincibleTimer, this, &UHPComponent::EndInvincible, InvincibleTime, false);
-		}	
-	}
+		World->GetTimerManager().SetTimer(InvincibleTimer, this, &UHPComponent::EndInvincible, InvincibleTime, false);
+	}	
 }
 
 void UHPComponent::ApplyHeal(float HealAmount)

@@ -305,16 +305,31 @@ void APlayerBase::Respawn()
 	
 	if (OtherPlayer && !OtherPlayer->GetHPComponent()->GetIsDead())
 	{
-		UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
-		if (NavSys)
+		FVector RespawnLocation = OtherPlayer->GetActorLocation() + FVector(150.f, 0.f, 100.f);
+		FRotator RespawnRotation = OtherPlayer->GetActorRotation();
+
+		if (UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld()))
 		{
 			FNavLocation RandLocation;
 			if (NavSys->GetRandomReachablePointInRadius(OtherPlayer->GetActorLocation(), 500.0f, RandLocation))
 			{
-				TeleportTo(RandLocation.Location + FVector(0, 0, 100.0f), OtherPlayer->GetActorRotation());
-				GetHPComponent()->Revive();
+				RespawnLocation = RandLocation.Location + FVector(0, 0, 100.0f);
 			}
 		}
+
+		TeleportTo(RespawnLocation, RespawnRotation);
+		GetHPComponent()->Revive();
+		
+		// UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+		// if (NavSys)
+		// {
+		// 	FNavLocation RandLocation;
+		// 	if (NavSys->GetRandomReachablePointInRadius(OtherPlayer->GetActorLocation(), 500.0f, RandLocation))
+		// 	{
+		// 		TeleportTo(RandLocation.Location + FVector(0, 0, 100.0f), OtherPlayer->GetActorRotation());
+		// 		GetHPComponent()->Revive();
+		// 	}
+		// }
 	}
 	else
 	{

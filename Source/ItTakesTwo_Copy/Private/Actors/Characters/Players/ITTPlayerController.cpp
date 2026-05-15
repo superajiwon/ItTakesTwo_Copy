@@ -40,7 +40,11 @@ void AITTPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		// SeamlessTravel/레벨 종료 시 남은 delegate 바인딩을 정리
 		ITTGI->OnDungeonLoadingFinished.RemoveAll(this);
 	}
-
+	if (UUIMangerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIMangerSubsystem>())
+	{
+		UIManager->EndHUD();
+		bHUDCreated = false;
+	}
 	Super::EndPlay(EndPlayReason);
 }
 
