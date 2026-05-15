@@ -15,6 +15,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Characters/Managers/CameraManagerActor.h"
 #include "Shared/ITTGameInstance.h"
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 AToyOgre_Monster::AToyOgre_Monster()
 {
@@ -99,6 +100,31 @@ void AToyOgre_Monster::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(AToyOgre_Monster, ToyOgreState);
 	DOREPLIFETIME(AToyOgre_Monster, RepMeshTransform);
 }
+
+void AToyOgre_Monster::Multicast_PlayOgreSFX2D_Implementation(FName SoundId)
+{
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager =
+			GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX2D(SoundId);
+		}
+	}
+}
+
+void AToyOgre_Monster::Multicast_PlayOgreSFX3D_Implementation(FName SoundId)
+{
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager =
+			GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX3D(SoundId, GetActorLocation());
+		}
+	}
+}
+
 
 void AToyOgre_Monster::OnRep_ToyOgreState()
 {
@@ -296,6 +322,76 @@ void AToyOgre_Monster::ResetMeshTransform()
 	ApplyMeshTransform();
 	Multicast_ApplyMeshTransform(RepMeshTransform);
 }
+
+void AToyOgre_Monster::StartHoleEnterAtMeshWorldLocation(
+	const FVector& MeshWorldLocation,
+	FName SoundId,
+	bool bUse3DSound
+)
+{
+	if (!HasAuthority() || !GetMesh())
+		return;
+
+	FToyOgre_MeshTransformInfo MeshTransform;
+	MeshTransform.RelativeLocation =
+		GetActorTransform().InverseTransformPosition(MeshWorldLocation);
+
+	MeshTransform.RelativeRotation = GetMesh()->GetRelativeRotation();
+	MeshTransform.bUseOverride = true;
+
+	RepMeshTransform = MeshTransform;
+
+	Multicast_StartHoleEnter(
+		MeshTransform,
+		HoleEnterMontage,
+		SoundId,
+		MeshWorldLocation,
+		bUse3DSound
+	);
+}
+
+void AToyOgre_Monster::Multicast_StartHoleEnter_Implementation(
+	const FToyOgre_MeshTransformInfo& MeshTransform,
+	UAnimMontage* Montage,
+	FName SoundId,
+	FVector SoundLocation,
+	bool bUse3DSound
+)
+{
+	RepMeshTransform = MeshTransform;
+	ApplyMeshTransform();
+
+	ToyOgreState = EToyOgreState::Hole_Enter;
+	OnRep_ToyOgreState();
+
+	if (Montage && GetMesh())
+	{
+		if (UAnimInstance* AnimInst = GetMesh()->GetAnimInstance())
+		{
+			AnimInst->Montage_Play(Montage);
+		}
+	}
+
+	if (!SoundId.IsNone())
+	{
+		if (UGameInstance* GameInstance = GetGameInstance())
+		{
+			if (USoundManagerSubsystem* SoundManager =
+				GameInstance->GetSubsystem<USoundManagerSubsystem>())
+			{
+				if (bUse3DSound)
+				{
+					SoundManager->PlaySFX3D(SoundId, SoundLocation);
+				}
+				else
+				{
+					SoundManager->PlaySFX2D(SoundId);
+				}
+			}
+		}
+	}
+}
+
 
 void AToyOgre_Monster::Multicast_ApplyMeshTransform_Implementation(const FToyOgre_MeshTransformInfo& MeshTransform)
 {

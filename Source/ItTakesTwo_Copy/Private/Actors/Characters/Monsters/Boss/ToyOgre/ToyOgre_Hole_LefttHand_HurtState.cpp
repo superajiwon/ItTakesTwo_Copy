@@ -14,14 +14,16 @@ void UToyOgre_Hole_LefttHand_HurtState::Enter()
 	OwnerOgre->ActivateRightHandCollider();
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->LeftHandHurtMontage);
 	
-	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
-	{
-		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
-		{
-			// SoundManager->PlaySFX3D(TEXT("Ogre_HandHurt"), OwnerOgre->GetActorLocation());
-			SoundManager->PlaySFX2D(TEXT("Ogre_HandHurt"));
-		}
-	}
+	// if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	// {
+	// 	if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+	// 	{
+	// 		// SoundManager->PlaySFX3D(TEXT("Ogre_HandHurt"), OwnerOgre->GetActorLocation());
+	// 		// SoundManager->PlaySFX2D(TEXT("Ogre_HandHurt"));
+	// 	}
+	// }
+	OwnerOgre->Multicast_PlayOgreSFX2D(TEXT("Ogre_HandHurt"));
+	
 }
 
 void UToyOgre_Hole_LefttHand_HurtState::Tick(float DeltaTime)

@@ -14,13 +14,15 @@ void UToyOgre_WallHitState::Enter()
 	OwnerOgre->SetToyOgreState(EToyOgreState::WallHit);
 	OwnerOgre->Multicast_PlayCamShake(5);
 	
-	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
-	{
-		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
-		{
-			SoundManager->PlaySFX2D(TEXT("Ogre_Impact"));
-		}
-	}
+	// if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	// {
+	// 	if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+	// 	{
+	// 		// SoundManager->PlaySFX2D(TEXT("Ogre_Impact"));
+	// 	}
+	// }
+	OwnerOgre->Multicast_PlayOgreSFX2D(TEXT("Ogre_Impact"));
+	
 }
 
 void UToyOgre_WallHitState::Tick(float DeltaTime)

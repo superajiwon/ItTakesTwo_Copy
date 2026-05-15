@@ -12,14 +12,16 @@ void UToyOgre_Hole_LeftHand_RecoverState::Enter()
 	OwnerOgre->SetToyOgreState(EToyOgreState::Hole_LeftHand_Recover);
 	OwnerOgre->PlayToyOgreMontage(OwnerOgre->LeftHandRecoverMontage);
 	
-	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
-	{
-		if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
-		{
-			// SoundManager->PlaySFX3D(TEXT("Ogre_Recovery"), OwnerOgre->GetActorLocation());
-			SoundManager->PlaySFX2D(TEXT("Ogre_Recovery"));
-		}
-	}
+	// if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	// {
+	// 	if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
+	// 	{
+	// 		// SoundManager->PlaySFX3D(TEXT("Ogre_Recovery"), OwnerOgre->GetActorLocation());
+	// 		// SoundManager->PlaySFX2D(TEXT("Ogre_Recovery"));
+	// 	}
+	// }
+	OwnerOgre->Multicast_PlayOgreSFX2D(TEXT("Ogre_Recovery"));
+	
 }
 
 void UToyOgre_Hole_LeftHand_RecoverState::Tick(float DeltaTime)
