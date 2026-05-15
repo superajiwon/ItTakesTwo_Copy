@@ -89,16 +89,20 @@ AActor* AITTGameMode::ChoosePlayerStart_Implementation(AController* Player)
 	return Super::ChoosePlayerStart_Implementation(Player);
 }
 
+
 void AITTGameMode::ChangeLevel(const FString& LevelPath)
 {
 	UWorld* World = GetWorld();
 	if (!World)
 		return;
 
+	if (!HasAuthority())
+		return;
+
 	bUseSeamlessTravel = true;
-	// World->ServerTravel(TEXT("/Game/Maps/Lv_CowDungeon"), true);
-	const FString TravelURL = LevelPath + TEXT("?listen");
-	World->ServerTravel(TravelURL, true);
+
+	// UE_LOG(LogTemp, Warning, TEXT("[ChangeLevel] ServerTravel to %s"), *LevelPath);
+	World->ServerTravel(LevelPath, false);
 }
 
 void AITTGameMode::UpdateRespawnPoint(ARespawn_TargetPoint* NewRespawnPointCody, ARespawn_TargetPoint* NewRespawnPointMay)
