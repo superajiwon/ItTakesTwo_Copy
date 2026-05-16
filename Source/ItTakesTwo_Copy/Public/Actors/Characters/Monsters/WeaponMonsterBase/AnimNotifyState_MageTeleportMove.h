@@ -51,4 +51,11 @@ private:
 	FVector TargetLocation;
 	float ElapsedTime = 0.f;
 	float Duration = 0.f;
+	
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Teleport")
+	float VisibleMeshZ = -125.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Teleport")
+	float HiddenMeshZ = -400.f;
 };

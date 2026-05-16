@@ -303,6 +303,7 @@ void AVFXObject::OnRep_VFXRepState()
 	SpawnInfo.OverlapExplosionNiagara = VFXRepState.OverlapExplosionNiagara;
 	SpawnInfo.OverlapExplosionLifeTime = VFXRepState.OverlapExplosionLifeTime;
 	SpawnInfo.OverlapExplosionCollisionInfo = VFXRepState.OverlapExplosionCollisionInfo;
+	SpawnInfo.SpawnSoundId = VFXRepState.SpawnSoundId;
 	ApplyVisualState(SpawnInfo);
 }
 
@@ -330,7 +331,7 @@ void AVFXObject::SetVFXRepStateFromSpawnInfo(const FVFXSpawn_Info& SpawnInfo)
 	VFXRepState.OverlapExplosionNiagara = SpawnInfo.OverlapExplosionNiagara;
 	VFXRepState.OverlapExplosionLifeTime = SpawnInfo.OverlapExplosionLifeTime;
 	VFXRepState.OverlapExplosionCollisionInfo = SpawnInfo.OverlapExplosionCollisionInfo;
-
+	VFXRepState.SpawnSoundId = SpawnInfo.SpawnSoundId;
 	
 	++VFXRepState.ActivationId;
 }

@@ -48,15 +48,7 @@ void AMapObject_Door::Tick(float DeltaTime)
 	if (PressedCount == ButtonCount)
 	{
 		bActive = true;
-
-		if (UGameInstance* GameInstance = GetGameInstance())
-		{
-			if (USoundManagerSubsystem* SoundManager =
-				GameInstance->GetSubsystem<USoundManagerSubsystem>())
-			{
-				SoundManager->PlaySFX2D(TEXT("SFX_DoorOpen"));
-			}
-		}
+		Multicast_PlayDoorOpenSound();
 	}
 }
 
@@ -92,6 +84,18 @@ void AMapObject_Door::OpenDoor(float DeltaTime)
 		Rotation.Yaw = DoorAngle;
 		SetActorRotation(Rotation);
 		SetMapObjectState(EMapObjectState::Active);
+	}
+}
+
+void AMapObject_Door::Multicast_PlayDoorOpenSound_Implementation()
+{
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager =
+			GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX2D(TEXT("SFX_DoorOpen"));
+		}
 	}
 }
 

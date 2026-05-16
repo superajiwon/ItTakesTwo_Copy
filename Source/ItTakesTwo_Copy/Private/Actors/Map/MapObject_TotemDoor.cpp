@@ -39,14 +39,7 @@ void AMapObject_TotemDoor::Tick(float DeltaTime)
 	if (!bOpening && AllTotemCheckActivate())
 	{
 		bOpening = true;
-
-		if (UGameInstance* GameInstance = GetGameInstance())
-		{
-			if (USoundManagerSubsystem* SoundManager = GameInstance->GetSubsystem<USoundManagerSubsystem>())
-			{
-				SoundManager->PlaySFX2D(TEXT("Ogre_DoorOpen"));
-			}
-		}
+		Multicast_PlayDoorOpenSound();
 	}
 	if (bOpening)
 		OpenDoor(DeltaTime);
@@ -99,6 +92,18 @@ void AMapObject_TotemDoor::OpenDoor(float DeltaTime)
 		
 		
 		SetActorTickEnabled(false);
+	}
+}
+
+void AMapObject_TotemDoor::Multicast_PlayDoorOpenSound_Implementation()
+{
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager =
+			GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX2D(TEXT("Ogre_DoorOpen"));
+		}
 	}
 }
 

@@ -67,4 +67,7 @@ struct FVFXSpawnRep_Info
 	
 	UPROPERTY()
 	FVFXCollision_Info OverlapExplosionCollisionInfo;
+	
+	UPROPERTY()
+	FName SpawnSoundId{NAME_None};
 };
