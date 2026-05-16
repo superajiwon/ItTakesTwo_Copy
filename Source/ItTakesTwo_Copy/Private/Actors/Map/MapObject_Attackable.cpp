@@ -111,15 +111,17 @@ void AMapObject_Attackable::DestroyObject()
 {
 	if (!HasAuthority() || bDestroyed)
 		return;
-	
 	bDestroyed = true;
 	CurrentHP = 0.f;
 
 	HitCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	if (GeometryCollection)
 	{
 		GeometryCollection->SetCollisionProfileName(FName("MapObject_Crush"));
 	}
+
+	Multicast_PlayDestroySound(DestroySoundId);
 	PlayDestroyEffect(LastHitLocation, LastHitDirection);
 
 	FTimerHandle DestroyTimerHandle;
@@ -148,47 +150,19 @@ void AMapObject_Attackable::Multicast_ShowDamageUI_Implementation(float DamageAm
 }
 
 
-void AMapObject_Attackable::PlayDestroyEffect(const FVector& HitLocation, const FVector& HitDirection)
+void AMapObject_Attackable::Multicast_PlayDestroySound_Implementation(FName SoundId)
 {
-	
-	
-	if (!DestroySoundId.IsNone())
-	{
-		if (UGameInstance* GameInstance = GetGameInstance())
-		{
-			if (USoundManagerSubsystem* SoundManager =
-				GameInstance->GetSubsystem<USoundManagerSubsystem>())
-			{
-				SoundManager->PlaySFX2D(DestroySoundId);
-			}
-		}
-	}
-	
-	if (!GeometryCollection)
+	if (SoundId.IsNone())
 		return;
 
-	GeometryCollection->SetCollisionProfileName(FName("MapObject_Crush"));
-	GeometryCollection->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-
-	GeometryCollection->SetSimulatePhysics(true);
-
-	const FVector Center = GeometryCollection->GetComponentLocation();
-	const FVector Dir = HitDirection.GetSafeNormal();
-
-	GeometryCollection->AddImpulse(
-	Dir * 500.f, // 어디서 어느 방향으로 때렸는지 받아와야 할듯
-	NAME_None,
-	true
-);
-
-	// 살짝 퍼지는 힘
-	GeometryCollection->AddRadialImpulse(
-		HitLocation,
-		500.f,
-		300.f,
-		ERadialImpulseFalloff::RIF_Linear,
-		true
-	);
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager =
+			GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX2D(SoundId);
+		}
+	}
 }
 
 
@@ -224,3 +198,32 @@ void AMapObject_Attackable::DestroyAfterDelay()
 	Destroy();
 }
 
+void AMapObject_Attackable::PlayDestroyEffect(const FVector& HitLocation, const FVector& HitDirection)
+{
+	
+	if (!GeometryCollection)
+		return;
+
+	GeometryCollection->SetCollisionProfileName(FName("MapObject_Crush"));
+	GeometryCollection->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	GeometryCollection->SetSimulatePhysics(true);
+
+	const FVector Center = GeometryCollection->GetComponentLocation();
+	const FVector Dir = HitDirection.GetSafeNormal();
+
+	GeometryCollection->AddImpulse(
+	Dir * 500.f, // 어디서 어느 방향으로 때렸는지 받아와야 할듯
+	NAME_None,
+	true
+);
+
+	// 살짝 퍼지는 힘
+	GeometryCollection->AddRadialImpulse(
+		HitLocation,
+		500.f,
+		300.f,
+		ERadialImpulseFalloff::RIF_Linear,
+		true
+	);
+}

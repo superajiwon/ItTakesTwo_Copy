@@ -44,14 +44,7 @@ void AMapObject_Button::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		if (PlayerCount == 0)
 		{
-			if (UGameInstance* GameInstance = GetGameInstance())
-			{
-				if (USoundManagerSubsystem* SoundManager =
-					GameInstance->GetSubsystem<USoundManagerSubsystem>())
-				{
-					SoundManager->PlaySFX3D(TEXT("SFX_ButtonPress"), GetActorLocation());
-				}
-			}
+			Multicast_PlayButtonPressSound();
 		}
 
 		CurrentState = EMapObjectState::AfterPressed;
@@ -80,5 +73,17 @@ void AMapObject_Button::NotifyActorEndOverlap(AActor* OtherActor)
 void AMapObject_Button::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AMapObject_Button::Multicast_PlayButtonPressSound_Implementation()
+{
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (USoundManagerSubsystem* SoundManager =
+			GameInstance->GetSubsystem<USoundManagerSubsystem>())
+		{
+			SoundManager->PlaySFX2D(TEXT("SFX_ButtonPress"));
+		}
+	}
 }
 

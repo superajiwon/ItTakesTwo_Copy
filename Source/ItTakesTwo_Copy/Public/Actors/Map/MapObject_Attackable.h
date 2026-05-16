@@ -49,6 +49,10 @@ public:
 	TSubclassOf<AFloatingUIActor> FloatingUIClass;
 	UFUNCTION(NetMulticast, Unreliable)
 	void Multicast_ShowDamageUI(float DamageAmount, FVector SpawnLocation);
+private:
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayDestroySound(FName SoundId);
+	
 	
 protected:
 	UPROPERTY(VisibleAnywhere)

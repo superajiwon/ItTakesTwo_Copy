@@ -25,6 +25,10 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 	
+private:
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayButtonPressSound();
+	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBoxComponent> BoxComponent;

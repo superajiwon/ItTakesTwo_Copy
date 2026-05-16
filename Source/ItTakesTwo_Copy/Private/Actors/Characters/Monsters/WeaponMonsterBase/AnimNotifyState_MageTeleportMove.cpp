@@ -4,22 +4,23 @@ void UAnimNotifyState_MageTeleportMove::NotifyBegin(USkeletalMeshComponent* Mesh
 	float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
-	
+
 	if (!MeshComp)
 		return;
 
 	StartLocation = MeshComp->GetRelativeLocation();
+	TargetLocation = StartLocation;
+
 	ElapsedTime = 0.f;
 	Duration = FMath::Max(TotalDuration, KINDA_SMALL_NUMBER);
 
 	if (MoveMode == EMageTeleportMoveMode::Enter)
 	{
-		TargetLocation = StartLocation + FVector(0.f, 0.f, OffsetZ);
+		TargetLocation.Z = HiddenMeshZ;   // 무조건 땅속
 	}
 	else
 	{
-		TargetLocation = StartLocation - FVector(0.f, 0.f, OffsetZ);
-		TargetLocation.Z = FMath::Max(TargetLocation.Z, -125.f);
+		TargetLocation.Z = VisibleMeshZ;  // 무조건 원래 보이는 위치
 	}
 }
 
@@ -27,7 +28,7 @@ void UAnimNotifyState_MageTeleportMove::NotifyTick(USkeletalMeshComponent* MeshC
 	float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
-	
+
 	if (!MeshComp)
 		return;
 
@@ -35,12 +36,14 @@ void UAnimNotifyState_MageTeleportMove::NotifyTick(USkeletalMeshComponent* MeshC
 
 	const float Alpha = FMath::Clamp(ElapsedTime / Duration, 0.f, 1.f);
 
-	FVector NewLocation = FMath::Lerp(
-		StartLocation,
-		TargetLocation,
+	FVector NewLocation = StartLocation;
+
+	NewLocation.Z = FMath::Lerp(
+		StartLocation.Z,
+		TargetLocation.Z,
 		Alpha
 	);
-	NewLocation.Z = FMath::Min(NewLocation.Z, -125.f);
+
 	MeshComp->SetRelativeLocation(
 		NewLocation,
 		false,
@@ -53,13 +56,23 @@ void UAnimNotifyState_MageTeleportMove::NotifyEnd(USkeletalMeshComponent* MeshCo
 	const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyEnd(MeshComp, Animation, EventReference);
-	
+
 	if (!MeshComp)
 		return;
-	FVector FinalLocation = TargetLocation;
-	FinalLocation.Z = FMath::Min(FinalLocation.Z, -125.f);
+
+	FVector FinalLocation = MeshComp->GetRelativeLocation();
+
+	if (MoveMode == EMageTeleportMoveMode::Enter)
+	{
+		FinalLocation.Z = HiddenMeshZ;
+	}
+	else
+	{
+		FinalLocation.Z = VisibleMeshZ;
+	}
+
 	MeshComp->SetRelativeLocation(
-		TargetLocation,
+		FinalLocation,
 		false,
 		nullptr,
 		ETeleportType::TeleportPhysics

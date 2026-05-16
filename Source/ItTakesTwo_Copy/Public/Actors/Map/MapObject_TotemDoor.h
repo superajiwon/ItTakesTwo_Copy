@@ -23,7 +23,8 @@ protected:
 private:
 	bool AllTotemCheckActivate();
 	void OpenDoor(float DeltaTime);
-	
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayDoorOpenSound();
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="TotemDoor|MapObject")
 	TArray<TObjectPtr<AMapObject_Totem>> TotemList;

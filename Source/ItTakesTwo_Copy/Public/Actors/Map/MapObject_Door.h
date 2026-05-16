@@ -23,7 +23,8 @@ protected:
 
 private:
 	void OpenDoor(float DeltaTime);
-
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayDoorOpenSound();
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MapObject_Button")
 	int32 ButtonCount{1};
