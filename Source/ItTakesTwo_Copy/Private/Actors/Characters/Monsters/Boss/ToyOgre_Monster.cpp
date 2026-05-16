@@ -372,14 +372,11 @@ void AToyOgre_Monster::Multicast_StartHoleEnter_Implementation(
 			if (USoundManagerSubsystem* SoundManager =
 				GameInstance->GetSubsystem<USoundManagerSubsystem>())
 			{
-				if (bUse3DSound)
-				{
-					SoundManager->PlaySFX3D(SoundId, SoundLocation);
-				}
-				else
-				{
-					SoundManager->PlaySFX2D(SoundId);
-				}
+				SoundManager->PlaySFX2D(SoundId);
+				// if (bUse3DSound)
+				// 	SoundManager->PlaySFX3D(SoundId, SoundLocation);
+				// else
+				// 	SoundManager->PlaySFX2D(SoundId);
 			}
 		}
 	}

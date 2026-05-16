@@ -2,7 +2,7 @@
 
 
 #include "Shared/Actor/VFXObject.h"
-
+#include "Shared/Subsystems/SoundManagerSubsystem.h"
 #include "NiagaraComponent.h"
 #include "Actors/Characters/CharacterBase.h"
 #include "Components/BoxComponent.h"
@@ -274,12 +274,6 @@ void AVFXObject::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeti
 
 void AVFXObject::OnRep_VFXRepState()
 {
-	// UE_LOG(LogTemp, Warning, TEXT("[VFX OnRep] %s bUsing=%d Asset=%s ActivationId=%d"),
-	// 	*GetName(),
-	// 	VFXRepState.bUsing,
-	// 	*GetNameSafe(Cast<UObject>(VFXRepState.NiagaraAsset)),
-	// 	VFXRepState.ActivationId);
-	
 	if (!VFXRepState.bUsing)
 	{
 		FinishVisualState();
@@ -304,7 +298,24 @@ void AVFXObject::OnRep_VFXRepState()
 	SpawnInfo.OverlapExplosionLifeTime = VFXRepState.OverlapExplosionLifeTime;
 	SpawnInfo.OverlapExplosionCollisionInfo = VFXRepState.OverlapExplosionCollisionInfo;
 	SpawnInfo.SpawnSoundId = VFXRepState.SpawnSoundId;
+
 	ApplyVisualState(SpawnInfo);
+
+	const bool bIsExplosion =
+		SpawnInfo.VFXType == EVFXSpawnType::Explosion_Once ||
+		SpawnInfo.VFXType == EVFXSpawnType::Explosion_LifeTime;
+
+	if (bIsExplosion && !SpawnInfo.SpawnSoundId.IsNone())
+	{
+		if (UGameInstance* GameInstance = GetGameInstance())
+		{
+			if (USoundManagerSubsystem* SoundManager =
+				GameInstance->GetSubsystem<USoundManagerSubsystem>())
+			{
+				SoundManager->PlaySFX2D(SpawnInfo.SpawnSoundId);
+			}
+		}
+	}
 }
 
 void AVFXObject::SetVFXRepStateFromSpawnInfo(const FVFXSpawn_Info& SpawnInfo)

@@ -138,7 +138,7 @@ void AVFXExplosionObject::UseVFXObject(const FVFXSpawn_Info& SpawnInfo)
 	if (!SoundManager)
 		return;
 
-	SoundManager->PlaySFX3D(SpawnInfo.SpawnSoundId, GetActorLocation());
+	SoundManager->PlaySFX2D(SpawnInfo.SpawnSoundId);
 }
 void AVFXExplosionObject::FinishVFXObject()
 {

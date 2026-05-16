@@ -11,25 +11,44 @@ AITTPlayerController::AITTPlayerController()
 {
 	
 }
-
 void AITTPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
 	if (!IsLocalController())
 		return;
 
 	FInputModeGameOnly InputMode;
 	SetInputMode(InputMode);
 	bShowMouseCursor = false;
-	
-	// [추가] 레벨이 시작되자마자(로딩 중) 플레이어의 입력을 막습니다.
+
 	SetIgnoreMoveInput(true);
 	SetIgnoreLookInput(true);
-	
+
 	if (UITTGameInstance* ITTGI = GetGameInstance<UITTGameInstance>())
 	{
-		// 로딩 완료 이벤트를 받아 HUD 생성 조건 확인
-		ITTGI->OnDungeonLoadingFinished.AddUObject(this, &AITTPlayerController::DungeonLoadingFinished);
+		ITTGI->OnDungeonLoadingFinished.AddUObject(
+			this,
+			&AITTPlayerController::DungeonLoadingFinished
+		);
+
+		GetWorldTimerManager().SetTimerForNextTick(
+			FTimerDelegate::CreateWeakLambda(this, [this, ITTGI]()
+			{
+				if (!GetWorld())
+					return;
+
+				const FString MapName = GetWorld()->GetMapName();
+				const bool bIsDungeonMap =
+					MapName.EndsWith(TEXT("Lv_Dungeon")) ||
+					MapName.EndsWith(TEXT("Lv_CowDungeon"));
+
+				if (bIsDungeonMap && !ITTGI->IsGameplayPausedForLoading())
+				{
+					DungeonLoadingFinished(GetWorld());
+				}
+			})
+		);
 	}
 }
 
