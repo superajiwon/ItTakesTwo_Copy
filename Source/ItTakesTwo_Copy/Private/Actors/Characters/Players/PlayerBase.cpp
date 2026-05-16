@@ -152,7 +152,7 @@ void APlayerBase::PlayHitSFX()
 	if (USoundManagerSubsystem* SoundManager = GetGameInstance()->GetSubsystem<USoundManagerSubsystem>())
 	{
 		SoundManager->PlaySFX2D(HitSFXID);
-		UE_LOG(LogTemp, Warning, TEXT("플레이 되는거 맞아? 왜?안돼 : %s"), *HitSFXID.ToString());
+		// UE_LOG(LogTemp, Warning, TEXT("플레이 되는거 맞아? 왜?안돼 : %s"), *HitSFXID.ToString());
 	}
 }
 

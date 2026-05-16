@@ -10,6 +10,7 @@
 class UHPComponent;
 class UStatComponent;
 class UWidgetComponent;
+class AFloatingUIActor;
 
 UCLASS()
 class ITTAKESTWO_COPY_API ACharacterBase : public ACharacter, public IDamagable, public IHealable
@@ -76,4 +77,8 @@ public:
 	UFUNCTION(NetMulticast, Unreliable)
 	void Multicast_PlayCamShake(float Scale = 1.0f);
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effect")
+	TSubclassOf<AFloatingUIActor> FloatingUIClass;
+	UFUNCTION(NetMulticast, Unreliable)
+	void Multicast_ShowDamageUI(float DamageAmount, FVector SpawnLocation);
 };

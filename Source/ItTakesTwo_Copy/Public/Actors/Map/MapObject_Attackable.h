@@ -7,6 +7,7 @@
 #include "Interfaces/Damagable.h"
 #include "MapObject_Attackable.generated.h"
 
+class AFloatingUIActor;
 class UBoxComponent;
 class UGeometryCollectionComponent;
 UCLASS()
@@ -44,6 +45,10 @@ public:
 		return bDestroyed;
 	}
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effect")
+	TSubclassOf<AFloatingUIActor> FloatingUIClass;
+	UFUNCTION(NetMulticast, Unreliable)
+	void Multicast_ShowDamageUI(float DamageAmount, FVector SpawnLocation);
 	
 protected:
 	UPROPERTY(VisibleAnywhere)

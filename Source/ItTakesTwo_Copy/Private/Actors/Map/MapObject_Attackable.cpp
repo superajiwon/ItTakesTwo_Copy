@@ -6,6 +6,8 @@
 #include "GeometryCollection/GeometryCollectionComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Shared/Subsystems/SoundManagerSubsystem.h"
+#include "UI/Actor/FloatingUIActor.h"
+#include "UI/UIManager/FloatingUIPoolSubsystem.h"
 
 AMapObject_Attackable::AMapObject_Attackable()
 {
@@ -78,6 +80,10 @@ void AMapObject_Attackable::Damage(float DamageAmount, AActor* Causer)
 		LastHitDirection = GetActorForwardVector();
 	}
 	ApplyDamage(DamageAmount);
+
+	// Floating UI (데미지 UI)
+	FVector SpawnLocation = GetActorLocation() + FVector(0.0f, 0.0f, 88.0f);
+	Multicast_ShowDamageUI(DamageAmount, SpawnLocation);
 }
 
 void AMapObject_Attackable::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -105,7 +111,6 @@ void AMapObject_Attackable::DestroyObject()
 {
 	if (!HasAuthority() || bDestroyed)
 		return;
-
 	
 	bDestroyed = true;
 	CurrentHP = 0.f;
@@ -126,6 +131,22 @@ void AMapObject_Attackable::DestroyObject()
 		false
 	);
 }
+
+
+void AMapObject_Attackable::Multicast_ShowDamageUI_Implementation(float DamageAmount, FVector SpawnLocation)
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (UFloatingUIPoolSubsystem* PoolSubsystem = World->GetSubsystem<UFloatingUIPoolSubsystem>())
+		{
+			if (AFloatingUIActor* FloatingActor = PoolSubsystem->GetFloatingUIActor(FloatingUIClass, SpawnLocation))
+			{
+				FloatingActor->ActivateFloatingUI(FText::AsNumber(DamageAmount), FLinearColor::Red);
+			}
+		}
+	}
+}
+
 
 void AMapObject_Attackable::PlayDestroyEffect(const FVector& HitLocation, const FVector& HitDirection)
 {
@@ -169,6 +190,7 @@ void AMapObject_Attackable::PlayDestroyEffect(const FVector& HitLocation, const 
 		true
 	);
 }
+
 
 void AMapObject_Attackable::OnRep_CurrentHP()
 {

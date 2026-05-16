@@ -6,6 +6,8 @@
 #include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/InGameHPBar.h"
+#include "UI/Actor/FloatingUIActor.h"
+#include "UI/UIManager/FloatingUIPoolSubsystem.h"
 
 ACharacterBase::ACharacterBase()
 {
@@ -75,7 +77,12 @@ void ACharacterBase::Damage(float DamageAmount, AActor* Causer)
 	IDamagable::Damage(DamageAmount, Causer);
 	
 	GetHPComponent()->ApplyDamage(DamageAmount, Causer);
-	
+		
+	if (HasAuthority())
+	{
+		FVector SpawnLocation = GetActorLocation() + FVector(0.0f, 0.0f, 88.0f);
+		Multicast_ShowDamageUI(DamageAmount, SpawnLocation);
+	}
 }
 
 void ACharacterBase::PlayCamShake(float Scale)
@@ -101,6 +108,20 @@ void ACharacterBase::Multicast_PlayCamShake_Implementation(float Scale)
 		if (PC && PC->PlayerCameraManager)
 		{
 			PC->PlayerCameraManager->StartCameraShake(CamShake, Scale);
+		}
+	}
+}
+
+void ACharacterBase::Multicast_ShowDamageUI_Implementation(float DamageAmount, FVector SpawnLocation)
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (UFloatingUIPoolSubsystem* PoolSubsystem = World->GetSubsystem<UFloatingUIPoolSubsystem>())
+		{
+			if (AFloatingUIActor* FloatingActor = PoolSubsystem->GetFloatingUIActor(FloatingUIClass, SpawnLocation))
+			{
+				FloatingActor->ActivateFloatingUI(FText::AsNumber(DamageAmount), FLinearColor::Red);
+			}
 		}
 	}
 }

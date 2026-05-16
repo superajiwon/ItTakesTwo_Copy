@@ -22,7 +22,6 @@ bool UCombatSystem::ProcessHit(const FHitRequest& Request)
 			AttackerPlayer->PlayHitSFX();
 		}
 
-		
 		DamagableTarget->Damage(Request.Damage, Request.Attacker);
 		
 		return true;
