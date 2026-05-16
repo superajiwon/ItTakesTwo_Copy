@@ -58,7 +58,7 @@ void UInGameHPBar::SetPercent(float FillValue)
 
 void UInGameHPBar::HitBarMovement()
 {
-	double Val = FMath::FInterpTo(Hit, Fill, GetWorld()->GetDeltaSeconds(), 5.0f);
+	double Val = FMath::FInterpTo(Hit, Fill, GetWorld()->GetDeltaSeconds(), 1.0f);
 	SetHit(Val);
 	
 	if (Hit <= Fill || FMath::IsNearlyEqual(Hit, Fill, 0.001f))

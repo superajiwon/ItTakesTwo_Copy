@@ -15,6 +15,8 @@
 
 AMayCharacter::AMayCharacter()
 {
+	this->Tags.AddUnique(TEXT("May"));
+	
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> TempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Models/Characters/May_Castle/SkeletalMeshes/May_Castle.May_Castle'"));
 	if (TempMesh.Succeeded())
 	{

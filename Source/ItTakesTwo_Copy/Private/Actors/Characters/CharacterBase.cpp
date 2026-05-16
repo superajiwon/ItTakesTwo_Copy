@@ -80,8 +80,14 @@ void ACharacterBase::Damage(float DamageAmount, AActor* Causer)
 		
 	if (HasAuthority())
 	{
+		FLinearColor Color = FLinearColor::Red;
+		if (Causer->ActorHasTag(TEXT("May")))
+			Color = FLinearColor::Blue;
+		if (Causer->ActorHasTag(TEXT("Cody")))
+			Color = FLinearColor::Green;
+			
 		FVector SpawnLocation = GetActorLocation() + FVector(0.0f, 0.0f, 88.0f);
-		Multicast_ShowDamageUI(DamageAmount, SpawnLocation);
+		Multicast_ShowDamageUI(DamageAmount, SpawnLocation, Color);
 	}
 }
 
@@ -112,7 +118,7 @@ void ACharacterBase::Multicast_PlayCamShake_Implementation(float Scale)
 	}
 }
 
-void ACharacterBase::Multicast_ShowDamageUI_Implementation(float DamageAmount, FVector SpawnLocation)
+void ACharacterBase::Multicast_ShowDamageUI_Implementation(float DamageAmount, FVector SpawnLocation, FLinearColor SpawnColor)
 {
 	if (UWorld* World = GetWorld())
 	{
@@ -120,7 +126,7 @@ void ACharacterBase::Multicast_ShowDamageUI_Implementation(float DamageAmount, F
 		{
 			if (AFloatingUIActor* FloatingActor = PoolSubsystem->GetFloatingUIActor(FloatingUIClass, SpawnLocation))
 			{
-				FloatingActor->ActivateFloatingUI(FText::AsNumber(DamageAmount), FLinearColor::Red);
+				FloatingActor->ActivateFloatingUI(FText::AsNumber(DamageAmount), SpawnColor);
 			}
 		}
 	}

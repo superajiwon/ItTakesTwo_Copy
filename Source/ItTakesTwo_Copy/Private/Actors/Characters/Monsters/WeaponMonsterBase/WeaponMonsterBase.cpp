@@ -23,11 +23,9 @@ AWeaponMonsterBase::AWeaponMonsterBase()
 	HPUIComp->SetupAttachment(GetCapsuleComponent());
 	static ConstructorHelpers::FClassFinder<UUserWidget> HPWidgetAsset(TEXT("/Game/UI/Blueprints/WBP_InGameHPBar.WBP_InGameHPBar_C"));
 	if (HPWidgetAsset.Succeeded()) HPUIComp->SetWidgetClass(HPWidgetAsset.Class);
-	float Height = GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 50.0f;
-	HPUIComp->SetRelativeLocation(FVector(0.0f, 0.0f, Height));
+	HPUIComp->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
 	HPUIComp->SetWidgetSpace(EWidgetSpace::Screen);
 	HPUIComp->SetDrawSize(FVector2D(50.0f, 10.0f));
-	
 }
 
 void AWeaponMonsterBase::BeginPlay()
