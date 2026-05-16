@@ -80,5 +80,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effect")
 	TSubclassOf<AFloatingUIActor> FloatingUIClass;
 	UFUNCTION(NetMulticast, Unreliable)
-	void Multicast_ShowDamageUI(float DamageAmount, FVector SpawnLocation);
+	void Multicast_ShowDamageUI(float DamageAmount, FVector SpawnLocation, FLinearColor SpawnColor = FLinearColor::Red);
 };

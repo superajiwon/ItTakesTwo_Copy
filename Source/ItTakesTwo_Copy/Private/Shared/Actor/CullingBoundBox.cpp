@@ -7,6 +7,7 @@
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Components/BoxComponent.h"
 #include "Components/LightComponent.h"
+#include "Components/WidgetComponent.h"
 
 ACullingBoundBox::ACullingBoundBox()
 {
@@ -110,6 +111,24 @@ void ACullingBoundBox::SetActiveActor(AActor* Actor, bool bActive)
 
 	Actor->SetActorHiddenInGame(!bActive);
 
+	// === WidgetComponent 컬링 추가 -> HP Bar 
+	TArray<UWidgetComponent*> WidgetComponents;
+	Actor->GetComponents<UWidgetComponent>(WidgetComponents);
+	for (UWidgetComponent* WidgetComp : WidgetComponents)
+	{
+		if (!WidgetComp) continue;
+
+		WidgetComp->SetVisibility(bActive);
+
+		if (UUserWidget* UserWidget = WidgetComp->GetUserWidgetObject())
+		{
+			UserWidget->SetVisibility(
+				bActive ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden
+			);
+		}
+	}
+	// === WidgetComponent 컬링 추가 -> HP Bar 
+	
 	TArray<ULightComponent*> LightComponents;
 	Actor->GetComponents<ULightComponent>(LightComponents);
 

@@ -13,6 +13,8 @@
 
 ACodyCharacter::ACodyCharacter()
 {
+	this->Tags.AddUnique(TEXT("Cody"));
+	
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> TempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Models/Characters/Cody_Wizard/SkeletalMeshes/Cody_Wizard.Cody_Wizard'"));
 	if (TempMesh.Succeeded())
 	{
