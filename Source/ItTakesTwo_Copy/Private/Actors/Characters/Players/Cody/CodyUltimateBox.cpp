@@ -112,7 +112,7 @@ void ACodyUltimateBox::Tick(float DeltaTime)
 		CenterComp->SetRelativeScale3D(FVector(Distance, 1, 1));
 	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("%s, Distance: %f"), *BeamLengthParam.ToString(), Distance);
+	// UE_LOG(LogTemp, Warning, TEXT("%s, Distance: %f"), *BeamLengthParam.ToString(), Distance);
 	Beam->SetVectorParameter(BeamLengthParam, FVector(Distance, 0.0f, 0.0f));
 }
 

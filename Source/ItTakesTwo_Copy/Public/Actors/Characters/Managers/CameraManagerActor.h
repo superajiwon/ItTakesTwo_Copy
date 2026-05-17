@@ -51,8 +51,6 @@ protected:
 	
 	// 에디터에서 설정 가능한 던전 이탈 방지용 투명 박스
 	// 카메라 중심점이 이 박스를 벗어나지 못하도록 Clamp 
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shared Camera")
-	// AVolume* CameraLimitVolume;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shared Camera")
 	bool bUseCameraLimit = false;
 
@@ -63,7 +61,6 @@ protected:
 	// 던전 이탈 방지 최대 한계 좌표 (X, Y, Z)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shared Camera", meta = (EditCondition = "bUseCameraLimit"))
 	FVector CameraLimitMax = FVector(10000.f, 10000.f, 10000.f);
-	
 	
 	// 카메라 이동 부드러움 정도 (값이 클수록 빠름)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shared Camera")

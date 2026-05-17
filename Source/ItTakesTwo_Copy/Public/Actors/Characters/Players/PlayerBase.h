@@ -54,7 +54,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Combat|Movement")
 	bool bIsActionLocked = false;
 	
-	// BeginPlay에서 저장할 기본 이동속도 (잠금 해제 시 복구용)
+	// BeginPlay에서 저장할 기본 이동속도
 	float DefaultMaxWalkSpeed = 500.0f;
 	
 	// 액션 잠금 중(ex. 궁극기) 강제 회전 동기화용 RPC
@@ -90,6 +90,7 @@ public:
 	// Ultimate 시작 시 VFX 재생 (Multicast 범위 내에서 호출됨)
 	virtual void PlayUltimateVFX() {}
 	
+public:
 	// === Combo ===
 	// 현재 콤보 단계 (로컬 상태 — 소유 클라이언트/방장에서만 증가)
 	int32 CurComboIndex = 0;
@@ -106,13 +107,18 @@ public:
 	UFUNCTION()
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 	
-	
+public:
 	//=== Death & Revive ===
 	UFUNCTION()
 	virtual void OnPlayerDeath();
 	
 	UFUNCTION()
 	virtual void OnPlayerRevive();
+	
+	FTimerHandle RespawnTimer;
+	
+	UFUNCTION()
+	void Respawn();
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Niagara")
 	UNiagaraSystem* DeathNiagara;
@@ -123,13 +129,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Niagara")
 	UNiagaraSystem* HitNiagara;
 	
-public:
-	// todo Timer가 아니라 다른걸로 바꿔야함
-	FTimerHandle RespawnTimer;
-	
-	UFUNCTION()
-	void Respawn();
-	
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_PlayDeathNiagara();
 	
@@ -138,7 +137,6 @@ public:
 
 	UFUNCTION(NetMulticast, Unreliable)
 	void Multicast_PlayHitVFX(FVector ImpactPoint);
-	
 	
 public:
 	// === SFX ===
@@ -172,6 +170,4 @@ public:
 	virtual void Ultimate(const FInputActionValue& Value);
 	
 	virtual void Damage(float DamageAmount, AActor* Causer) override;
-	
-	void StopInLoading();
 };

@@ -102,7 +102,7 @@ void UHPComponent::Revive()
 void UHPComponent::EndInvincible()
 {
 	bIsInInvincible = false;
-	UE_LOG(LogTemp, Log, TEXT("jiwon [서버] 피격 가능!"));
+	// UE_LOG(LogTemp, Log, TEXT("jiwon [서버] 피격 가능!"));
 }
 
 void UHPComponent::OnRep_IsDead()

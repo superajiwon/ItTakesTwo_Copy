@@ -85,7 +85,7 @@ void UInGameHPBar::UpdateHP(float CurHp, float MaxHp)
 	if (MaxHp <= 0.0f) return;
 	
 	float Percent = CurHp / MaxHp;
-	UE_LOG(LogTemp, Warning, TEXT("CurHP(%f)/MaxHP(%f) : %f"), CurHp, MaxHp, Percent);
+	// UE_LOG(LogTemp, Warning, TEXT("CurHP(%f)/MaxHP(%f) : %f"), CurHp, MaxHp, Percent);
 	if (Percent >= Fill)
 	{
 		SetFill(Percent);
