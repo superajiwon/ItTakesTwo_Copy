@@ -76,3 +76,6 @@ DerivedDataCache/*
 
 # RiderLink Plugin
 Plugins/Developer/RiderLink/
+
+# md file
+*.md
