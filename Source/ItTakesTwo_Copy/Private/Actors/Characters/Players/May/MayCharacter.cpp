@@ -46,6 +46,7 @@ AMayCharacter::AMayCharacter()
 	UltimateCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Root"));
 	FHitComp_Info UltimateHitCompInfo(FName("Player_MayUltimate"), FName("PlayerWeapon"), FVector(0.0f,0.0f,0.0f), 300.f);
 	UltimateCollision->InitializeHitComp(UltimateHitCompInfo, GetTargetName());
+	UltimateCollision->SetDotInterval(0.3f);
 	UltimateCollision->CollisionOff();
 	
 	AlwaysNiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("AlwaysNiagaraComp"));

@@ -25,6 +25,7 @@ ACodyUltimateBox::ACodyUltimateBox()
 	AttackBox->SetupAttachment(CenterComp);
 	AttackBox->SetRelativeLocation(FVector(0.5f, 0.0f, 0.0f));
 	AttackBox->SetBoxExtent(FVector(0.5f, 50, 50));
+	AttackBox->SetDotInterval(0.3f);
 	AttackBox->CollisionOff();
 	
 	Beam = CreateDefaultSubobject<UNiagaraComponent>("Beam");
