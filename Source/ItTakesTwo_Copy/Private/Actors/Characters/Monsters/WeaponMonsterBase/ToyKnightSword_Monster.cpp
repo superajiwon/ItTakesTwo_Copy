@@ -21,7 +21,7 @@ AToyKnightSword_Monster::AToyKnightSword_Monster()
 	HitBoxComponent->AttachToComponent(RightHand_WeaponMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FHitComp_Info HitCompInfo(FName("Monster"), FName("MonsterWeapon"), FVector(0.f, 0.f, 45.0f), FVector(20.f, 20.f, 40.f));
 	HitBoxComponent->InitializeHitComp(HitCompInfo, GetTargetName());
-	HitBoxComponent->SetDamage(40);
+	HitBoxComponent->SetDamage(20);
 	HitBoxComponent->CollisionOff();
 }
 
