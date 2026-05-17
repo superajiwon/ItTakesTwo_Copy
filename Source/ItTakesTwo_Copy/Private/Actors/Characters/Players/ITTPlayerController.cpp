@@ -5,6 +5,7 @@
 #include "Shared/ITTGameInstance.h"
 #include "UI/UIManager/UIMangerSubsystem.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameFramework/GameModeBase.h"
 #include "Shared/Subsystems/SoundManagerSubsystem.h"
 
 AITTPlayerController::AITTPlayerController()
@@ -126,11 +127,29 @@ void AITTPlayerController::TryCreateHUD()
 	}
 }
 
+// void AITTPlayerController::ExecuteServerTravel(FString MapName)
+// {
+// 	if (HasAuthority())
+// 	{
+// 		UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to %s"), *MapName);
+// 		GetWorld()->ServerTravel(MapName, false);
+// 		// GetWorld()->ServerTravel(MapName, true);
+// 	}
+// }
+
 void AITTPlayerController::ExecuteServerTravel(FString MapName)
 {
 	if (HasAuthority())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to %s"), *MapName);
-		GetWorld()->ServerTravel(MapName, true);
+		
+		// 인게임(던전)에서는 하드 트래블 시 클라이언트가 튕길 수 있으므로 심리스 트래블(Seamless Travel)을 활성화해야 합니다.
+		if (AGameModeBase* GM = GetWorld()->GetAuthGameMode())
+		{
+			GM->bUseSeamlessTravel = true;
+		}
+		
+		// 심리스 트래블 시 옵션 유지를 위해 false 사용
+		GetWorld()->ServerTravel(MapName, false);
 	}
 }
