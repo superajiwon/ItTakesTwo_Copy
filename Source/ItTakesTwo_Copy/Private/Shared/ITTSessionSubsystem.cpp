@@ -384,7 +384,11 @@ void UITTSessionSubsystem::OnSessionUserInviteAccepted(bool bWasSuccessful, int3
 		UE_LOG(LogTemp, Error, TEXT("OnSessionUserInviteAccepted failed: InviteResult is invalid."));
 		return;
 	}
-
+	
+	// 호스트 닉네임 저장
+	CachedFriendSteamId = InviteResult.Session.OwningUserName;
+	UE_LOG(LogTemp, Warning, TEXT("[Client] Host Name successfully cached from invite: %s"), *CachedFriendSteamId);
+	
 	JoinSessionByResult(InviteResult);
 }
 
