@@ -9,6 +9,7 @@
 #include "Shared/Struct/HitComp_Info.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Components/StatComponent.h"
 #include "Net/UnrealNetwork.h"
 
 ACodyCharacter::ACodyCharacter()
@@ -90,7 +91,7 @@ void ACodyCharacter::SetWeaponCollision(bool bEnable)
 
 	if (bEnable)
 	{
-		int32 RandDamage = FMath::RandRange(5, 18);
+		int32 RandDamage = GetStatComponent()->GetRandAttackPower();
 		BaseCollision->SetDamage(RandDamage);
 		BaseCollision->CollisionOn();
 	}

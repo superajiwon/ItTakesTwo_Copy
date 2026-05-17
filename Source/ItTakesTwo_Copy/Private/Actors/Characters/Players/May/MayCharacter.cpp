@@ -6,6 +6,7 @@
 #include "GameFramework/RootMotionSource.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Components/StatComponent.h"
 #include "Shared/Components/DotHitSphereComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
@@ -92,7 +93,7 @@ void AMayCharacter::SetWeaponCollision(bool bEnable)
 	
 	if (bEnable)
 	{
-		int32 RandDamage = FMath::RandRange(5, 18);
+		int32 RandDamage = GetStatComponent()->GetRandAttackPower();
 		SwordCollision->SetDamage(RandDamage);
 		SwordCollision->CollisionOn();
 	}

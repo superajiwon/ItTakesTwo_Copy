@@ -2,6 +2,7 @@
 #include "Actors/Characters/Players/May/MayAnimInstance.h"
 
 #include "Actors/Characters/Players/May/MayCharacter.h"
+#include "Components/StatComponent.h"
 #include "Shared/Components/DotHitBoxComponent.h"
 #include "Shared/Components/DotHitSphereComponent.h"
 #include "Shared/Components/HitSphereComponent.h"
@@ -33,7 +34,7 @@ void UMayAnimInstance::AnimNotify_SpecialOn()
 	auto* Owner = Cast<AMayCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
-	int32 RandDamage = FMath::RandRange(5, 18);
+	int32 RandDamage = Owner->GetStatComponent()->GetRandAttackPower();
 	Owner->SpecialCollision->SetDamage(RandDamage);
 	Owner->SpecialCollision->CollisionOn();
 	
@@ -57,7 +58,7 @@ void UMayAnimInstance::AnimNotify_UltimateOn()
 	auto* Owner = Cast<AMayCharacter>(GetOwningActor());
 	if (!Owner) return;
 	
-	int32 RandDamage = FMath::RandRange(5, 18);
+	int32 RandDamage = Owner->GetStatComponent()->GetRandAttackPower();
 	Owner->UltimateCollision->SetDamage(RandDamage);
 	Owner->UltimateCollision->CollisionOn();
 }
