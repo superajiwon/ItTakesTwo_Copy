@@ -125,3 +125,9 @@ void AITTPlayerController::TryCreateHUD()
 		bHUDCreated = true;
 	}
 }
+
+void AITTPlayerController::ExecuteServerTravel(FString MapName)
+{
+	UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to %s"), *MapName);
+	GetWorld()->ServerTravel(MapName, true);
+}

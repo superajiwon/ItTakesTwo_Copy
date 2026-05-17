@@ -16,6 +16,9 @@ class ITTAKESTWO_COPY_API AITTPlayerController : public APlayerController
 public:
 	AITTPlayerController();
 	
+	UFUNCTION(BlueprintCallable, Category="Network")
+	void ExecuteServerTravel(FString MapName);
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -26,7 +29,6 @@ private:
 	void DungeonLoadingFinished(UWorld* LoadedWorld);
 	void TryCreateHUD();
 
-	
 	
 private:
 	bool bDungeonLoadingFinished = false;
