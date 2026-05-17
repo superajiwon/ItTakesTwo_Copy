@@ -25,6 +25,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 protected:
 	void StartLoopSound();
 	void StopLoopSound();
@@ -34,9 +36,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetAttackerActive(bool bActive);
 	
-	
+private:
+	UFUNCTION()
+	void OnRep_AttackerActive();
+	void ApplyAttackerActive(bool bActive, bool bApplyGameplay);
+
+
 protected:
-	
+	UPROPERTY(ReplicatedUsing=OnRep_AttackerActive)
+	bool bAttackerActive = true;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Spline")
 	TObjectPtr<AActor> SplineActor;
 

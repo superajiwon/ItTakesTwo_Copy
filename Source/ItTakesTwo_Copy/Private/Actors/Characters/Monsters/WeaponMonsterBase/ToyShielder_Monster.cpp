@@ -11,7 +11,7 @@ AToyShielder_Monster::AToyShielder_Monster()
 
 	MonsterMoveType = EMonsterMoveType::BasicMove;
 	DetectRadius = 2000.0f;
-	AttackRange = 130.f;
+	AttackRange = 180.f;
 	MaxIdleTime = 0.8f;
 	MoveSpeed = 300.f;
 
@@ -35,20 +35,11 @@ void AToyShielder_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
-	if (MoveComp)
-	{
-		MoveComp->bOrientRotationToMovement = true;
-		MoveComp->bUseControllerDesiredRotation = false;
-		MoveComp->RotationRate = FRotator(0.f, 360.f, 0.f);
-	}
-
-	bUseControllerRotationYaw = false;
-
 	if (RightHand_WeaponMeshComponent)
 	{
 		RightHand_WeaponMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		RightHand_WeaponMeshComponent->SetCollisionProfileName(TEXT("NoCollision"));
+		RightHand_WeaponMeshComponent->SetCanEverAffectNavigation(false);
 	}
 }
 
