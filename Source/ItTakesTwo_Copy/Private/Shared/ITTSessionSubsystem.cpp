@@ -227,6 +227,25 @@ void UITTSessionSubsystem::TrySendPendingInvite()
 	PendingInviteFriendId.Reset();
 }
 
+FString UITTSessionSubsystem::GetMySteamId() const
+{
+	IOnlineSubsystem* OSS = IOnlineSubsystem::Get();
+	if (!OSS)
+		return TEXT("OSS Invalid");
+
+	IOnlineIdentityPtr IdentityInterface = OSS->GetIdentityInterface();
+	if (!IdentityInterface.IsValid())
+		return TEXT("Identity Invalid");
+
+	// 숫자 ID가 아닌 스팀 닉네임 반환
+	return IdentityInterface->GetPlayerNickname(0);
+}
+
+FString UITTSessionSubsystem::GetMyFriendId() const
+{
+	return CachedFriendSteamId;
+}
+
 void UITTSessionSubsystem::ReadSteamFriends()
 {
 	IOnlineFriendsPtr FriendsInterface = Online::GetFriendsInterface(GetWorld());
@@ -258,15 +277,19 @@ TArray<FSteamFriendEntry> UITTSessionSubsystem::GetSteamFriendEntries() const
 
 void UITTSessionSubsystem::InviteFriendByIndex(int32 FriendIndex)
 {
-	
 	if (!CachedFriends.IsValidIndex(FriendIndex))
 	{
 		UE_LOG(LogTemp, Error, TEXT("초대 인덱스 실패"));
 		return;
 	}
+	
 	// 선택한 친구 NetId 저장
 	PendingInviteFriendId = CachedFriends[FriendIndex]->GetUserId();
 	
+	// 친구 닉네임 캐싱 (내가 초대를 보내는 쪽)
+	CachedFriendSteamId = CachedFriends[FriendIndex]->GetDisplayName();
+	UE_LOG(LogTemp, Warning, TEXT("[Invite] Friend Name cached: %s"), *CachedFriendSteamId);
+
 	// 내가 Host가 되기 위해 세션 생성
 	CreateSession(2);
 }
@@ -361,7 +384,11 @@ void UITTSessionSubsystem::OnSessionUserInviteAccepted(bool bWasSuccessful, int3
 		UE_LOG(LogTemp, Error, TEXT("OnSessionUserInviteAccepted failed: InviteResult is invalid."));
 		return;
 	}
-
+	
+	// 호스트 닉네임 저장
+	CachedFriendSteamId = InviteResult.Session.OwningUserName;
+	UE_LOG(LogTemp, Warning, TEXT("[Client] Host Name successfully cached from invite: %s"), *CachedFriendSteamId);
+	
 	JoinSessionByResult(InviteResult);
 }
 

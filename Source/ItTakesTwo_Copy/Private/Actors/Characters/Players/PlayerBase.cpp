@@ -16,6 +16,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NavigationSystem.h"
+#include "Components/StatComponent.h"
 #include "Shared/ITTGameInstance.h"
 #include "Shared/Subsystems/SoundManagerSubsystem.h"
 #include "UI/InGameHPBar.h"
@@ -48,6 +49,8 @@ APlayerBase::APlayerBase()
 	HPUIComp->SetDrawSize(FVector2D(50.0f, 10.0f));
 	
 	GetHPComponent()->SetIsPlayer(true);
+	GetStatComponent()->SetAttackPower(40);
+	GetStatComponent()->SetMinAttackPower(20);
 	
 	// === Input ===
 	ConstructorHelpers::FObjectFinder<UInputMappingContext> TempIMC(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Inputs/IMC_PlayerMapping.IMC_PlayerMapping'"));

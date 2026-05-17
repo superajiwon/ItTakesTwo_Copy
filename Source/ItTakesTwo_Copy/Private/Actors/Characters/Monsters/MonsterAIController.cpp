@@ -353,6 +353,16 @@ void AMonsterAIController::Standing(float DeltaTime)
 	{
 		CurrentTarget = FindNearestPlayer();
 		ReTargetTime = 0.f;
+
+		// 재탐색 후에도 타겟을 못 찾으면 Idle로 복귀
+		if (!CurrentTarget.IsValid())
+		{
+			CurrentIdleTime = 0.0f;
+			if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
+				CachedMonster->SetMonsterState(EMonsterState::Idle);
+			CachedMonster->SetDetectPlayer(false);
+			return;
+		}
 	}
 	
 	if (bRestTime)

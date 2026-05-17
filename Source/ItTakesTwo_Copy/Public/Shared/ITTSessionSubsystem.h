@@ -49,6 +49,16 @@ public:// Steam 초대
 	void TrySendPendingInvite();
 	
 	
+	// 내 Steam ID 반환 (항상 로컬 플레이어 기준)
+	UFUNCTION(BlueprintCallable)
+	FString GetMySteamId() const;
+
+	// 친구 Steam ID 반환
+	// - 내가 초대를 보낸 경우: InviteFriendByIndex() 시 선택한 친구 ID
+	// - 내가 초대를 받은 경우: 나를 초대한 친구(세션 오너) ID
+	UFUNCTION(BlueprintCallable)
+	FString GetMyFriendId() const;
+	
 private:
 	// 친구 목록 찾기
 	void OnReadSteamFriendsComplete(int32 LocalUserNum,	bool bWasSuccessful, const FString& ListName, const FString& ErrorStr);
@@ -93,6 +103,9 @@ private:
 	TArray<FSteamFriendEntry> CachedFriendEntries;
 
 	FUniqueNetIdPtr PendingInviteFriendId;
+	
+	// 초대를 주고받은 친구의 Steam ID (양방향 저장)
+	FString CachedFriendSteamId;
 	
 	FOnSessionUserInviteAcceptedDelegate SessionInviteAcceptedDelegate;
 	FDelegateHandle SessionInviteAcceptedDelegateHandle;
