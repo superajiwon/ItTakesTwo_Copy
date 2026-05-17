@@ -3,6 +3,7 @@
 
 #include "Actors/Characters/Monsters/WeaponMonsterBase/ToyKnightMorningStar_Monster.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
 
@@ -30,7 +31,8 @@ void AToyKnightMorningStar_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 	
-
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
 }
 
 void AToyKnightMorningStar_Monster::AnimNotify_CollisionOn()

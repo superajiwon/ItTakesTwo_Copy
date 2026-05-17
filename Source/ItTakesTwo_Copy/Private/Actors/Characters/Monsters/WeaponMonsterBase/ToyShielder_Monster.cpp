@@ -2,7 +2,6 @@
 
 
 #include "Actors/Characters/Monsters/WeaponMonsterBase/ToyShielder_Monster.h"
-
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
@@ -32,14 +31,27 @@ AToyShielder_Monster::AToyShielder_Monster()
 
 	RightHand_WeaponMeshComponent->SetupAttachment(GetMesh(), FName(TEXT("LeftHandSocket")));
 }
-
 void AToyShielder_Monster::BeginPlay()
 {
 	Super::BeginPlay();
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
+	if (MoveComp)
+	{
+		MoveComp->bOrientRotationToMovement = true;
+		MoveComp->bUseControllerDesiredRotation = false;
+		MoveComp->RotationRate = FRotator(0.f, 360.f, 0.f);
+	}
+
 	bUseControllerRotationYaw = false;
-	
+
+	if (RightHand_WeaponMeshComponent)
+	{
+		RightHand_WeaponMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		RightHand_WeaponMeshComponent->SetCollisionProfileName(TEXT("NoCollision"));
+	}
 }
+
 
 void AToyShielder_Monster::AnimNotify_CollisionOn()
 {
