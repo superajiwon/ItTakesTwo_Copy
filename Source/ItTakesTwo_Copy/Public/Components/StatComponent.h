@@ -26,13 +26,21 @@ public:
 	float GetMoveSpeed() const { return MoveSpeed; }
 	
 	UFUNCTION(BlueprintCallable, Category="Stat")
+	void SetAttackPower(float Value) { AttackPower = Value; }
+	UFUNCTION(BlueprintCallable, Category="Stat")
+	void SetMinAttackPower(float Value) { MinAttackPower = Value; }
+	UFUNCTION(BlueprintCallable, Category="Stat")
 	float GetAttackPower() const { return AttackPower; }
+	UFUNCTION(BlueprintCallable, Category="Stat")
+	float GetRandAttackPower() const { return FMath::RandRange(MinAttackPower, AttackPower); }
 	
 //! 변수
 private:   
 	UPROPERTY(EditAnywhere, Replicated, Category="Stat")
 	float MoveSpeed = 500.0f;
 	
+	UPROPERTY(EditAnywhere, Replicated, Category="Stat")
+	float MinAttackPower = 5.0f;
 	UPROPERTY(EditAnywhere, Replicated, Category="Stat")
 	float AttackPower = 10.0f;
 	

@@ -75,7 +75,7 @@ void UCodyAnimInstance::AnimNotify_UltimateOn()
 	
 	if (Owner->UltimateCollision)
 	{
-		int32 RandDamage = FMath::RandRange(5, 18);
+		int32 RandDamage = Owner->GetStatComponent()->GetRandAttackPower();
 		Owner->UltimateCollision->SetDamage(RandDamage);
 		Owner->UltimateCollision->CollisionOn();
 	}

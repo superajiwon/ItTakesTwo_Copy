@@ -142,7 +142,7 @@ void AVFXProjectileObject::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 					int32 Damage = 0;
 					if (Cast<ACodyCharacter>(VFXInfo.OwnerActor))
 					{
-						Damage = FMath::RandRange(5, 18);
+						Damage = VFXInfo.OwnerActor->GetStatComponent()->GetRandAttackPower();
 					}
 					else
 					{
