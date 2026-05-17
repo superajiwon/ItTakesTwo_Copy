@@ -73,7 +73,7 @@ void AToyArbalist_Monster::ProjectileFire()
 		OverlapNiagara,
 		0.f
 	);
-	
+	SpawnInfo.WithSpawnSound(TEXT("SFX_ArrowExplosion"));
 	PoolSubsystem->UseVFX_Projectile(SpawnInfo);
 }
 

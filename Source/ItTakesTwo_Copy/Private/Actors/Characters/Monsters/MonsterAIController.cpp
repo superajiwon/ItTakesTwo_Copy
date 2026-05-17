@@ -2,7 +2,7 @@
 
 
 #include "Actors/Characters/Monsters/MonsterAIController.h"
-
+#include "Shared/ITTGameInstance.h"
 #include "Actors/Characters/Monsters/MonsterBase.h"
 #include "Actors/Characters/Players/PlayerBase.h"
 #include "Kismet/GameplayStatics.h"
@@ -47,44 +47,37 @@ void AMonsterAIController::OnPossess(APawn* InPawn)
 	MaxIdleTime = CachedMonster->GetMaxIdleTime();
 
 }
-
 void AMonsterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	if (!HasAuthority())
-	{
 		return;
+
+	if (const UITTGameInstance* GI = GetGameInstance<UITTGameInstance>())
+	{
+		if (GI->IsGameplayPausedForLoading())
+		{
+			StopMovement();
+			return;
+		}
 	}
-	
 
 	if (!CachedMonster)
 	{
 		CachedMonster = Cast<AMonsterBase>(GetPawn());
 		if (!CachedMonster)
-		{
 			return;
-		}
 	}
+
 	if (CachedMonster->IsDead())
 	{
 		StopMovement();
 		return;
 	}
-	// FString StateStr = UEnum::GetValueAsString(CachedMonster->GetMonsterState());
-	// DrawDebugString(
-	// 	GetWorld(),
-	// 	CachedMonster->GetActorLocation() + FVector(0, 0, 100.f),
-	// 	StateStr,
-	// 	nullptr,
-	// 	FColor::White,
-	// 	0.f,
-	// 	true
-	// );
 
 	if (CurrentTarget.IsValid())
-	{
 		ReTargetTime += DeltaTime;
-	}
 
 	if (MonsterMoveType == EMonsterMoveType::Teleport &&
 		TeleportStep == ETeleportTypeState::IdleWait &&
@@ -96,9 +89,9 @@ void AMonsterAIController::Tick(float DeltaTime)
 	{
 		CurrentIdleTime += DeltaTime;
 	}
-
 	UpdateMovement(DeltaTime);
 }
+
 
 TObjectPtr<ACharacterBase> AMonsterAIController::FindNearestPlayer() const
 {

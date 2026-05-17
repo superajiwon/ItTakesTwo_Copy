@@ -105,10 +105,24 @@ public:
 	float GetDetectRadius() const;
 	float GetAttackRange() const;
 
-protected:
+public:
+	bool IsGameplayLoadingPaused() const;
+
+private:
+	void UpdateLoadingPauseState();
+
+	
+private:
+	UPROPERTY()
+	bool bPausedForLoading = false;
+
+	UPROPERTY()
+	float SavedMaxWalkSpeed = 0.f;
+	
 	UPROPERTY()
 	bool bDead{false};
 	
+protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bDetectPlayer{false};
 	

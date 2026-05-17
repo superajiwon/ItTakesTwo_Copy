@@ -46,18 +46,19 @@ void AMonsterBase::BeginPlay()
 void AMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	if (const UITTGameInstance* GI = GetGameInstance<UITTGameInstance>())
+
+	UpdateLoadingPauseState();
+
+	if (IsGameplayLoadingPaused())
 	{
-		if (GI->IsGameplayPausedForLoading())
-		{
-			return;
-		}
+		return;
 	}
+
 	if (GetHPComponent()->GetIsDead())
 	{
 		SetMonsterState(EMonsterState::Dead);
 		bDead = true;
+
 		if (AnimInstance)
 		{
 			AnimInstance->CurrentState = EMonsterState::Dead;
@@ -112,6 +113,51 @@ float AMonsterBase::GetDetectRadius() const
 float AMonsterBase::GetAttackRange() const
 {
 	return AttackRange;
+}
+
+bool AMonsterBase::IsGameplayLoadingPaused() const
+{
+	if (const UITTGameInstance* GI = GetGameInstance<UITTGameInstance>())
+		return GI->IsGameplayPausedForLoading();
+	return false;
+}
+
+void AMonsterBase::UpdateLoadingPauseState()
+{
+	const bool bShouldPause = IsGameplayLoadingPaused();
+
+	if (bPausedForLoading == bShouldPause)
+		return;
+
+	bPausedForLoading = bShouldPause;
+
+	if (bShouldPause)
+	{
+		if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+		{
+			SavedMaxWalkSpeed = MoveComp->MaxWalkSpeed;
+			MoveComp->StopMovementImmediately();
+			MoveComp->DisableMovement();
+		}
+
+		if (USkeletalMeshComponent* MeshComp = GetMesh())
+		{
+			MeshComp->bPauseAnims = true;
+		}
+	}
+	else
+	{
+		if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+		{
+			MoveComp->SetMovementMode(MOVE_Walking);
+			MoveComp->MaxWalkSpeed = SavedMaxWalkSpeed > 0.f ? SavedMaxWalkSpeed : MoveSpeed;
+		}
+
+		if (USkeletalMeshComponent* MeshComp = GetMesh())
+		{
+			MeshComp->bPauseAnims = false;
+		}
+	}
 }
 
 void AMonsterBase::MontagePlay()
