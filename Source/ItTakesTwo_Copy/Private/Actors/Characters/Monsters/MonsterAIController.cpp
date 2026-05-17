@@ -232,10 +232,11 @@ void AMonsterAIController::MoveToTarget(float DeltaTime)
 
 	if (!bWasChasing || bTargetChanged)
 	{
+		const float MoveAcceptanceRadius = FMath::Max(0.f, AttackRange - 20.f);
 		MoveToActor(
 			CurrentTarget.Get(),
-			AttackRange,
-			true,
+			MoveAcceptanceRadius,
+			false,
 			true,
 			false
 		);

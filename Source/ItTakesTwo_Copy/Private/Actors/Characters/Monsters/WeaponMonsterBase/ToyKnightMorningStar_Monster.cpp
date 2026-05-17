@@ -13,7 +13,7 @@ AToyKnightMorningStar_Monster::AToyKnightMorningStar_Monster()
 		
 	MonsterMoveType = EMonsterMoveType::BasicMove;
 	DetectRadius = 2000.0f;
-	AttackRange = 100.f;
+	AttackRange = 150.f;
 	MaxIdleTime = 0.8f;
 	MoveSpeed = 300.f;
 	
