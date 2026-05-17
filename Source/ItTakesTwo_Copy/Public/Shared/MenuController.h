@@ -32,7 +32,6 @@ public:
 	UFUNCTION(Client, Reliable, BlueprintCallable, Category = "Menu|Lobby")
 	void Client_UpdateSelectionUI(EPlayerRole HostRole, EPlayerRole ClientRole);
 
-	// 헤더 파일 (.h)
 	UFUNCTION(BlueprintCallable, Category="Network")
 	void ExecuteServerTravel(FString MapName);
 	
