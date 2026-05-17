@@ -109,22 +109,35 @@ void ACodyCharacter::SpecialAttack(const FInputActionValue& Value)
 
 void ACodyCharacter::CodyTeleport(float Distance)
 {
-	FVector StartLocation = GetActorLocation() + FVector(0.0f, 0.0f, 50.0f);
-	FVector DistLocation = StartLocation + (GetActorForwardVector() * Distance);
+	FVector CurrentLocation = GetActorLocation();
+	FVector ForwardVector = GetActorForwardVector();
+	FVector FinalDistLocation = CurrentLocation + (ForwardVector * Distance); // 발바닥 높이 기준
+    
+	FVector StartTrace = CurrentLocation + FVector(0.0f, 0.0f, 50.0f); // 플레이어 중간에서 발사 
+	FVector EndTrace = StartTrace + (ForwardVector * Distance);
+    
 	FHitResult Hit;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
-	
+    
+	// 플레이어의 콜라이더 두께로 체크
+	FCollisionShape SphereShape = FCollisionShape::MakeSphere(GetCapsuleComponent()->GetScaledCapsuleRadius());
+    
 	bool bCanTeleport = false;
-	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, StartLocation, DistLocation, ECC_Visibility, Params);
+    
+	bool bHit = GetWorld()->SweepSingleByChannel(Hit, StartTrace, EndTrace, FQuat::Identity, ECC_Visibility, SphereShape, Params);
 	if (bHit && Hit.GetActor())
 	{
 		bCanTeleport = Hit.GetActor()->ActorHasTag(FName("CanTeleport"));
+        
+		if (!bCanTeleport)
+		{
+			FinalDistLocation = FVector(Hit.Location.X, Hit.Location.Y, CurrentLocation.Z);
+		}
 	}
-	
-	SetActorLocation(DistLocation, !bCanTeleport); // bSweep
+    
+	SetActorLocation(FinalDistLocation, !bCanTeleport); 
 
-	// 이동 완료 후 도착 지점에 VFX 재생 (서버에서 호출 → Multicast로 전파)
 	Multicast_PlayTeleportVFX(GetActorLocation());
 	
 	// bNoCheck = true : 철창이나 좁은 틈새를 무시하고 통과하기 위해 '체크 안 함' 설정! 
