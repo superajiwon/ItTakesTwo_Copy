@@ -3,6 +3,7 @@
 #include "Actors/Characters/Monsters/WeaponMonsterBase/ToyKnightSword_Monster.h"
 
 
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Shared/Components/HitBoxComponent.h"
 #include "Shared/Struct/HitComp_Info.h"
 
@@ -27,7 +28,8 @@ AToyKnightSword_Monster::AToyKnightSword_Monster()
 void AToyKnightSword_Monster::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
 }
 
 void AToyKnightSword_Monster::AnimNotify_CollisionOn()

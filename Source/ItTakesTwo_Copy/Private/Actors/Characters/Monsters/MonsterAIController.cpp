@@ -162,43 +162,53 @@ void AMonsterAIController::UpdateMovement(float DeltaTime)
 
 void AMonsterAIController::MoveToTarget(float DeltaTime)
 {
+	bool bTargetChanged = false;
+
 	if (!CurrentTarget.IsValid())
 	{
 		CurrentTarget = FindNearestPlayer();
 		ReTargetTime = 0.f;
+		bTargetChanged = true;
 	}
+
 	if (ReTargetTime > MaxReTargetTime)
 	{
 		CurrentTarget = FindNearestPlayer();
 		ReTargetTime = 0.f;
+		bTargetChanged = true;
 	}
+
 	if (!CurrentTarget.IsValid())
 	{
 		if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
 			CachedMonster->SetMonsterState(EMonsterState::Idle);
+
 		StopMovement();
 		return;
 	}
+
 	if (bRestTime)
-	{ 
+	{
 		StopMovement();
 		LookAtTargetSmooth(DeltaTime);
-		
+
 		if (CurrentIdleTime < MaxIdleTime)
 			return;
-		
+
 		bRestTime = false;
 		CurrentIdleTime = 0.f;
-		
 	}
-	
-	const float DistanceToTarget = FVector::Dist(CachedMonster->GetActorLocation(), CurrentTarget->GetActorLocation());
-	
+
+	const float DistanceToTarget =
+		FVector::Dist(CachedMonster->GetActorLocation(), CurrentTarget->GetActorLocation());
+
 	if (DistanceToTarget >= DetectRadius)
 	{
 		CurrentTarget = nullptr;
+
 		if (CachedMonster->GetMonsterState() != EMonsterState::Idle)
 			CachedMonster->SetMonsterState(EMonsterState::Idle);
+
 		StopMovement();
 		return;
 	}
@@ -206,16 +216,32 @@ void AMonsterAIController::MoveToTarget(float DeltaTime)
 	if (DistanceToTarget <= AttackRange)
 	{
 		if (CachedMonster->GetMonsterState() != EMonsterState::Swing)
-			CachedMonster->SetMonsterState(EMonsterState::Swing);	
+			CachedMonster->SetMonsterState(EMonsterState::Swing);
+
 		StopMovement();
 		return;
 	}
-	
-	if (CachedMonster->GetMonsterState() != EMonsterState::Chase)
-		CachedMonster->SetMonsterState(EMonsterState::Chase);
 
-	MoveToActor(CurrentTarget.Get());
+	const bool bWasChasing =
+		CachedMonster->GetMonsterState() == EMonsterState::Chase;
+
+	if (!bWasChasing)
+	{
+		CachedMonster->SetMonsterState(EMonsterState::Chase);
+	}
+
+	if (!bWasChasing || bTargetChanged)
+	{
+		MoveToActor(
+			CurrentTarget.Get(),
+			AttackRange,
+			true,
+			true,
+			false
+		);
+	}
 }
+
 
 void AMonsterAIController::MoveToTargetLocation(float DeltaTime)
 {
