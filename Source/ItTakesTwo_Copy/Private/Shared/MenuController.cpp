@@ -66,9 +66,12 @@ void AMenuController::FindSession()
 }
 
 void AMenuController::ExecuteServerTravel(FString MapName)
-{
-	UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to %s"), *MapName);
-	GetWorld()->ServerTravel(MapName, true);
+{	
+	if (HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[Server_StartGame] ServerTravel to %s"), *MapName);
+		GetWorld()->ServerTravel(MapName, true);
+	}
 }
 
 void AMenuController::Server_SelectCharacter_Implementation(EPlayerRole SelectedRole)
@@ -135,8 +138,6 @@ void AMenuController::Server_SelectCharacter_Implementation(EPlayerRole Selected
 
 void AMenuController::Client_UpdateSelectionUI_Implementation(EPlayerRole HostRole, EPlayerRole ClientRole)
 {
-	// 이 함수는 양쪽 PC에서 각자 실행됩니다.
-	// 블루프린트로 구현된 UI 업데이트 노드(OnSelectionUpdated)를 실행시킵니다.
 	OnSelectionUpdated(HostRole, ClientRole);
 }
 
