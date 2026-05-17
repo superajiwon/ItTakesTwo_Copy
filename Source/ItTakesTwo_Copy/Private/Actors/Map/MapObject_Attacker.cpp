@@ -19,11 +19,31 @@ AMapObject_Attacker::AMapObject_Attacker()
 	HitBoxComponent->SetupAttachment(RootComponent);
 	HitBoxComponent->SetDamage(Damage);
 	HitBoxComponent->bAutoResetEndOverlap = true;
+
+	// 히트박스는 충돌 판정용이라 게임 화면에 보이면 안 됨
+	HitBoxComponent->SetVisibility(false, true);
+	HitBoxComponent->SetHiddenInGame(true, true);
 }
 
 void AMapObject_Attacker::BeginPlay()
 {
 	Super::BeginPlay();
+
+	TArray<UPrimitiveComponent*> PrimitiveComponents;
+	GetComponents<UPrimitiveComponent>(PrimitiveComponents);
+
+	for (UPrimitiveComponent* PrimitiveComp : PrimitiveComponents)
+	{
+		if (!PrimitiveComp)
+			continue;
+
+		if (PrimitiveComp->IsA<UMeshComponent>() || PrimitiveComp->IsA<UNiagaraComponent>())
+			continue;
+
+		PrimitiveComp->SetVisibility(false, true);
+		PrimitiveComp->SetHiddenInGame(true, true);
+	}
+
 	if (SplineActor)
 	{
 		SplineComponent = SplineActor->FindComponentByClass<USplineComponent>();
@@ -41,6 +61,9 @@ void AMapObject_Attacker::BeginPlay()
 		HitBoxComponent->InitializeHitComp(HitInfo, FName(TEXT("Player")));
 		HitBoxComponent->SetDamage(static_cast<int32>(Damage));
 		HitBoxComponent->CollisionOn();
+
+		HitBoxComponent->SetVisibility(false, true);
+		HitBoxComponent->SetHiddenInGame(true, true);
 	}
 	
 	if (!SplineComponent)
@@ -49,9 +72,9 @@ void AMapObject_Attacker::BeginPlay()
 		return;
 	}
 
-	CurrentDistance = SplineComponent->GetDistanceAlongSplineAtSplineInputKey(SplineComponent->FindInputKeyClosestToWorldLocation(GetActorLocation()));
-
-	
+	CurrentDistance = SplineComponent->GetDistanceAlongSplineAtSplineInputKey(
+		SplineComponent->FindInputKeyClosestToWorldLocation(GetActorLocation())
+	);
 }
 
 void AMapObject_Attacker::Tick(float DeltaTime)
@@ -150,6 +173,7 @@ void AMapObject_Attacker::OnRep_AttackerActive()
 	ApplyAttackerActive(bAttackerActive, false);
 }
 
+
 void AMapObject_Attacker::ApplyAttackerActive(bool bActive, bool bApplyGameplay)
 {
 	SetActorHiddenInGame(!bActive);
@@ -161,6 +185,24 @@ void AMapObject_Attacker::ApplyAttackerActive(bool bActive, bool bApplyGameplay)
 	{
 		if (!Comp)
 			continue;
+
+		if (UPrimitiveComponent* PrimitiveComp = Cast<UPrimitiveComponent>(Comp))
+		{
+			if (!PrimitiveComp->IsA<UMeshComponent>() && !PrimitiveComp->IsA<UNiagaraComponent>())
+			{
+				PrimitiveComp->SetVisibility(false, true);
+				PrimitiveComp->SetHiddenInGame(true, true);
+				continue;
+			}
+		}
+		
+		// HitBoxComponent는 충돌만 사용하고 화면에는 절대 보이지 않게 유지
+		if (Comp == HitBoxComponent)
+		{
+			Comp->SetVisibility(false, true);
+			Comp->SetHiddenInGame(true, true);
+			continue;
+		}
 
 		Comp->SetVisibility(bActive, true);
 		Comp->SetHiddenInGame(!bActive, true);
@@ -203,6 +245,11 @@ void AMapObject_Attacker::ApplyAttackerActive(bool bActive, bool bApplyGameplay)
 		{
 			HitBoxComponent->CollisionOff();
 		}
-	}
-}
 
+		// CollisionOn 이후에도 화면에는 보이지 않게 다시 고정
+		HitBoxComponent->SetVisibility(false, true);
+		HitBoxComponent->SetHiddenInGame(true, true);
+	}
+	
+	
+}

@@ -52,14 +52,23 @@ Plugins/**/Binaries/*
 
 # Builds
 Build/*
-
-# Whitelist PakBlacklist-<BuildConfiguration>.txt files
 !Build/*/
 Build/*/**
 !Build/*/PakBlacklist*.txt
-
-# Don't ignore icon files in Build
 !Build/**/*.ico
+
+# PSO final cache - keep this in Git
+!Build/Windows/
+!Build/Windows/PipelineCaches/
+!Build/Windows/PipelineCaches/*.upipelinecache
+
+# PSO temporary/generated files - do not commit
+*.rec.upipelinecache
+*.spc
+*.shk
+Windows/**/Saved/CollectedPSOs/
+Saved/PSO/
+Saved/Shaders/
 
 # Built data for maps
 *_BuiltData.uasset
