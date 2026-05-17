@@ -117,5 +117,6 @@ public:
 	
 	
 	// === SFX ===
+	// Damage 받았을 때 사운드
 	virtual void PlayHitSFX() override;
 };

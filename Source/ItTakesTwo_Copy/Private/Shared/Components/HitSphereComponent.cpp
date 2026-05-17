@@ -63,7 +63,7 @@ void UHitSphereComponent::OnHitSphereBeginOverlap(UPrimitiveComponent* Overlappe
 	if (AlreadyHitActors.Contains(OtherActor)) return;
 	AlreadyHitActors.Add(OtherActor);
 	
-	UE_LOG(LogTemp, Log, TEXT("%s 와 충돌!"), *OtherActor->GetName());
+	// UE_LOG(LogTemp, Log, TEXT("%s 와 충돌!"), *OtherActor->GetName());
 	
 	if (UCombatSystem* CombatSystem = GetWorld()->GetSubsystem<UCombatSystem>())
 	{

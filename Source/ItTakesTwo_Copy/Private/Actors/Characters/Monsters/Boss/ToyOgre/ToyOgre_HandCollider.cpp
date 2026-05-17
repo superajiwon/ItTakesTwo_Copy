@@ -191,7 +191,7 @@ void AToyOgre_HandCollider::InitHPBar()
 	
 	if (UInGameHPBar* HPBarWidget = Cast<UInGameHPBar>(HPUIComp->GetWidget()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("==== [%s] HP바 위젯 바인딩 성공! ===="), *GetName());
+		// UE_LOG(LogTemp, Warning, TEXT("==== [%s] HP바 위젯 바인딩 성공! ===="), *GetName());
 		
 		HPBarWidget->SetColors(FLinearColor::Red, FLinearColor::White);
 		HPBarWidget->UpdateHP(CurrentHP, MaxHP);
@@ -200,7 +200,7 @@ void AToyOgre_HandCollider::InitHPBar()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[%s] HP바 위젯 아직 생성 안됨. 0.1초 후 재시도..."), *GetName());
+		// UE_LOG(LogTemp, Warning, TEXT("[%s] HP바 위젯 아직 생성 안됨. 0.1초 후 재시도..."), *GetName());
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AToyOgre_HandCollider::InitHPBar, 0.1f, false);
 	}

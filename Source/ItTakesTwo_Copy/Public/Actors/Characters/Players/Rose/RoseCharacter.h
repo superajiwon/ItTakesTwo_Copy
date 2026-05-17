@@ -25,11 +25,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsSelect = false;
 	
-	// UFUNCTION(BlueprintCallable)
-	// void Selected();
-	
 	// 서버가 호출하면 모든 클라이언트에서 실행됨
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_Selected();
-	
 };

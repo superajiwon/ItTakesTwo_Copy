@@ -48,10 +48,6 @@ void UUIMangerSubsystem::BeginHUD(APlayerController* OwningPC)
 				MainGameUIWidget->AddToViewport();
 			}
 		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("MainGameUI 클래스를 로드하지 못했습니다. 경로를 확인해주세요: %s"), *WidgetPath);
-		}
 	}
 }
 

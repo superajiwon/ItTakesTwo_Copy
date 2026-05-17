@@ -18,14 +18,14 @@ struct FComboStepData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat")
-	TArray<UAnimMontage*> Montages; // 랜덤 재생할 몽타주
+	TArray<UAnimMontage*> Montages;				// 랜덤 재생할 몽타주
 };
 
 // ============================================================
-//  하나의 공격 모드 전체 데이터 (Normal / Ultimate 공용)
+//  하나의 공격 모드 전체 데이터 (Basic / Ultimate 공용)
 //    - BasicAttackCombos 배열 크기 = 최대 콤보 수
-//      ex) Cody Normal : 3칸, 각 칸 몽타주 3개
-//          May  Normal : 3칸, 각 칸 몽타주 1개
+//      ex) Cody Basic : 3칸, 각 칸 몽타주 3개
+//          May  Basic : 3칸, 각 칸 몽타주 1개
 //          May  Ult    : 1칸, 몽타주 1개 (궁극기 중 기본공격)
 // ============================================================
 USTRUCT(BlueprintType)
@@ -53,24 +53,19 @@ class ITTAKESTWO_COPY_API UPlayerActionData : public UPrimaryDataAsset
 	GENERATED_BODY()
 	
 public:
-	// 평상시 공격
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attack")
-	FAttackModeData NormalAttackData;
+	FAttackModeData NormalAttackData;			// 평상시 공격
 	
-	// 궁극기 사용 시 공격 -> May 전용 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attack")
-	FAttackModeData UltimateAttackData;
+	FAttackModeData UltimateAttackData;			// 궁극기 사용 시 공격 -> May 전용 
 	
-	// 대쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attack")
-	UAnimMontage* DashMontage;
+	UAnimMontage* DashMontage;					// 대쉬
 	
-	// 궁극기
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attack")
-	UAnimMontage* UltimateMontage;
+	UAnimMontage* UltimateMontage;				// 궁극기
 	
-	// 피격
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Damage")
-	FComboStepData TakeDamageData;
+	FComboStepData TakeDamageData;				// 피격
 	
 };

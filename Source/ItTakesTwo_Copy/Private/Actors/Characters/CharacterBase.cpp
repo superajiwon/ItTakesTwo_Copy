@@ -35,19 +35,16 @@ void ACharacterBase::InitHPBar()
 
 	if (UInGameHPBar* HPBarWidget = Cast<UInGameHPBar>(HPUIComp->GetWidget()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("==== [%s] HP바 위젯 바인딩 성공! ===="), *GetName());
+		// UE_LOG(LogTemp, Warning, TEXT("==== [%s] HP바 위젯 바인딩 성공! ===="), *GetName());
 		
-		// 위젯이 생성되었다면 색상을 먼저 설정합니다.
 		HPBarWidget->SetColors(HPBarColor, HPBarHitColor);
 		
-		// 델리게이트를 바인딩하고 현재 HP로 업데이트합니다.
 		HPBarWidget->UpdateHP(HPComp->GetCurHP(), HPComp->GetMaxHP());
 		HPComp->OnHPChanged.AddDynamic(HPBarWidget, &UInGameHPBar::UpdateHP);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[%s] HP바 위젯 아직 생성 안됨. 0.1초 후 재시도..."), *GetName());
-		// 네트워크 환경 등으로 인해 클라이언트에서 위젯 생성이 지연되는 경우, 0.1초 후 재시도합니다.
+		// UE_LOG(LogTemp, Warning, TEXT("[%s] HP바 위젯 아직 생성 안됨. 0.1초 후 재시도..."), *GetName());
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACharacterBase::InitHPBar, 0.1f, false);
 	}

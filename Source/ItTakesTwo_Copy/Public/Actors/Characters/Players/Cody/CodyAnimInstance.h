@@ -26,6 +26,7 @@ public:
 	TObjectPtr<UNiagaraSystem> ProjectileNiagara;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile|Niagara")
 	TObjectPtr<UNiagaraSystem> OverlapNiagara;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile")
 	float ProjectileSpeed = 1000.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile")

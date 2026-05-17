@@ -334,7 +334,7 @@ void APlayerBase::Respawn()
 	else
 	{
 		// 둘 다 죽은 경우 
-		UE_LOG(LogTemp, Warning, TEXT("둘다 쥬금. 체크 포인트 필요"));
+		// UE_LOG(LogTemp, Warning, TEXT("둘다 쥬금. 체크 포인트 필요"));
 		if (AITTGameMode* GM = Cast<AITTGameMode>(GetWorld()->GetAuthGameMode()))
 		{
 			FTransform RespawnPoint = GM->GetRespawnTransform(this);
@@ -416,14 +416,14 @@ void APlayerBase::BaseAttack(const FInputActionValue& Value)
 		GetCharacterMovement()->bOrientRotationToMovement = false; 
 		
 		CurComboIndex = 0;
-		UE_LOG(LogTemp, Log, TEXT("jiwon [Combo] 첫번째 공격임"))
+		// UE_LOG(LogTemp, Log, TEXT("jiwon [Combo] 첫번째 공격임"))
 	}
 	else
 	{
 		// 콤보가 불가능 할 때 입력이 들어올 경우
 		if (!bCanCombo) return;
 		
-		UE_LOG(LogTemp, Log, TEXT("jiwon [Combo] 콤보로 들어왔을 때"))
+		// UE_LOG(LogTemp, Log, TEXT("jiwon [Combo] 콤보로 들어왔을 때"))
 		
 		// 콤보 구간 내 입력 시 다음 콤보 증가
 		bCanCombo = false; // 이 구간에서 입력 중복 처리 방지
@@ -499,7 +499,7 @@ void APlayerBase::Damage(float DamageAmount, AActor* Causer)
 	
 	if (ActionData->TakeDamageData.Montages.IsEmpty())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("jiwon Take Damage 몽타주가 비어있어요"));
+		// UE_LOG(LogTemp, Warning, TEXT("jiwon Take Damage 몽타주가 비어있어요"));
 		return;
 	}
 	
